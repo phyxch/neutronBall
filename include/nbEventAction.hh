@@ -1,6 +1,7 @@
 // Created on 10/13/2021
 //
-
+// Updated on 10/20/2021
+//
 
 #ifndef nbEventAction_h
 #define nbEventAction_h 1
@@ -25,8 +26,7 @@ class nbEventAction : public G4UserEventAction
     
   private:
     // methods
-    void PrintEventStatistics(G4double absoEdep, G4double absoTrackLength,
-                              G4double gapEdep, G4double gapTrackLength) const;
+    void PrintEventStatistics(G4double shellEdep, G4double shellTrackLength) const;
 };
                      
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

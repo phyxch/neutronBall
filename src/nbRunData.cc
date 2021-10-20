@@ -1,6 +1,8 @@
 // Created on 10/13/2021
 //
-// Updated: 
+// Updated on 10/20/2021: hexc, Mayur, Tien and Weisen
+//    Removed unrelated variable names
+//
 
 #include "nbRunData.hh"
 #include "nbAnalysis.hh"
@@ -12,7 +14,7 @@
 
 nbRunData::nbRunData() 
  : G4Run(),
-   fVolumeNames{ { "Absorber", "Gap" } }
+   fVolumeNames{ { "Shell"} }
 {
   for ( auto& edep : fEdep ) { 
     edep = 0.; 
@@ -35,7 +37,7 @@ void nbRunData::FillPerEvent()
   auto analysisManager = G4AnalysisManager::Instance();
 
   // accumulate statistic
-  // in the order od the histograms, ntuple columns declarations
+  // in the order of the histograms, ntuple columns declarations
   G4int counter = 0;
   for ( auto edep : fEdep ) {
     analysisManager->FillH1(counter, edep);

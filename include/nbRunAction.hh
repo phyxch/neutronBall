@@ -1,5 +1,7 @@
 // Created on 10/13/2021
 //
+// Updated on 10/20/2021
+//   Added proper name for our detector
 
 #ifndef nbRunAction_h
 #define nbRunAction_h 1
@@ -15,10 +17,8 @@ class G4Run;
 /// and track lengths of charged particles with use of analysis tools:
 /// H1D histograms are created in BeginOfRunAction() for the following 
 /// physics quantities:
-/// - Edep in absorber
-/// - Edep in gap
-/// - Track length in absorber
-/// - Track length in gap
+/// - Edep in shell
+/// - Track length in shell
 /// The same values are also saved in the ntuple.
 /// The histograms and ntuple are saved in the output file in a format
 /// accoring to a selected technology in nbAnalysis.hh.

@@ -51,6 +51,7 @@ set(nb_SCRIPTS
   init_vis.mac
   plotHisto.C
   plotNtuple.C
+  config.txt
   run1.mac
   run2.mac
   vis.mac

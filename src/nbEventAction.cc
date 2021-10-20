@@ -1,5 +1,7 @@
 // Created on 10/13/2021
 // 
+// Updated on 10/20/2021
+//   Added proper names for the detector
 //
 
 #include "nbEventAction.hh"
@@ -26,21 +28,22 @@ nbEventAction::~nbEventAction()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void nbEventAction::PrintEventStatistics(
-                              G4double absoEdep, G4double absoTrackLength,
-                              G4double gapEdep, G4double gapTrackLength) const
+                              G4double shellEdep, G4double shellTrackLength) const
 {
   // print event statistics
   G4cout
-     << "   Absorber: total energy: " 
-     << std::setw(7) << G4BestUnit(absoEdep, "Energy")
+     << "   Shell: total energy: " 
+     << std::setw(7) << G4BestUnit(shellEdep, "Energy")
      << "       total track length: " 
-     << std::setw(7) << G4BestUnit(absoTrackLength, "Length")
-     << G4endl
+     << std::setw(7) << G4BestUnit(shellTrackLength, "Length")
+     << G4endl;
+    /*
      << "        Gap: total energy: " 
      << std::setw(7) << G4BestUnit(gapEdep, "Energy")
      << "       total track length: " 
      << std::setw(7) << G4BestUnit(gapTrackLength, "Length")
      << G4endl;
+    */
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -70,10 +73,8 @@ void nbEventAction::EndOfEventAction(const G4Event* event)
     G4cout << "---> End of event: " << eventID << G4endl;     
 
     PrintEventStatistics(
-      runData->GetEdep(kAbs),
-      runData->GetTrackLength(kAbs),
-      runData->GetEdep(kGap),
-      runData->GetTrackLength(kGap));
+      runData->GetEdep(kShell),
+      runData->GetTrackLength(kShell));
   }
 }  
 

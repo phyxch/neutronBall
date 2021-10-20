@@ -2,6 +2,9 @@
 //
 // Created on 10/13/2021: hexc, Mayur, Tien, Weisen, Austin
 // neutron ball detector is constructed as a shell with a predeinfed inner and outer radia.
+//
+// Updated on 10/20/2021: hexc, Mayur, Tien and Weisen
+//    Add code for reading in the detector configuration file
 
 #include "nbDetectorConstruction.hh"
 
@@ -26,6 +29,9 @@
 
 #include "G4PhysicalConstants.hh"
 #include "G4SystemOfUnits.hh"
+#include <string>
+#include <stdio.h>
+#include <stdlib.h>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -39,6 +45,36 @@ nbDetectorConstruction::nbDetectorConstruction()
    shellPV(nullptr),
    fCheckOverlaps(true)
 {
+
+  std::string line;
+  char varName[10];
+  G4double inputVal[3];
+  std::ifstream nbConfig("config.txt");
+  G4int i = 0;
+  if (nbConfig.is_open())
+    {
+      while (getline(nbConfig, line))
+	{
+	  char* token = strtok((char *)line.c_str(), ",\t");
+	  int num = 0;
+	  while (token != NULL)
+	    {
+	      G4cout << token << G4endl;
+	      if (num++ != 0) inputVal[i++] = atoi(token);
+	      token = strtok(NULL,",\t");
+		/*
+		  G4cout << line << G4endl;
+		  strtok(line.c_str(), " ,\t");
+		  inputVal[i++] = atoi(strtok(NULL, " ,\t"));
+		*/
+	    }
+	}
+    }
+  
+  inner_r = inputVal[0]*mm;
+  outer_r = inputVal[1]*mm;
+  matType = (G4int)inputVal[2];
+  G4cout << "inner_r: " << inner_r << "   outer_r: " << outer_r << "   matType: " << matType << G4endl; 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -88,18 +124,25 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 {
   // Geometry parameters
 
-  inner_r = 10.*mm;
-  outer_r = 10*inner_r;
-
   auto worldSizeXY = 1.5 * outer_r;
   auto worldSizeZ  = worldSizeXY; 
   
   // Get materials
   auto defaultMaterial = G4Material::GetMaterial("Galactic");
-  //  auto shellMaterial = G4Material::GetMaterial("G4_Pb");
-  auto shellMaterial = G4Material::GetMaterial("G4_AIR");
-  auto gapMaterial = G4Material::GetMaterial("liquidArgon");
-  
+  if (matType == 1)
+    {
+      shellMaterial = G4Material::GetMaterial("G4_Pb");
+    } else if (matType == 2)
+    {
+      shellMaterial = G4Material::GetMaterial("G4_AIR");
+    } else if (matType == 3)
+    {
+      shellMaterial = G4Material::GetMaterial("liquidArgon");
+    } else {
+    G4cout << "Material is NOT defined! " << G4endl;
+    exit(1);
+  }
+ 
   if ( ! defaultMaterial || ! shellMaterial  ) {
     G4ExceptionDescription msg;
     msg << "Cannot retrieve materials already defined."; 

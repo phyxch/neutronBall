@@ -47,7 +47,7 @@ void nbSteppingAction::UserSteppingAction(const G4Step* step)
     (G4RunManager::GetRunManager()->GetNonConstCurrentRun());
 
   if ( volume == fDetConstruction->GetShellPV() ) {
-    runData->Add(kAbs, edep, stepLength);
+    runData->Add(kShell, edep, stepLength);
   }
   
 }

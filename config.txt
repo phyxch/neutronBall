@@ -1,0 +1,4 @@
+# This is a configuration file for setting up neutron ball simulation
+r_in	1.0
+r_out	10.0
+Mat	1 

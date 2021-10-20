@@ -11,7 +11,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-const G4int kAbs = 0;
+const G4int kShell = 0;
 const G4int kGap = 1;
 const G4int kDim = 2;
 

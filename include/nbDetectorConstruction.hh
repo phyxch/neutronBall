@@ -2,6 +2,9 @@
 //
 // All of the geometric parameters of the neutron ball detector is define here
 //
+// Updated on 10/20/2021: hexc, Mayur, Tien, Weisen
+//    Added code for reading on detector configuration parameter
+//
 
 #ifndef nbDetectorConstruction_h
 #define nbDetectorConstruction_h 1
@@ -11,6 +14,7 @@
 
 class G4VPhysicalVolume;
 class G4GlobalMagFieldMessenger;
+class G4Material;
 
 /// Detector construction class to define materials and geometry.
 /// The detector consists of concentric spherical shells. One can have as many shell as we want.
@@ -43,6 +47,8 @@ private:
   // magnetic field messenger
   
   G4double inner_r, outer_r;
+  G4int matType;
+  G4Material* shellMaterial;
   G4VPhysicalVolume*   shellPV;     // neutron ball shell physical volume
   
   G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
