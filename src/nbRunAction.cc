@@ -35,7 +35,7 @@ nbRunAction::nbRunAction()
   //
   
   // Creating histograms
-  analysisManager->CreateH1("Eshell","Edep in shell", 100, 0., 800*MeV);
+  analysisManager->CreateH1("Eshell","Edep in shell", 100, 0., 100*MeV);
   //analysisManager->CreateH1("Egap","Edep in gap", 100, 0., 100*MeV);
   analysisManager->CreateH1("Lshell","trackL in shell", 100, 0., 1*m);
   //  analysisManager->CreateH1("Lgap","trackL in gap", 100, 0., 50*cm);

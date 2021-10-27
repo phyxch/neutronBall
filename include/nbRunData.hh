@@ -13,7 +13,8 @@
 
 const G4int kShell = 0;
 const G4int kGap = 1;
-const G4int kDim = 2;
+// const G4int kDim = 2;   // from example code
+const G4int kDim = 1;
 
 ///  Run data class
 ///
@@ -55,6 +56,7 @@ private:
 inline void nbRunData::Add(G4int id, G4double de, G4double dl) {
   fEdep[id] += de; 
   fTrackLength[id] += dl;
+  // G4cout << " de: " << de << "  dl: " << dl << G4endl;
 }
 
 inline G4String  nbRunData::GetVolumeName(G4int id) const {
