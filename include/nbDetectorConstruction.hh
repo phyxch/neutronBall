@@ -5,6 +5,8 @@
 // Updated on 10/20/2021: hexc, Mayur, Tien, Weisen
 //    Added code for reading on detector configuration parameter
 //
+// Updated on 11/10/2021: hexc, Mayur, Tien, Jarvious
+//   Add more layers in the detector construct with different material properties.
 
 #ifndef nbDetectorConstruction_h
 #define nbDetectorConstruction_h 1
@@ -47,9 +49,9 @@ private:
   // magnetic field messenger
   
   G4double inner_r, outer_r;
-  G4int matType;
-  G4Material* shellMaterial;
-  G4VPhysicalVolume*   shellPV;     // neutron ball shell physical volume
+  G4int matType, matType_1, matType_2, matType_3;
+  G4Material *shellMaterial, *shellMaterial_1, *shellMaterial_2, *shellMaterial_3;
+  G4VPhysicalVolume  *shellPV, *shellPV_1, *shellPV_2, *shellPV_3;    // neutron ball shell physical volume
   
   G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
 };
