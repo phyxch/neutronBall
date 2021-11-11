@@ -276,25 +276,25 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   // shellMaterial_1 type 
   if (matType_1 == 1)
     {
-      shellMaterial = G4Material::GetMaterial("G4_Pb");
+      shellMaterial_1 = G4Material::GetMaterial("G4_Pb");
     } else if (matType_1 == 2)
     {
-      shellMaterial = G4Material::GetMaterial("G4_AIR");
+      shellMaterial_1 = G4Material::GetMaterial("G4_AIR");
     } else if (matType_1 == 3)
     {
       shellMaterial = G4Material::GetMaterial("liquidArgon");
     } else if (matType_1 == 4)
     {
-      shellMaterial = soilOne;
+      shellMaterial_1 = soilOne;
     } else if (matType_1 == 5)
     {
-      shellMaterial = soilOne10W;
+      shellMaterial_1 = soilOne10W;
     } else if (matType_1 == 6)
     {
-      shellMaterial = soilOne20W;
+      shellMaterial_1 = soilOne20W;
     } else if (matType_1 == 7)
     {
-      shellMaterial = soilOne30W;
+      shellMaterial_1 = soilOne30W;
     } else {
     G4cout << "Material_1 is NOT defined! " << G4endl;
     exit(1);
@@ -303,25 +303,25 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   // shellMaterial_2 type 
   if (matType_2 == 1)
     {
-      shellMaterial = G4Material::GetMaterial("G4_Pb");
+      shellMaterial_2 = G4Material::GetMaterial("G4_Pb");
     } else if (matType_2 == 2)
     {
-      shellMaterial = G4Material::GetMaterial("G4_AIR");
+      shellMaterial_2 = G4Material::GetMaterial("G4_AIR");
     } else if (matType_2 == 3)
     {
-      shellMaterial = G4Material::GetMaterial("liquidArgon");
+      shellMaterial_2 = G4Material::GetMaterial("liquidArgon");
     } else if (matType_2 == 4)
     {
-      shellMaterial = soilOne;
+      shellMaterial_2 = soilOne;
     } else if (matType_2 == 5)
     {
-      shellMaterial = soilOne10W;
+      shellMaterial_2 = soilOne10W;
     } else if (matType_2 == 6)
     {
-      shellMaterial = soilOne20W;
+      shellMaterial_2 = soilOne20W;
     } else if (matType_2 == 7)
     {
-      shellMaterial = soilOne30W;
+      shellMaterial_2 = soilOne30W;
     } else {
     G4cout << "Material_2 is NOT defined! " << G4endl;
     exit(1);
@@ -330,38 +330,31 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   // shellMaterial_3 type 
   if (matType_3 == 1)
     {
-      shellMaterial = G4Material::GetMaterial("G4_Pb");
+      shellMaterial_3 = G4Material::GetMaterial("G4_Pb");
     } else if (matType_3 == 2)
     {
-      shellMaterial = G4Material::GetMaterial("G4_AIR");
+      shellMaterial_3 = G4Material::GetMaterial("G4_AIR");
     } else if (matType_3 == 3)
     {
-      shellMaterial = G4Material::GetMaterial("liquidArgon");
+      shellMaterial_3 = G4Material::GetMaterial("liquidArgon");
     } else if (matType_3 == 4)
     {
-      shellMaterial = soilOne;
+      shellMaterial_3 = soilOne;
     } else if (matType_3 == 5)
     {
-      shellMaterial = soilOne10W;
+      shellMaterial_3 = soilOne10W;
     } else if (matType_3 == 6)
     {
-      shellMaterial = soilOne20W;
+      shellMaterial_3 = soilOne20W;
     } else if (matType_3 == 7)
     {
-      shellMaterial = soilOne30W;
+      shellMaterial_3 = soilOne30W;
     } else {
     G4cout << "Material_3 is NOT defined! " << G4endl;
     exit(1);
   }
 
   
-  if ( ! defaultMaterial || ! shellMaterial  ) {
-    G4ExceptionDescription msg;
-    msg << "Cannot retrieve materials already defined."; 
-    G4Exception("nbDetectorConstruction::DefineVolumes()",
-      "MyCode0001", FatalException, msg);
-  }  
-
   // Geometry parameters  
 
   //     
@@ -405,8 +398,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   // Outer shell
   auto solidShell = new G4Sphere("Shell", inner_r, outer_r,
 			       startAnglePhi, spanningAnglePhi, 
-			       startAngleTheta, spanningAngleTheta);
-  
+			       startAngleTheta, spanningAngleTheta);  
   auto shellLV
     = new G4LogicalVolume(
                  solidShell,     // its solid
