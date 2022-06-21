@@ -1,11 +1,7 @@
 #----------------------------------------------------------------------------
 # Setup the project
-#
-cmake_minimum_required(VERSION 3.8...3.18)
-if(${CMAKE_VERSION} VERSION_LESS 3.12)
-  cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
-endif()
-project(nb)
+cmake_minimum_required(VERSION 3.16...3.21)
+project(rdecay01)
 
 #----------------------------------------------------------------------------
 # Find Geant4 package, activating all available UI and Vis drivers by default
@@ -21,43 +17,35 @@ endif()
 
 #----------------------------------------------------------------------------
 # Setup Geant4 include directories and compile definitions
-# Setup include directory for this project
 #
 include(${Geant4_USE_FILE})
-include_directories(${PROJECT_SOURCE_DIR}/include)
 
 #----------------------------------------------------------------------------
 # Locate sources and headers for this project
-# NB: headers are included so they will show up in IDEs
 #
+include_directories(${PROJECT_SOURCE_DIR}/include 
+                    ${Geant4_INCLUDE_DIR})
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
 #
-add_executable(neutronBall  neutronBall.cc ${sources} ${headers})
-target_link_libraries(neutronBall ${Geant4_LIBRARIES})
+add_executable(rdecay01 rdecay01.cc ${sources} ${headers})
+target_link_libraries(rdecay01 ${Geant4_LIBRARIES} )
 
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we
-# build neutronBall. This is so that we can run the executable directly because it
+# build rdecay01. This is so that we can run the executable directly because it
 # relies on these scripts being in the current working directory.
 #
-set(nb_SCRIPTS
-  nb.out
-  nb.in
-  gui.mac
-  init_vis.mac
-  plotHisto.C
-  plotNtuple.C
-  config.txt
-  run1.mac
-  run2.mac
-  vis.mac
+set(rdecay01_SCRIPTS
+    alpha.mac Cf238.mac Co60.mac debug.mac Gd158.mac electronicCapture.mac fullChain.mac neutron.mac
+    proton.mac No252.mac Po212.mac Ra228.mac rdecay01.in singleDecay.mac timeWindow.mac
+    timeWindowBiased.mac timeWindowBiased.data atomicDeexcitation.mac vis.mac
   )
 
-foreach(_script ${nb_SCRIPTS})
+foreach(_script ${rdecay01_SCRIPTS})
   configure_file(
     ${PROJECT_SOURCE_DIR}/${_script}
     ${PROJECT_BINARY_DIR}/${_script}
@@ -68,4 +56,5 @@ endforeach()
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
 #
-install(TARGETS neutronBall DESTINATION bin)
+install(TARGETS rdecay01 DESTINATION bin)
+
