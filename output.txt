@@ -1,0 +1,435 @@
+
+
+          ################################
+          !!! G4Backtrace is activated !!!
+          ################################
+
+
+**************************************************************
+ Geant4 version Name: geant4-11-00-patch-02    (25-May-2022)
+                       Copyright : Geant4 Collaboration
+                      References : NIM A 506 (2003), 250-303
+                                 : IEEE-TNS 53 (2006), 270-278
+                                 : NIM A 835 (2016), 186-225
+                             WWW : http://geant4.org/
+**************************************************************
+
+inner_r: 1   outer_r: 30   matType: 7
+inner_r: 1   outer_r: 30   matType_1: 6
+inner_r: 1   outer_r: 30   matType_2: 5
+inner_r: 1   outer_r: 30   matType_3: 4
+
+***** Table : Nb of materials = 4 *****
+
+ Material:    G4_Pb    density: 11.350 g/cm3   RadL:   5.613 mm   Nucl.Int.Length:  18.248 cm 
+                       Imean: 823.000 eV   temperature: 293.15 K  pressure:   1.00 atm
+
+   --->  Element: Pb (Pb)   Z = 82.0   N =   207   A = 207.217 g/mole
+         --->  Isotope: Pb204   Z = 82   N = 204   A = 203.97 g/mole   abundance:  1.400 %
+         --->  Isotope: Pb206   Z = 82   N = 206   A = 205.97 g/mole   abundance: 24.100 %
+         --->  Isotope: Pb207   Z = 82   N = 207   A = 206.98 g/mole   abundance: 22.100 %
+         --->  Isotope: Pb208   Z = 82   N = 208   A = 207.98 g/mole   abundance: 52.400 %
+          ElmMassFraction: 100.00 %  ElmAbundance 100.00 % 
+
+
+ Material:   G4_AIR    density:  1.205 mg/cm3  RadL: 303.921 m    Nucl.Int.Length: 710.095 m  
+                       Imean:  85.700 eV   temperature: 293.15 K  pressure:   1.00 atm
+
+   --->  Element: C (C)   Z =  6.0   N =    12   A = 12.011 g/mole
+         --->  Isotope:   C12   Z =  6   N =  12   A =  12.00 g/mole   abundance: 98.930 %
+         --->  Isotope:   C13   Z =  6   N =  13   A =  13.00 g/mole   abundance:  1.070 %
+          ElmMassFraction:   0.01 %  ElmAbundance   0.02 % 
+
+   --->  Element: N (N)   Z =  7.0   N =    14   A = 14.007 g/mole
+         --->  Isotope:   N14   Z =  7   N =  14   A =  14.00 g/mole   abundance: 99.632 %
+         --->  Isotope:   N15   Z =  7   N =  15   A =  15.00 g/mole   abundance:  0.368 %
+          ElmMassFraction:  75.53 %  ElmAbundance  78.44 % 
+
+   --->  Element: O (O)   Z =  8.0   N =    16   A = 15.999 g/mole
+         --->  Isotope:   O16   Z =  8   N =  16   A =  15.99 g/mole   abundance: 99.757 %
+         --->  Isotope:   O17   Z =  8   N =  17   A =  17.00 g/mole   abundance:  0.038 %
+         --->  Isotope:   O18   Z =  8   N =  18   A =  18.00 g/mole   abundance:  0.205 %
+          ElmMassFraction:  23.18 %  ElmAbundance  21.07 % 
+
+   --->  Element: Ar (Ar)   Z = 18.0   N =    40   A = 39.948 g/mole
+         --->  Isotope:  Ar36   Z = 18   N =  36   A =  35.97 g/mole   abundance:  0.337 %
+         --->  Isotope:  Ar38   Z = 18   N =  38   A =  37.96 g/mole   abundance:  0.063 %
+         --->  Isotope:  Ar40   Z = 18   N =  40   A =  39.96 g/mole   abundance: 99.600 %
+          ElmMassFraction:   1.28 %  ElmAbundance   0.47 % 
+
+
+ Material: liquidArgon    density:  1.390 g/cm3   RadL:  14.064 cm   Nucl.Int.Length:  86.076 cm 
+                       Imean: 188.000 eV   temperature: 293.15 K  pressure:   1.00 atm
+
+   --->  Element: Ar (Ar)   Z = 18.0   N =    40   A = 39.948 g/mole
+         --->  Isotope:  Ar36   Z = 18   N =  36   A =  35.97 g/mole   abundance:  0.337 %
+         --->  Isotope:  Ar38   Z = 18   N =  38   A =  37.96 g/mole   abundance:  0.063 %
+         --->  Isotope:  Ar40   Z = 18   N =  40   A =  39.96 g/mole   abundance: 99.600 %
+          ElmMassFraction: 100.00 %  ElmAbundance 100.00 % 
+
+
+ Material: Galactic    density:  0.000 mg/cm3  RadL: 204310098.490 pc   Nucl.Int.Length: 113427284.261 pc 
+                       Imean:  19.200 eV   temperature:   2.73 K  pressure:   0.00 atm
+
+   --->  Element: H (H)   Z =  1.0   N =     1   A =  1.008 g/mole
+         --->  Isotope:    H1   Z =  1   N =   1   A =   1.01 g/mole   abundance: 99.989 %
+         --->  Isotope:    H2   Z =  1   N =   2   A =   2.01 g/mole   abundance:  0.011 %
+          ElmMassFraction: 100.00 %  ElmAbundance 100.00 % 
+
+
+
+Checking overlaps for volume shellPV:0 (G4Sphere) ... OK! 
+Checking overlaps for volume shellPV_1:0 (G4Sphere) ... OK! 
+Checking overlaps for volume shellPV_2:0 (G4Sphere) ... OK! 
+Checking overlaps for volume shellPV_3:0 (G4Sphere) ... OK! 
+
+------------------------------------------------------------
+---> The shell dimension:  inner_r 1   outer_r 30
+------------------------------------------------------------
+
+  Set atomic relaxation mode 0
+/run/verbose 1
+#
+/gun/particle ion
+/gun/ion 92 238
+#
+/rdecay01/fullChain true
+#
+/analysis/setFileName run2
+Set file name: run2
+/analysis/h1/set 1 100 0. 4000 keV
+/analysis/h1/set 2 100 0. 4000 keV
+/analysis/h1/set 3 100 0. 4000 keV
+/analysis/h1/set 4 100 0. 10 MeV
+/analysis/h1/set 5 100 0. 200 keV
+/analysis/h1/set 6 100 0 8 MeV
+/analysis/h1/set 7 100 0. 300 MeV
+/analysis/h1/set 8 100 0. 1.e+11 y
+/analysis/h1/set 9 100 40. 100. MeV
+#
+/run/printProgress 10000
+/run/beamOn 100000
+======================================================================
+======          Radioactive Decay Physics Parameters           =======
+======================================================================
+Max life time                                     0.14427 ps
+Internal e- conversion flag                       1
+Stored internal conversion coefficients           1
+Enable correlated gamma emission                  0
+Max 2J for sampling of angular correlations       10
+Atomic de-excitation enabled                      0
+Auger electron emission enabled                   0
+Check EM cuts disabled for atomic de-excitation   0
+Use Bearden atomic level energies                 0
+Use ANSTO fluorescence model                      0
+Threshold for very long decay time at rest        1e+27  ns
+======================================================================
+
+========= Table of registered couples ============================
+
+Index : 0     used in the geometry : Yes
+ Material : Galactic
+ Range cuts        :  gamma  1 mm     e-  1 mm     e+  1 mm  proton 1 mm 
+ Energy thresholds :  gamma  1 keV    e-  1 keV    e+  1 keV proton 100 keV
+ Region(s) which use this couple : 
+    DefaultRegionForTheWorld
+
+Index : 1     used in the geometry : Yes
+ Material : DrySoil30W
+ Range cuts        :  gamma  1 mm     e-  1 mm     e+  1 mm  proton 1 mm 
+ Energy thresholds :  gamma  2.79805 keV    e-  232.473 keV    e+  227.009 keV proton 100 keV
+ Region(s) which use this couple : 
+    DefaultRegionForTheWorld
+
+Index : 2     used in the geometry : Yes
+ Material : DrySoil20W
+ Range cuts        :  gamma  1 mm     e-  1 mm     e+  1 mm  proton 1 mm 
+ Energy thresholds :  gamma  2.85652 keV    e-  229.73 keV    e+  224.293 keV proton 100 keV
+ Region(s) which use this couple : 
+    DefaultRegionForTheWorld
+
+Index : 3     used in the geometry : Yes
+ Material : DrySoil10W
+ Range cuts        :  gamma  1 mm     e-  1 mm     e+  1 mm  proton 1 mm 
+ Energy thresholds :  gamma  2.91389 keV    e-  226.94 keV    e+  221.575 keV proton 100 keV
+ Region(s) which use this couple : 
+    DefaultRegionForTheWorld
+
+Index : 4     used in the geometry : Yes
+ Material : DrySoil
+ Range cuts        :  gamma  1 mm     e-  1 mm     e+  1 mm  proton 1 mm 
+ Energy thresholds :  gamma  2.97033 keV    e-  224.133 keV    e+  218.854 keV proton 100 keV
+ Region(s) which use this couple : 
+    DefaultRegionForTheWorld
+
+==================================================================
+
+### Run 0 starts.
+... set ntuple merging row mode : row-wise - done
+... create file : run2.root - done
+... open analysis file : run2.root - done
+... open analysis file : run2.root - done
+--> Event 0 starts.
+    End of event. Decay chain: U238 ---> Th234[49.550] ---> Th234 ---> Pa234[73.920X] ---> U234 ---> Th230 ---> Ra226 ---> Rn222 ---> Po218 ---> Pb214 ---> Bi214[351.932] ---> Bi214 ---> Po214[2728.609] ---> Po214[1764.515] ---> Po214 ---> Pb210 ---> Bi210 ---> Po210 ---> Pb206
+
+--> Event 10000 starts.
+    End of event. Decay chain: U238 ---> Th234 ---> Pa234[73.920X] ---> U234 ---> Th230 ---> Ra226 ---> Rn222 ---> Po218 ---> Pb214 ---> Bi214[351.932] ---> Bi214 ---> Po214[1764.515] ---> Po214 ---> Pb210 ---> Bi210[46.539] ---> Bi210 ---> Po210 ---> Pb206
+
+--> Event 20000 starts.
+    End of event. Decay chain: U238 ---> Th234 ---> Pa234[73.920X] ---> U234 ---> Th230[53.227] ---> Th230 ---> Ra226 ---> Rn222 ---> Po218 ---> Pb214 ---> Bi214[295.223] ---> Bi214 ---> Po214[1764.515] ---> Po214 ---> Pb210 ---> Bi210[46.539] ---> Bi210 ---> Po210 ---> Pb206
+
+--> Event 30000 starts.
+    End of event. Decay chain: U238 ---> Th234 ---> Pa234[73.920X] ---> U234 ---> Th230 ---> Ra226 ---> Rn222 ---> Po218 ---> Pb214 ---> Bi214[351.932] ---> Bi214 ---> Po214[1729.609] ---> Po214 ---> Pb210 ---> Bi210[46.539] ---> Bi210 ---> Po210 ---> Pb206
+
+--> Event 40000 starts.
+    End of event. Decay chain: U238 ---> Th234 ---> Pa234[73.920X] ---> U234 ---> Th230 ---> Ra226[67.670] ---> Ra226 ---> Rn222 ---> Po218 ---> Pb214 ---> Bi214[351.932] ---> Bi214 ---> Po214 ---> Pb210 ---> Bi210[46.539] ---> Bi210 ---> Po210 ---> Pb206
+
+--> Event 50000 starts.
+    End of event. Decay chain: U238 ---> Th234 ---> Pa234[73.920X] ---> U234 ---> Th230 ---> Ra226[67.670] ---> Ra226 ---> Rn222 ---> Po218 ---> Pb214 ---> Bi214[351.932] ---> Bi214 ---> Po214 ---> Pb210 ---> Bi210[46.539] ---> Bi210 ---> Po210 ---> Pb206
+
+--> Event 60000 starts.
+    End of event. Decay chain: U238 ---> Th234 ---> Pa234[73.920X] ---> U234[809.907] ---> U234 ---> Th230 ---> Ra226 ---> Rn222 ---> Po218 ---> Pb214 ---> Bi214[295.223] ---> Bi214 ---> Po214[2010.830] ---> Po214[609.316] ---> Po214 ---> Pb210 ---> Bi210[46.539] ---> Bi210 ---> Po210 ---> Pb206
+
+--> Event 70000 starts.
+    End of event. Decay chain: U238 ---> Th234[49.550] ---> Th234 ---> Pa234[73.920X] ---> U234 ---> Th230 ---> Ra226 ---> Rn222 ---> Po218 ---> Pb214 ---> Bi214[351.932] ---> Bi214 ---> Po214 ---> Pb210 ---> Bi210 ---> Po210 ---> Pb206
+
+--> Event 80000 starts.
+    End of event. Decay chain: U238 ---> Th234 ---> Pa234[73.920X] ---> U234 ---> Th230 ---> Ra226 ---> Rn222 ---> Po218 ---> Pb214 ---> Bi214[295.223] ---> Bi214 ---> Po214[1729.609] ---> Po214[609.316] ---> Po214 ---> Pb210 ---> Bi210[46.539] ---> Bi210 ---> Po210 ---> Pb206
+
+--> Event 90000 starts.
+    End of event. Decay chain: U238 ---> Th234 ---> Pa234[73.920X] ---> U234 ---> Th230[53.227] ---> Th230 ---> Ra226 ---> Rn222 ---> Po218 ---> Pb214 ---> Bi214[351.932] ---> Bi214 ---> Po214[2482.468] ---> Po214[1274.766] ---> Po214[609.316] ---> Po214 ---> Pb210 ---> Bi210[46.539] ---> Bi210 ---> Po210 ---> Pb206
+
+ Run terminated.
+Run Summary
+  Number of events processed : 100000
+  User=18.490000s Real=18.873247s Sys=0.030000s
+
+ ======================== run summary ======================
+ The run was 100000 U238 of 0 eV 
+ ===========================================================
+
+ Nb of generated particles: 
+
+            At218:      16  Emean =  305.1 meV	( 104.9 meV --> 598.5 meV)	mean life = 2.164 s  
+            Bi210:   99272  Emean =  79.79 meV	( 0.08731 meV --> 170.4 meV)	mean life = 7.231 d  
+    Bi210[46.539]:   83407  Emean =  11.57 meV	( 0 eV  --> 44.15 meV)	mean life = 4.328 ns 
+            Bi214:   99272  Emean =  604.4 meV	( 2.212 meV --> 5.143 eV )	mean life = 28.71 min
+   Bi214[103.000]:       2  Emean =  124.4 keV	( 124.4 keV --> 124.4 keV)
+   Bi214[258.870]:     877  Emean =  568.7 meV	( 189.4 meV --> 1.857 eV )
+   Bi214[295.223]:   39907  Emean =  1.443 eV 	( 0.6694 meV --> 3.135 eV )	mean life = 72.13 ps 
+   Bi214[351.932]:   45336  Emean =  1.264 eV 	( 0.2328 meV --> 2.797 eV )	mean life = 144.3 ps 
+   Bi214[377.040]:     218  Emean =  535.4 meV	( 535.4 meV --> 535.4 meV)
+    Bi214[53.228]:   14817  Emean =  401.7 meV	( 106.1 meV --> 2.995 eV )	mean life = 144.3 ps 
+   Bi214[533.676]:    1067  Emean =  717.9 meV	( 0.8731 meV --> 1.748 eV )
+    Bi214[62.690]:     234  Emean =  7.488 keV	( 96.57 meV --> 125.2 keV)
+   Bi214[839.009]:    2730  Emean =  181.5 meV	( 1.455 meV --> 529.5 meV)
+            Pa234:     142  Emean =  130.4 meV	( 12.51 meV --> 182.1 meV)	mean life = 9.666 h  
+  Pa234[103.420X]:    5759  Emean =  45.99 meV	( 9.051 meV --> 207.5 meV)	mean life = 721.3 ps 
+  Pa234[166.300X]:   13885  Emean =  84.96 meV	( 0.08731 meV --> 270.7 meV)	mean life = 144.3 ps 
+  Pa234[166.720X]:    7741  Emean =  74.22 meV	( 0.291 meV --> 267.7 meV)	mean life = 793.5 ps 
+  Pa234[177.270X]:      15  Emean =  53.96 meV	( 9.197 meV --> 135.4 meV)
+  Pa234[186.730X]:    1508  Emean =  64.44 meV	( 0.3783 meV --> 213.2 meV)
+   Pa234[73.920X]:   99274  Emean =  173.2 meV	( 0.0291 meV --> 549.3 meV)	mean life = 1.672 min
+            Pb206:   99272  Emean =  103.1 keV	( 6.938 eV  --> 103.1 keV)	stable
+            Pb210:   99272  Emean =  146.6 keV	( 1.635 eV  --> 146.7 keV)	mean life = 32.05 y  
+  Pb210[1097.700]:      12  Emean =  4.326 eV 	( 229.7 meV --> 22.66 eV )	mean life = 865.6 ps 
+  Pb210[1195.000]:       7  Emean =  2.323 eV 	( 180.1 meV --> 15.06 eV )	mean life = 70.69 ns 
+  Pb210[1275.000]:       6  Emean =  33.78 eV 	( 25.16 eV  --> 45.33 eV )
+  Pb210[1870.000]:       3  Emean =  10.33 eV 	( 10.33 eV  --> 10.33 eV )
+  Pb210[2414.000]:       3  Emean =  3.737 eV 	( 3.731 eV  --> 3.75 eV )
+  Pb210[3070.000]:       2  Emean =  11.23 eV 	( 6.762 eV  --> 15.7 eV )
+  Pb210[3458.000]:       1  Emean =    653 meV	( 653 meV --> 653 meV)
+  Pb210[3622.000]:       3  Emean =  8.808 eV 	( 7.466 eV  --> 10.06 eV )
+  Pb210[3625.000]:       1  Emean =  581.7 meV	( 581.7 meV --> 581.7 meV)
+  Pb210[3880.000]:       3  Emean =  4.908 eV 	( 2.659 eV  --> 8.662 eV )
+  Pb210[4102.000]:       1  Emean =  5.361 eV 	( 5.361 eV  --> 5.361 eV )
+   Pb210[799.700]:      34  Emean =  65.84 keV	( 227.1 meV --> 131.7 keV)	mean life = 24.53 ps 
+            Pb214:   99257  Emean =  112.3 keV	( 1.749 eV  --> 112.3 keV)	mean life = 39.04 min
+   Pb214[835.000]:       2  Emean =     97 keV	( 97 keV --> 97 keV)
+            Po210:   99271  Emean =  3.247 eV 	( 0.8149 meV --> 6.454 eV )	mean life = 199.6 d  
+            Po214:   99255  Emean =  7.129 eV 	( 45.61 meV --> 35.1 eV )	mean life = 237 us 
+  Po214[1015.039]:      95  Emean =  1.352 eV 	( 700.3 meV --> 1.738 eV )
+  Po214[1274.766]:    1500  Emean =  2.149 eV 	( 181 meV --> 7.349 eV )
+  Po214[1377.678]:    8874  Emean =  6.401 eV 	( 20.29 meV --> 13.74 eV )
+  Po214[1415.495]:    1720  Emean =  4.417 eV 	( 236.3 meV --> 13.22 eV )	mean life = 142.8 ps 
+  Po214[1543.372]:    3687  Emean =  5.778 eV 	( 12.25 meV --> 11.75 eV )
+  Po214[1661.279]:    1379  Emean =  3.473 eV 	( 54.19 meV --> 10.45 eV )
+  Po214[1712.970]:     159  Emean =  5.241 eV 	( 40.13 meV --> 9.565 eV )
+  Po214[1729.609]:   18565  Emean =  4.966 eV 	( 17.35 meV --> 9.843 eV )
+  Po214[1742.980]:     264  Emean =  3.042 eV 	( 60.04 meV --> 9.25 eV )
+  Po214[1764.515]:   17473  Emean =  4.905 eV 	( 11.82 meV --> 9.487 eV )
+  Po214[1847.443]:    8106  Emean =  4.499 eV 	( 15.57 meV --> 8.689 eV )
+  Po214[1890.306]:    1584  Emean =  4.314 eV 	( 51.25 meV --> 8.242 eV )
+  Po214[1994.640]:    1270  Emean =  3.511 eV 	( 6.403 meV --> 7.218 eV )
+  Po214[2010.830]:    1482  Emean =  3.677 eV 	( 50.41 meV --> 7.027 eV )
+  Po214[2017.309]:    2372  Emean =  3.658 eV 	( 34.2 meV --> 7.062 eV )
+  Po214[2088.440]:     160  Emean =  2.298 eV 	( 182.2 meV --> 6.412 eV )
+  Po214[2118.533]:    4340  Emean =  3.088 eV 	( 13.1 meV --> 6.206 eV )
+  Po214[2147.830]:     454  Emean =  2.782 eV 	( 69.06 meV --> 5.848 eV )
+  Po214[2192.537]:     940  Emean =  2.809 eV 	( 24.24 meV --> 5.562 eV )
+  Po214[2204.089]:    5770  Emean =  2.757 eV 	( 10.91 meV --> 5.486 eV )
+  Po214[2208.690]:     171  Emean =  284.7 meV	( 188 meV --> 678.2 meV)
+  Po214[2266.410]:     200  Emean =  2.478 eV 	( 17.4 meV --> 4.951 eV )
+  Po214[2293.358]:     545  Emean =  2.462 eV 	( 51.69 meV --> 4.644 eV )
+  Po214[2360.570]:      11  Emean =  2.195 eV 	( 424.8 meV --> 3.836 eV )
+  Po214[2423.230]:      79  Emean =  1.884 eV 	( 52.94 meV --> 3.525 eV )
+  Po214[2447.702]:    2726  Emean =  1.739 eV 	( 8.615 meV --> 3.684 eV )
+  Po214[2482.468]:    1263  Emean =  1.715 eV 	( 30.04 meV --> 3.526 eV )
+  Po214[2505.370]:     170  Emean =  1.601 eV 	( 113.7 meV --> 3.142 eV )
+  Po214[2508.170]:     119  Emean =  1.538 eV 	( 75.76 meV --> 3.167 eV )
+  Po214[2544.960]:      46  Emean =  1.483 eV 	( 282.7 meV --> 2.837 eV )
+  Po214[2562.400]:       1  Emean =  2.086 eV 	( 2.086 eV  --> 2.086 eV )
+  Po214[2604.680]:     140  Emean =  1.232 eV 	( 9.808 meV --> 2.551 eV )
+  Po214[2630.860]:      33  Emean =  1.057 eV 	( 214.5 meV --> 2.328 eV )
+  Po214[2662.310]:     132  Emean =  1.142 eV 	( 132.3 meV --> 2.33 eV )
+  Po214[2694.620]:     271  Emean =  958.1 meV	( 23.14 meV --> 2.236 eV )
+  Po214[2698.760]:      94  Emean =  1.105 eV 	( 75.15 meV --> 2.158 eV )
+  Po214[2719.270]:     281  Emean =  932.7 meV	( 18.54 meV --> 2.047 eV )
+  Po214[2728.609]:     529  Emean =  905.5 meV	( 3.667 meV --> 1.98 eV )
+  Po214[2769.940]:      55  Emean =  758.4 meV	( 122.9 meV --> 1.661 eV )
+  Po214[2785.960]:      44  Emean =    711 meV	( 100.5 meV --> 1.66 eV )
+  Po214[2826.980]:      34  Emean =  577.9 meV	( 135.1 meV --> 1.325 eV )
+  Po214[2860.890]:      30  Emean =  608.8 meV	( 29.66 meV --> 1.322 eV )
+  Po214[2869.600]:      13  Emean =  630.6 meV	( 207 meV --> 1.003 eV )
+  Po214[2880.360]:      12  Emean =  539.2 meV	( 327 meV --> 1.057 eV )
+  Po214[2893.580]:      11  Emean =    461 meV	( 53.58 meV --> 817.9 meV)
+  Po214[2896.980]:       2  Emean =    520 meV	( 38.91 meV --> 1.001 eV )
+  Po214[2921.900]:      26  Emean =  412.8 meV	( 26.28 meV --> 910.6 meV)
+  Po214[2928.560]:       4  Emean =  460.5 meV	( 150.7 meV --> 701.3 meV)
+  Po214[2934.540]:       2  Emean =  616.1 meV	( 528.1 meV --> 704.1 meV)
+  Po214[2940.670]:      40  Emean =  472.9 meV	( 36.99 meV --> 931.4 meV)
+  Po214[2978.930]:      17  Emean =    371 meV	( 3.289 meV --> 734 meV)
+  Po214[2986.240]:       8  Emean =  400.9 meV	( 83.12 meV --> 676 meV)
+  Po214[3000.000]:      12  Emean =  308.2 meV	( 16.44 meV --> 507.5 meV)
+  Po214[3003.400]:       4  Emean =  268.1 meV	( 15.16 meV --> 659.6 meV)
+  Po214[3014.110]:      42  Emean =  295.2 meV	( 13.82 meV --> 597.2 meV)
+  Po214[3053.930]:      39  Emean =    255 meV	( 4.307 meV --> 573.4 meV)
+  Po214[3081.800]:       4  Emean =  136.5 meV	( 100.9 meV --> 176.7 meV)
+  Po214[3142.580]:       2  Emean =  100.2 meV	( 18.98 meV --> 181.5 meV)
+  Po214[3160.300]:       1  Emean =  206.4 meV	( 206.4 meV --> 206.4 meV)
+  Po214[3183.650]:       2  Emean =  24.45 meV	( 8.44 meV --> 40.45 meV)
+   Po214[609.316]:   46711  Emean =  3.617 eV 	( 44.09 meV --> 24.3 eV )
+            Po218:   99273  Emean =  100.8 keV	( 639.8 meV --> 100.9 keV)	mean life = 4.469 min
+   Po218[509.700]:      72  Emean =  91.65 keV	( 91.65 keV --> 91.65 keV)
+            Ra226:   99273  Emean =  63.53 keV	( 10.86 meV --> 83.04 keV)	mean life = 2310 y  
+   Ra226[211.540]:     133  Emean =  78.76 keV	( 14.84 meV --> 79.36 keV)	mean life = 245.3 ps 
+   Ra226[253.730]:      38  Emean =  78.62 keV	( 78.62 keV --> 78.62 keV)
+   Ra226[321.540]:       1  Emean =  77.44 keV	( 77.44 keV --> 77.44 keV)
+    Ra226[67.670]:   23304  Emean =  81.34 keV	( 49.13 meV --> 81.86 keV)	mean life = 908.9 ps 
+            Rn222:   99273  Emean =  80.95 keV	( 83.85 meV --> 86.3 keV)	mean life = 5.516 d  
+   Rn222[186.211]:    6153  Emean =  82.93 keV	( 166.2 meV --> 83 keV)	mean life = 461.7 ps 
+   Rn222[448.370]:       4  Emean =  78.35 keV	( 78.35 keV --> 78.35 keV)
+   Rn222[600.660]:       1  Emean =  75.65 keV	( 75.65 keV --> 75.65 keV)
+            Th230:   99273  Emean =   59.3 keV	( 6.607 meV --> 83.13 keV)	mean life = 1.089e+05 y  
+   Th230[174.111]:     193  Emean =  80.14 keV	( 80.14 keV --> 80.14 keV)	mean life = 239.5 ps 
+   Th230[508.150]:       1  Emean =  74.42 keV	( 74.42 keV --> 74.42 keV)
+    Th230[53.227]:   28451  Emean =  81.65 keV	( 27.1 meV --> 82.21 keV)	mean life = 510.7 ps 
+   Th230[634.919]:       1  Emean =  72.25 keV	( 72.25 keV --> 72.25 keV)
+            Th234:   99274  Emean =  56.82 keV	( 5.646 meV --> 71.83 keV)	mean life = 34.77 d  
+   Th234[163.050]:      72  Emean =  69.08 keV	( 69.08 keV --> 69.08 keV)
+    Th234[49.550]:   20747  Emean =  70.75 keV	( 9.051 meV --> 70.99 keV)	mean life = 533.8 ps 
+            Tl206:       1  Emean =  709.8 meV	( 709.8 meV --> 709.8 meV)	mean life = 6.062 min
+   Tl206[304.896]:       1  Emean =  90.24 keV	( 90.24 keV --> 90.24 keV)	mean life = 6.059 ps 
+            Tl210:      17  Emean =  37.13 keV	( 9.983 meV --> 105.2 keV)	mean life = 1.876 min
+   Tl210[253.600]:       1  Emean =  100.5 keV	( 100.5 keV --> 100.5 keV)
+    Tl210[62.500]:      11  Emean =  94.58 keV	( 93.37 meV --> 104 keV)
+             U234:   99274  Emean =  9.158 eV 	( 7.509 meV --> 17.08 eV )	mean life = 3.544e+05 y  
+   U234[1023.770]:       8  Emean =  389.4 meV	( 24.71 meV --> 732.4 meV)
+   U234[1023.800]:       7  Emean =  2.437 eV 	( 511.7 meV --> 3.882 eV )
+   U234[1023.826]:      16  Emean =  1.051 eV 	( 58.85 meV --> 3.892 eV )
+   U234[1044.536]:    1046  Emean =  3.175 eV 	( 27.21 meV --> 6.224 eV )
+   U234[1069.281]:      13  Emean =  1.813 eV 	( 163.3 meV --> 5.025 eV )
+   U234[1085.260]:       6  Emean =  1.048 eV 	( 503.2 meV --> 1.564 eV )
+   U234[1125.280]:       2  Emean =    987 meV	( 987 meV --> 987 meV)
+   U234[1126.626]:      12  Emean =  1.068 eV 	( 313.2 meV --> 3.909 eV )
+   U234[1127.552]:      15  Emean =  851.8 meV	( 113.3 meV --> 3.468 eV )
+   U234[1165.440]:       2  Emean =  317.1 meV	( 317.1 meV --> 317.1 meV)
+   U234[1172.043]:       2  Emean =  383.1 meV	( 142.5 meV --> 623.7 meV)
+   U234[1174.100]:       5  Emean =  2.268 eV 	( 398.7 meV --> 4.262 eV )
+   U234[1194.748]:      16  Emean =    853 meV	( 117.7 meV --> 3.334 eV )
+   U234[1237.256]:      14  Emean =  2.199 eV 	( 678.8 meV --> 4.173 eV )
+   U234[1261.782]:       2  Emean =  58.32 meV	( 58.32 meV --> 58.32 meV)
+   U234[1274.290]:       2  Emean =  112.9 meV	( 112.9 meV --> 112.9 meV)
+   U234[1277.461]:       4  Emean =  134.3 meV	( 67.9 meV --> 333.6 meV)
+   U234[1341.330]:       1  Emean =  788.2 meV	( 788.2 meV --> 788.2 meV)
+   U234[1421.257]:      26  Emean =  74.86 meV	( 37.34 meV --> 423.3 meV)	mean life = 48.33 us 
+    U234[143.352]:      88  Emean =  1.653 eV 	( 53.49 meV --> 7.409 eV )
+   U234[1435.380]:      16  Emean =  1.261 eV 	( 298.8 meV --> 2.88 eV )
+   U234[1457.160]:       2  Emean =  659.8 meV	( 263.9 meV --> 1.056 eV )
+   U234[1496.111]:      27  Emean =  476.8 meV	( 118.5 meV --> 2.182 eV )
+   U234[1500.990]:      11  Emean =  1.287 eV 	( 363.3 meV --> 2.155 eV )
+   U234[1537.228]:      19  Emean =  310.2 meV	( 79.51 meV --> 1.059 eV )
+   U234[1543.690]:       1  Emean =  159.7 meV	( 159.7 meV --> 159.7 meV)
+   U234[1552.555]:      25  Emean =  908.9 meV	( 88.39 meV --> 2.001 eV )	mean life = 3.174 ns 
+   U234[1553.600]:      28  Emean =  1.352 eV 	( 206.3 meV --> 2.503 eV )
+   U234[1570.690]:       4  Emean =  571.2 meV	( 243.2 meV --> 1.274 eV )
+   U234[1581.590]:       1  Emean =  1.096 eV 	( 1.096 eV  --> 1.096 eV )
+   U234[1588.819]:       4  Emean =    499 meV	( 86.09 meV --> 1.516 eV )
+   U234[1592.290]:      28  Emean =  1.134 eV 	( 208.5 meV --> 2.133 eV )
+   U234[1601.826]:       1  Emean =  1.615 eV 	( 1.615 eV  --> 1.615 eV )
+   U234[1653.900]:       1  Emean =    985 meV	( 985 meV --> 985 meV)
+   U234[1667.400]:       3  Emean =  925.3 meV	( 489.8 meV --> 1.639 eV )
+   U234[1693.453]:       2  Emean =  620.2 meV	( 562 meV --> 678.4 meV)
+   U234[1693.700]:       1  Emean =  1.427 eV 	( 1.427 eV  --> 1.427 eV )
+   U234[1722.870]:      12  Emean =  766.9 meV	( 151.5 meV --> 1.217 eV )
+   U234[1723.402]:      46  Emean =  633.9 meV	( 30.36 meV --> 1.336 eV )
+   U234[1737.430]:       2  Emean =  420.1 meV	( 387.1 meV --> 453 meV)
+   U234[1761.790]:       1  Emean =  638.5 meV	( 638.5 meV --> 638.5 meV)
+   U234[1781.220]:      35  Emean =  723.8 meV	( 176.7 meV --> 1.541 eV )
+   U234[1782.554]:      12  Emean =  547.2 meV	( 237.6 meV --> 1.048 eV )
+   U234[1796.300]:       3  Emean =  477.8 meV	( 289.1 meV --> 763.9 meV)
+   U234[1809.730]:      21  Emean =  664.6 meV	( 48.57 meV --> 1.243 eV )
+   U234[1811.620]:       2  Emean =  281.3 meV	( 174.9 meV --> 387.8 meV)
+   U234[1863.160]:       4  Emean =  307.6 meV	( 117.6 meV --> 805.5 meV)
+   U234[1875.300]:      26  Emean =  491.5 meV	( 2.183 meV --> 1.037 eV )
+   U234[1911.090]:      43  Emean =  452.7 meV	( 51.66 meV --> 969.1 meV)
+   U234[1927.520]:       1  Emean =  251.3 meV	( 251.3 meV --> 251.3 meV)
+   U234[1937.010]:      12  Emean =  315.1 meV	( 71.97 meV --> 747.3 meV)
+   U234[1940.500]:       3  Emean =  275.7 meV	( 174.1 meV --> 346.5 meV)
+   U234[1969.900]:       1  Emean =  541.3 meV	( 541.3 meV --> 541.3 meV)
+   U234[2019.810]:       1  Emean =  66.65 meV	( 66.65 meV --> 66.65 meV)
+   U234[2033.520]:       1  Emean =  182.4 meV	( 182.4 meV --> 182.4 meV)
+   U234[2115.660]:       1  Emean =  148.3 meV	( 148.3 meV --> 148.3 meV)
+   U234[2144.010]:       1  Emean =  59.78 meV	( 59.78 meV --> 59.78 meV)
+    U234[296.072]:      33  Emean =  1.629 eV 	( 92.67 meV --> 3.834 eV )
+     U234[43.498]:    1345  Emean =  2.384 eV 	( 22.88 meV --> 8.225 eV )	mean life = 363.6 ps 
+    U234[497.040]:       4  Emean =  1.137 eV 	( 905.4 meV --> 1.397 eV )
+    U234[786.288]:     163  Emean =  1.914 eV 	( 94.67 meV --> 8.022 eV )
+    U234[809.907]:     924  Emean =  4.193 eV 	( 49.97 meV --> 8.2 eV )	mean life = 144.3 ps 
+    U234[849.266]:      20  Emean =  985.8 meV	( 45.08 meV --> 2.881 eV )
+    U234[851.740]:      27  Emean =  986.4 meV	( 85.27 meV --> 1.258 eV )	mean life = 2.51 ps 
+    U234[926.720]:      28  Emean =  1.048 eV 	( 9.022 meV --> 3.399 eV )	mean life = 1.991 ps 
+    U234[947.640]:       1  Emean =  2.252 eV 	( 2.252 eV  --> 2.252 eV )
+    U234[962.546]:       8  Emean =  1.218 eV 	( 304.5 meV --> 3.05 eV )
+    U234[968.425]:      18  Emean =  1.104 eV 	( 81.49 meV --> 2.952 eV )
+    U234[989.430]:      49  Emean =  1.885 eV 	( 31.93 meV --> 6.292 eV )	mean life = 1.096 ns 
+             U238:  100000  Emean =      0 eV 	( 0 eV  --> 0 eV )	mean life = 6.45e+09 y  
+            alpha:  794183  Emean =  5.359 MeV	( 4.038 MeV --> 7.687 MeV)	stable
+        anti_nu_e:  595637  Emean =  658.2 keV	( 265.8 eV  --> 4.205 MeV)	stable
+               e-:  813631  Emean =  280.5 keV	( 101.5 meV --> 3.313 MeV)	stable
+            gamma:  217341  Emean =  794.1 keV	( 20.01 keV --> 3.184 MeV)	stable
+
+   Ekin Total (Q single decay): mean =  2.809 MeV	( 3.277 keV --> 7.833 MeV)
+
+   Momentum balance (excluding gamma desexcitation): mean =  76.29 MeV	( 7.804 meV --> 239.5 MeV)
+
+   Total time of life (full chain): mean = 6.164e+09 y    half-life = 4.272e+09 y     ( 0 ps  --> 3.171e+10 y  )
+
+   Total visible energy (full chain) : mean =  47.35 MeV   ( 0 eV  --> 50.58 MeV)
+
+   Activity of U238 = 1.302e+04 Bq/g   (3.519e-07 Ci/g) 
+
+
+... write file : run2.root - done
+... close file : run2.root - done
+#limit the chain
+#
+###/process/had/rdm/nucleusLimits 234 238 90 92
+#
+###/run/beamOn 1
+G4 kernel has come to Quit state.
+================== Deleting memory pools ===================
+Number of memory pools allocated: 10; of which, static: 0
+Dynamic pools deleted: 10 / Total memory freed: 0.015 MB
+============================================================
+RunManagerKernel is deleted. Good bye :)
