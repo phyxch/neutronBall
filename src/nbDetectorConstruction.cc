@@ -58,8 +58,8 @@ nbDetectorConstruction::nbDetectorConstruction()
   std::ifstream nbConfig("config.txt");
   G4int i = 0;
   if (nbConfig.is_open())
-    {
-      while (getline(nbConfig, line))
+  {
+	while (getline(nbConfig, line))
 	{
 	  char* token = strtok((char *)line.c_str(), ",\t");
 	  int num = 0;
@@ -75,8 +75,8 @@ nbDetectorConstruction::nbDetectorConstruction()
 		*/
 	    }
 	}
-    }
-  
+  }
+
   inner_r = inputVal[0]*cm;
   outer_r = inputVal[1]*cm;
   matType = (G4int)inputVal[2];
@@ -87,7 +87,7 @@ nbDetectorConstruction::nbDetectorConstruction()
   G4cout << "inner_r: " << inner_r << "   outer_r: " << outer_r << "   matType_1: " << matType_1 << G4endl;
   G4cout << "inner_r: " << inner_r << "   outer_r: " << outer_r << "   matType_2: " << matType_2 << G4endl;
   G4cout << "inner_r: " << inner_r << "   outer_r: " << outer_r << "   matType_3: " << matType_3 << G4endl;
-  
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -354,7 +354,9 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     exit(1);
   }
 
-  
+  // temp
+  shellMaterial_4 = soilOne30W;
+
   // Geometry parameters  
 
   //     
@@ -415,9 +417,9 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
                  0,                // copy number
                  fCheckOverlaps);  // checking overlaps
 
-  // 1st layer
+  // 1st layer (A/Ap 0-6 inches)
   
-  auto solidShell_1 = new G4Sphere("Shell_1", 1.001*inner_r, 0.8*outer_r,
+  auto solidShell_1 = new G4Sphere("Shell_1", 1.001*inner_r,0.94*outer_r,
 				 startAnglePhi, spanningAnglePhi, 
 				 startAngleTheta, spanningAngleTheta);
   
@@ -437,9 +439,9 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
                  0,                // copy number
                  fCheckOverlaps);  // checking overlaps 
   
-  // 2nd layer
+  // 2nd layer (E 6-9 inches - 100-9)
   
-  auto solidShell_2 = new G4Sphere("Shell_2", 1.002*inner_r, 0.6*outer_r,
+  auto solidShell_2 = new G4Sphere("Shell_2", 1.002*inner_r, 0.91*outer_r,
 				   startAnglePhi, spanningAnglePhi, 
 				   startAngleTheta, spanningAngleTheta);
   
@@ -459,9 +461,9 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 				0,                // copy number
 				fCheckOverlaps);  // checking overlaps 
   
-  // 3rd layer
+  // 3rd layer (Be, Bt, Bc 9-53 inches - 100-53 = 47)
   
-  auto solidShell_3 = new G4Sphere("Shell_3", 1.003*inner_r, 0.4*outer_r,
+  auto solidShell_3 = new G4Sphere("Shell_3", 1.003*inner_r, 0.47*outer_r,
 				   startAnglePhi, spanningAnglePhi, 
 				   startAngleTheta, spanningAngleTheta);
   
@@ -480,6 +482,28 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 				false,            // no boolean operation
 				0,                // copy number
 				fCheckOverlaps);  // checking overlaps 
+  
+  // 4th layer (C 53-80 inches - 100-80 = 20)
+  
+  auto solidShell_4 = new G4Sphere("Shell_4", 1.003*inner_r, 0.20*outer_r,
+                                   startAnglePhi, spanningAnglePhi, 
+                                   startAngleTheta, spanningAngleTheta);
+  
+  auto shellLV_4
+    = new G4LogicalVolume(
+                          solidShell_4,     // its solid
+                          shellMaterial_4,  // its material
+                          "shellLV_3");   // its name
+  
+  shellPV_4 = new G4PVPlacement(
+                                0,                // no rotation
+                                G4ThreeVector(),  // at (0,0,0)
+                                shellLV_4,          // its logical volume
+                                "shellPV_3",    // its name
+                                shellLV_3,          // its mother  volume
+                                false,            // no boolean operation
+                                0,                // copy number
+                                fCheckOverlaps);  // checking overlaps
   //
   // print parameters
   //

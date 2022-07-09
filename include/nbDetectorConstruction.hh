@@ -50,8 +50,8 @@ private:
   
   G4double inner_r, outer_r;
   G4int matType, matType_1, matType_2, matType_3;
-  G4Material *shellMaterial, *shellMaterial_1, *shellMaterial_2, *shellMaterial_3;
-  G4VPhysicalVolume  *shellPV, *shellPV_1, *shellPV_2, *shellPV_3;    // neutron ball shell physical volume
+  G4Material *shellMaterial, *shellMaterial_1, *shellMaterial_2, *shellMaterial_3, *shellMaterial_4;
+  G4VPhysicalVolume  *shellPV, *shellPV_1, *shellPV_2, *shellPV_3, *shellPV_4;    // neutron ball shell physical volume
   
   G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
 };
