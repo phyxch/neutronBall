@@ -26,11 +26,17 @@ class G4Material;
 class nbDetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
+
+  // construction definition
   nbDetectorConstruction();
+  // destructor definition
   virtual ~nbDetectorConstruction();
   
 public:
+
+  // virtual function construct() which returns physical world volume
   virtual G4VPhysicalVolume* Construct();
+  // currently we are not using any SDs (but defined)
   virtual void ConstructSDandField();
   
   // get methods

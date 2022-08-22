@@ -10,7 +10,11 @@
 //   Add soil material with vaiable water contents
 //   Make multiple soil layers
 //
+// Updated on 22 Aug, 2022
+// commented unused variables and added some more comments
 
+
+// This file will make use nbDetectorConstruction.hh
 
 #include "nbDetectorConstruction.hh"
 
@@ -41,11 +45,13 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-G4ThreadLocal 
-G4GlobalMagFieldMessenger* nbDetectorConstruction::fMagFieldMessenger = nullptr; 
+// set messenger value
+G4ThreadLocal G4GlobalMagFieldMessenger* nbDetectorConstruction::fMagFieldMessenger = nullptr; 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+// constructor to initialization values of shellPV, overlap checks 
+// set data member values from config.txt file
 nbDetectorConstruction::nbDetectorConstruction()
  : G4VUserDetectorConstruction(),
    shellPV(nullptr),
@@ -53,7 +59,7 @@ nbDetectorConstruction::nbDetectorConstruction()
 {
 
   std::string line;
-  char varName[10];
+  // char varName[10];
   G4double inputVal[6];
   std::ifstream nbConfig("config.txt");
   G4int i = 0;
@@ -92,12 +98,14 @@ nbDetectorConstruction::nbDetectorConstruction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+// destructor
 nbDetectorConstruction::~nbDetectorConstruction()
 { 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+// member function of header file
 G4VPhysicalVolume* nbDetectorConstruction::Construct()
 {
   // Define materials 
@@ -138,11 +146,11 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 
   G4String symbol;             //a=mass of a mole;
   G4double a, z, density;      //z=mean number of protons;  
-  G4int iz, n;                 //iz=number of protons  in an isotope; 
+  // G4int iz, n;                 //iz=number of protons  in an isotope; 
   // n=number of nucleons in an isotope;
   
-  G4int ncomponents, natoms;
-  G4double abundance, fractionmass;
+  G4int ncomponents, natoms, fractionmass;
+  // G4double abundance;
   
   //
   // define Elements
@@ -158,7 +166,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   G4Element* Ca = new G4Element("Calcium",symbol="Ca" , z= 20., a= 40.078*g/mole);
   G4Element* Ti = new G4Element("Titanium", symbol="Ti", z = 22, a=47.867*g/mole);
   G4Element* Fe = new G4Element("Iron",symbol="Fe" , z= 26., a= 55.845*g/mole);
-  G4Element* W = new G4Element("Tungston",symbol="W" , z= 74., a= 183.85*g/mole);
+  // G4Element* W = new G4Element("Tungston",symbol="W" , z= 74., a= 183.85*g/mole);
   
   // Add soil materials
   auto H2O = new G4Material("Water", density= 0.998*g/cm3, ncomponents=2);
@@ -354,8 +362,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     exit(1);
   }
 
-  // temp
-  shellMaterial_4 = soilOne30W;
+  shellMaterial_4 = soilOne30W; // newly added layer 4 has same materials as layer 3
 
   // Geometry parameters  
 
@@ -364,11 +371,11 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   //
 
   auto worldSizeXY = 2.5 * outer_r;
-  auto worldSizeZ  = worldSizeXY; 
+  // auto worldSizeZ  = worldSizeXY; 
   
   auto worldS 
     = new G4Box("World",           // its name
-                 worldSizeXY/2, worldSizeXY/2, worldSizeZ/2); // its size
+                 worldSizeXY/2, worldSizeXY/2, worldSizeXY/2); // its size
                          
   auto worldLV
     = new G4LogicalVolume(

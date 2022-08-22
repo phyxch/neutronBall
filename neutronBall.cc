@@ -10,6 +10,7 @@
 
 #include "nbDetectorConstruction.hh"
 #include "nbActionInitialization.hh"
+#include "nbPhysicsList.hh"
 
 #include "G4RunManagerFactory.hh"
 
@@ -89,21 +90,26 @@ int main(int argc,char** argv)
   #endif
 
   // Set mandatory initialization classes
+  //
+  // Set detector class
   auto detConstruction = new nbDetectorConstruction();
   runManager->SetUserInitialization(detConstruction);
+  // 
+  // Set physicsLists
+  runManager->SetUserInitialization(new nbPhysicsList);
 
-  // physics lists
+  // Create instance of G4PhysListFactory
   G4PhysListFactory *physListFactory = new G4PhysListFactory();
-  G4VModularPhysicsList* phys = NULL;	
-  phys = physListFactory->GetReferencePhysList("FTFP_BERT");
-  // now let's add radioactivation physics list
-  auto* rd1 = new G4DecayPhysics();
-  auto* rd2 = new G4RadioactiveDecayPhysics();
-  phys->RegisterPhysics(rd1);
-  phys->RegisterPhysics(rd2);
-  phys->DumpList();
+  //  G4VModularPhysicsList* phys = NULL;	
+  //  phys = physListFactory->GetReferencePhysList("FTFP_BERT");
+  //  // now let's add radioactivation physics list  
+  //  auto* rd1 = new G4DecayPhysics();
+  //  auto* rd2 = new G4RadioactiveDecayPhysics();
+  //  phys->RegisterPhysics(rd1);
+  //  phys->RegisterPhysics(rd2);
+  //  phys->DumpList();
  
-  runManager->SetUserInitialization(phys);
+  //  runManager->SetUserInitialization(phys);
   // print added physics lists
   const std::vector<G4String> v = physListFactory->AvailablePhysLists();
   G4cout<<"following are added physics lists in the simulation : "<<G4endl;

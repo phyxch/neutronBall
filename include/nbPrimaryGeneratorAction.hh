@@ -21,9 +21,14 @@ class G4Event;
 class nbPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
 public:
-  nbPrimaryGeneratorAction();    
-  virtual ~nbPrimaryGeneratorAction();
 
+  // constructor
+  nbPrimaryGeneratorAction();    
+  
+  // destructor
+  ~nbPrimaryGeneratorAction();
+
+  // inbuilt virtual method for overriding
   virtual void GeneratePrimaries(G4Event* event);
   
   // set methods

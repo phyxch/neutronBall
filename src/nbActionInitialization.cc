@@ -11,6 +11,7 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+// nbActionInitialization constructor
 nbActionInitialization::nbActionInitialization
                             (nbDetectorConstruction* detConstruction)
  : G4VUserActionInitialization(),
@@ -19,20 +20,25 @@ nbActionInitialization::nbActionInitialization
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+// nbActionInitialization destructor
 nbActionInitialization::~nbActionInitialization()
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+// override virtual method from base class
 void nbActionInitialization::BuildForMaster() const
 {
+  // initiaze nbRunAction class
   SetUserAction(new nbRunAction);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+// override virtual method from base class
 void nbActionInitialization::Build() const
 {
+  // initialize action classes
   SetUserAction(new nbPrimaryGeneratorAction);
   SetUserAction(new nbRunAction);
   SetUserAction(new nbEventAction);

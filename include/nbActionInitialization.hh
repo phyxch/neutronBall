@@ -14,13 +14,24 @@ class nbDetectorConstruction;
 class nbActionInitialization : public G4VUserActionInitialization
 {
   public:
+  
+    // nbActionInitialization constructor
+    //
     nbActionInitialization(nbDetectorConstruction*);
-    virtual ~nbActionInitialization();
-
+    
+    // nbActionInitialization destructor
+    ~nbActionInitialization();
+    
+    // virtul function to override in derived class
+    //
     virtual void BuildForMaster() const;
+    
     virtual void Build() const;
 
   private:
+  
+    // create instance of detector construction
+    //
     nbDetectorConstruction* fDetConstruction;
 };
 
