@@ -55,6 +55,7 @@ set(nb_SCRIPTS
   run1.mac
   run2.mac
   vis.mac
+  fullChain.mac
   )
 
 foreach(_script ${nb_SCRIPTS})

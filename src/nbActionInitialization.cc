@@ -1,48 +1,47 @@
-// Created on 10/13/2021
-// 
+// code updated on 23 August, 2022
+// fully revamped as per rdecay01; might need to add code from previous neutronBall nbEventAction.cc file
 
 #include "nbActionInitialization.hh"
 #include "nbPrimaryGeneratorAction.hh"
 #include "nbRunAction.hh"
 #include "nbEventAction.hh"
-#include "nbSteppingAction.hh"
-#include "G4MTRunManager.hh"
-#include "nbDetectorConstruction.hh"
+#include "nbTrackingAction.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-// nbActionInitialization constructor
-nbActionInitialization::nbActionInitialization
-                            (nbDetectorConstruction* detConstruction)
- : G4VUserActionInitialization(),
-   fDetConstruction(detConstruction)
+nbActionInitialization::nbActionInitialization()
+ : G4VUserActionInitialization()
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-// nbActionInitialization destructor
 nbActionInitialization::~nbActionInitialization()
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-// override virtual method from base class
 void nbActionInitialization::BuildForMaster() const
 {
-  // initiaze nbRunAction class
-  SetUserAction(new nbRunAction);
+  nbRunAction* runAction = new nbRunAction(0);
+  SetUserAction(runAction);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-// override virtual method from base class
 void nbActionInitialization::Build() const
 {
-  // initialize action classes
-  SetUserAction(new nbPrimaryGeneratorAction);
-  SetUserAction(new nbRunAction);
-  SetUserAction(new nbEventAction);
-  SetUserAction(new nbSteppingAction(fDetConstruction));
+  nbPrimaryGeneratorAction* primary = new nbPrimaryGeneratorAction();
+  SetUserAction(primary);
+    
+  nbRunAction* runAction = new nbRunAction(primary);
+  SetUserAction(runAction);
+  
+  nbEventAction* eventAction = new nbEventAction();
+  SetUserAction(eventAction);
+  
+  nbTrackingAction* trackingAction = new nbTrackingAction(eventAction);
+  SetUserAction(trackingAction);
 }  
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+

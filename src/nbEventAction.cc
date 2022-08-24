@@ -1,24 +1,27 @@
-// Created on 10/13/2021
+// code updated on 23 August, 2022
+// fully revamped as per rdecay01; might need to add code from previous neutronBall nbEventAction.cc file
 // 
-// Updated on 10/20/2021
-//   Added proper names for the detector
-//
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #include "nbEventAction.hh"
-#include "nbRunData.hh"
+#include "nbHistoManager.hh"
+#include "nbRun.hh"
 
-#include "G4RunManager.hh"
 #include "G4Event.hh"
-#include "G4UnitsTable.hh"
+#include "G4RunManager.hh"
 
-#include "Randomize.hh"
 #include <iomanip>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 nbEventAction::nbEventAction()
- : G4UserEventAction()
-{}
+:G4UserEventAction(),
+ fDecayChain(),fEvisTot(0.)
+{
+  // Set default print level 
+  G4RunManager::GetRunManager()->SetPrintProgress(10000);
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -27,55 +30,31 @@ nbEventAction::~nbEventAction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbEventAction::PrintEventStatistics(
-                              G4double shellEdep, G4double shellTrackLength) const
+void nbEventAction::BeginOfEventAction(const G4Event*)
 {
-  // print event statistics
-  G4cout
-     << "   Shell: total energy: " 
-     << std::setw(7) << G4BestUnit(shellEdep, "Energy")
-     << "       total track length: " 
-     << std::setw(7) << G4BestUnit(shellTrackLength, "Length")
-     << G4endl;
-    /*
-     << "        Gap: total energy: " 
-     << std::setw(7) << G4BestUnit(gapEdep, "Energy")
-     << "       total track length: " 
-     << std::setw(7) << G4BestUnit(gapTrackLength, "Length")
-     << G4endl;
-    */
+ fDecayChain = " ";
+ fEvisTot = 0.;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbEventAction::BeginOfEventAction(const G4Event* /*event*/)
-{  
-  auto runData 
-    = static_cast<nbRunData*>(
-        G4RunManager::GetRunManager()->GetNonConstCurrentRun());
-  runData->Reset();  
+void nbEventAction::EndOfEventAction(const G4Event* evt)
+{
+ G4int evtNb = evt->GetEventID(); 
+ G4int printProgress = G4RunManager::GetRunManager()->GetPrintProgress();
+ //printing survey
+ //
+ if (evtNb%printProgress == 0) 
+   G4cout << "    End of event. Decay chain:" << fDecayChain 
+          << G4endl << G4endl;
+ 
+ //total visible energy
+ G4AnalysisManager::Instance()->FillH1(9, fEvisTot);
+ nbRun* run = static_cast<nbRun*>(G4RunManager::GetRunManager()->GetNonConstCurrentRun());
+ run->EvisEvent(fEvisTot);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbEventAction::EndOfEventAction(const G4Event* event)
-{
-  auto runData 
-    = static_cast<nbRunData*>(
-        G4RunManager::GetRunManager()->GetNonConstCurrentRun());
-  runData->FillPerEvent();
 
-  //print per event (modulo n)
-  //
-  auto eventID = event->GetEventID();
-  auto printModulo = G4RunManager::GetRunManager()->GetPrintProgress();
-  if ( ( printModulo > 0 ) && ( eventID % printModulo == 0 ) ) {
-    G4cout << "---> End of event: " << eventID << G4endl;     
 
-    PrintEventStatistics(
-      runData->GetEdep(kShell),
-      runData->GetTrackLength(kShell));
-  }
-}  
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

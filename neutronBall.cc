@@ -118,7 +118,7 @@ int main(int argc,char** argv)
   }
 
   // setup for action initialization
-  auto actionInitialization = new nbActionInitialization(detConstruction);
+  auto actionInitialization = new nbActionInitialization();
   runManager->SetUserInitialization(actionInitialization);
 
   // Initialize visualization
