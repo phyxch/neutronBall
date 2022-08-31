@@ -25,3 +25,7 @@ Initially beamOn was set on 100,000 particles but it takes more than 15 mins to 
 --------
 
 - [ ] understand varible naming conventions and different data members 
+- [ ] create map with key = layerName and value = array of structs where each struct at index in array represents data of each particle. The data can be
+      particleName, particleCount.
+
+    
