@@ -6,7 +6,7 @@
 
 #include "G4UserSteppingAction.hh"
 
-class nbDetectorConstruction;
+// class nbDetectorConstruction;
 
 /// Stepping action class.
 ///
@@ -16,14 +16,18 @@ class nbDetectorConstruction;
 
 class nbSteppingAction : public G4UserSteppingAction
 {
+
+private:
+  // const nbDetectorConstruction* fDetConstruction;
+
 public:
-  nbSteppingAction(const nbDetectorConstruction* detectorConstruction);
-  virtual ~nbSteppingAction();
+  // nbSteppingAction(const nbDetectorConstruction* detectorConstruction);
+  
+  // currently I do not need any user action class in stepping action
+  nbSteppingAction();
+  ~nbSteppingAction();
 
   virtual void UserSteppingAction(const G4Step* step);
-    
-private:
-  const nbDetectorConstruction* fDetConstruction;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

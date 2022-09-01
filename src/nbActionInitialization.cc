@@ -6,6 +6,7 @@
 #include "nbRunAction.hh"
 #include "nbEventAction.hh"
 #include "nbTrackingAction.hh"
+#include "nbSteppingAction.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -41,6 +42,10 @@ void nbActionInitialization::Build() const
   
   nbTrackingAction* trackingAction = new nbTrackingAction(eventAction);
   SetUserAction(trackingAction);
+	
+  nbSteppingAction* steppingAction = new nbSteppingAction();
+  SetUserAction(steppingAction);
+  
 }  
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

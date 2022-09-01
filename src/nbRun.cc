@@ -13,6 +13,8 @@
 #include "G4UnitsTable.hh"
 #include "G4PhysicalConstants.hh"
 
+using namespace std;
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 // constructor
@@ -41,6 +43,78 @@ void nbRun::SetPrimary(G4ParticleDefinition* particle, G4double energy)
 } 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+// function to get particle information per layer
+void nbRun::ParticleCountPerLayer(G4String layerName, G4String particleName)
+{
+    // create iterator instance of map
+    map<G4String, vector<particleDataPerLayer>>::iterator it = fParticleDataPerLayerMap.find(layerName);
+    
+    // if we do not find layerName
+    if (it == fParticleDataPerLayerMap.end()) {
+        
+        // push struct in vector
+        particleDataPerLayer obj;
+	obj.fParticleName = particleName;
+	obj.fcount = 1;
+        particleDataVector.push_back(obj); // initialize vector with particle name and count
+         
+        // store in map 
+        fParticleDataPerLayerMap[layerName] = particleDataVector;
+    }
+    
+    // we already have this layerName in our map
+    else {
+        
+        G4int flag = 0;
+        G4int index = -1;
+        
+	vector<particleDataPerLayer>& v = it->second;
+	// search if you have this particle already in your vector
+	for (auto i = begin (v); i != end (v); ++i) {
+	        if(i->fParticleName == particleName)
+	        {
+	        	flag = 1;
+	        	index = i - v.begin();
+	        	break;
+	        }
+	}
+	
+	if(flag == 1)
+	{
+		// this particle is already present in the vector
+		v[index].fcount++;
+		// fParticleDataPerLayerMap[layerName] = v;
+	}
+	else
+	{
+	    	// this particle is not present in vector
+	    	// push struct in vector
+		particleDataPerLayer obj;
+		obj.fParticleName = particleName;
+		obj.fcount = 1;
+        	v.push_back(obj);
+        	// fParticleDataPerLayerMap[layerName] = v;
+	}
+    }
+    
+//    std::map<G4String,vector<particleDataPerLayer>>::iterator lt;
+//	 for (lt = fParticleDataPerLayerMap.begin(); lt != fParticleDataPerLayerMap.end(); lt++) { 
+//	    G4String lp     = lt->first;
+//	    
+//	    G4cout<<"LAYER NAME: "<<lp<<G4endl;
+//	    
+//	    // get vector in the layer
+//	    vector<particleDataPerLayer> v = lt->second;
+//	    for (auto i = begin (v); i != end (v); ++i) 
+//	    {
+//		G4cout<<"PARTICLE NAME: "<<i->fParticleName<<"PARTICLE COUNT: "<<i->fcount<<G4endl;
+//	    }
+//	    
+//	    G4cout<<""<<G4endl;
+//	 }  
+    
+}
 
 void nbRun::ParticleCount(G4String name, G4double Ekin, G4double meanLife)
 {
@@ -91,6 +165,7 @@ void nbRun::CountInTimeWindow(G4String name, G4bool life1,
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 
 void nbRun::Balance(G4double Ekin, G4double Pbal)
 {
@@ -268,6 +343,26 @@ void nbRun::EndOfRun()
       G4cout << "\tmean life = " << G4BestUnit(meanLife, "Time")   << G4endl;
     else if (meanLife < 0.) G4cout << "\tstable" << G4endl;
     else G4cout << G4endl;
+ }
+ 
+ G4cout << "\n ===========================================================\n";
+ G4cout << " per layer summary \n" << G4endl;
+ G4cout << "\n ===========================================================\n";
+ 
+ std::map<G4String,vector<particleDataPerLayer>>::iterator lt;
+ for (lt = fParticleDataPerLayerMap.begin(); lt != fParticleDataPerLayerMap.end(); lt++) { 
+    G4String layerName     = lt->first;
+    
+    G4cout<<"LAYER NAME: "<<G4endl;
+    
+    // get vector in the layer
+    vector<particleDataPerLayer> v = lt->second;
+    for (auto i = begin (v); i != end (v); ++i) 
+    {
+	G4cout<<"PARTICLE NAME: "<<i->fParticleName<<"PARTICLE COUNT: "<<i->fcount<<G4endl;
+    }
+    
+    G4cout<<""<<G4endl;
  }
  
  //energy momentum balance

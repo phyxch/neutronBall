@@ -10,51 +10,63 @@
 #include "G4Step.hh"
 #include "G4RunManager.hh"
 
+#include "nbRun.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbSteppingAction::nbSteppingAction(
-                      const nbDetectorConstruction* detectorConstruction)
-  : G4UserSteppingAction(),
-    fDetConstruction(detectorConstruction)
+// stepping action constructor
+nbSteppingAction::nbSteppingAction(): G4UserSteppingAction()
 {
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+// stepping action destructor
 nbSteppingAction::~nbSteppingAction()
 { 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 
-void nbSteppingAction::UserSteppingAction(const G4Step* step)
-{
-// Collect energy and track length step by step
 
-  // get volume of the current step
-  auto volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
-  //  G4cout << " Volume :  " << volume << G4endl;
-  
-  // energy deposit
-  auto edep = step->GetTotalEnergyDeposit();
-  
-  // step length
-  G4double stepLength = 0.;
-  /*
-  if ( step->GetTrack()->GetDefinition()->GetPDGCharge() != 0. ) {
-    stepLength = step->GetStepLength();
-  }
-  */
-  stepLength = step->GetStepLength();
-  //  G4cout << " ********* stepLength : " << stepLength << G4endl;
-      
-  auto runData = static_cast<nbRunData*>
-    (G4RunManager::GetRunManager()->GetNonConstCurrentRun());
-  
-  //  if ( volume == fDetConstruction->GetShellPV() ) {
-  runData->Add(kShell, edep, stepLength);
-  //  }
-  
+void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
+{ 
+    // instance of run class
+    nbRun* run = static_cast<nbRun*>(G4RunManager::GetRunManager()->GetNonConstCurrentRun());
+    
+    // get particle information
+    G4ParticleDefinition* particle = aStep->GetTrack()->GetDefinition();
+    G4String particleName   = particle->GetParticleName();    	
+    
+    // write you code for stepping action here
+    
+    // instances of preStep and postStep
+    // preStep -> can give you information about what happened in previous step
+    // postStep -> can give you information about what is happening in current Step 
+    // more here: https://geant4-forum.web.cern.ch/t/measuring-of-entrance-spectrum-of-particles-through-a-surface/3098
+    
+    // G4StepPoint* postStepPoint = aStep->GetPostStepPoint();
+    // G4StepPoint* preStepPoint  = aStep->GetPreStepPoint();
+    
+    // get volume name
+    // G4VPhysicalVolume* volume = aStep->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
+    
+    // check: if this is first step 
+    G4bool isFirstStep = aStep->IsFirstStepInVolume();
+    // get the name of volume
+    G4String volumeName = aStep->GetTrack()->GetVolume()->GetName();
+    
+    // count number of particles reached in outer layer
+    if(volumeName == "shellPV" && isFirstStep == true)
+    {
+  	// call function
+  	run->ParticleCountPerLayer(volumeName, particleName);
+    }
+    else
+    {
+    	// yes this is first step in volume
+    	G4cout<<"NANANA"<<G4endl;	
+    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

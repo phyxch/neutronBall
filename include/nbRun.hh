@@ -13,6 +13,8 @@
 #include "globals.hh"
 #include <map>
 
+using namespace std;
+
 // use defined class to store data
 class G4ParticleDefinition;
 
@@ -32,6 +34,20 @@ class nbRun : public G4Run
    
   // declared struct particleData to store particleData
   // note: structs are used with constructors to initialize the values of variables
+  private:
+    
+    struct particleDataPerLayer {
+    	G4int fcount;
+    	G4String fParticleName;
+    };
+    
+    // dynamic vector of structs
+    vector<particleDataPerLayer> particleDataVector;
+    
+    // map(k=layerName, v=vector containing information about all particles)
+    std::map<G4String,vector<particleDataPerLayer>>  fParticleDataPerLayerMap;
+    
+  
   private:    
     struct ParticleData {
      ParticleData()
@@ -93,6 +109,9 @@ class nbRun : public G4Run
         
     void SetPrimary(G4ParticleDefinition* particle, G4double energy);
     void EndOfRun(); 
+    
+    // 
+    void ParticleCountPerLayer(G4String, G4String);
 
     // override inbuilt method (refere doc to know more about virtual methods available in G4Run class)
     virtual void Merge(const G4Run*);

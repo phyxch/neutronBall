@@ -79,6 +79,7 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
 {
   nbRun* run = static_cast<nbRun*>(G4RunManager::GetRunManager()->GetNonConstCurrentRun());
          
+   
   G4ParticleDefinition* particle = track->GetDefinition();
   G4String name   = particle->GetParticleName();
   fCharge = particle->GetPDGCharge();
