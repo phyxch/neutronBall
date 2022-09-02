@@ -1,6 +1,11 @@
 Radon Emanation Simulation
 ==========================
 
+# usage:
+--------
+
+git clone -b test-branch https://github.com/phyxch/neutronBall.git 
+
 # commands:
 -----------
 
@@ -24,7 +29,9 @@ Initially beamOn was set on 100,000 particles but it takes more than 15 mins to 
 ## Tasks:
 --------
 
-- [ ] understand varible naming conventions and different data members 
-- [ ] create map with key = layerName and value = array of structs where each struct at index in array represents data of each particle. The data can be particleName, particleCount.
+- [x] understand varible naming conventions and different data members 
+- [x] stored all raw data in ntuples
+- [ ] create new histograms 
+- [ ] read all raw ntuples data using analysis manager reader
 
     
