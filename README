@@ -33,5 +33,6 @@ Initially beamOn was set on 100,000 particles but it takes more than 15 mins to 
 - [x] stored all raw data in ntuples
 - [ ] create new histograms 
 - [ ] read all raw ntuples data using analysis manager reader
+- [ ] perform analysis on thorium and radium decays as said by Dr. He
 
     
