@@ -36,16 +36,15 @@ class nbRun : public G4Run
   // note: structs are used with constructors to initialize the values of variables
   private:
     
-    struct particleDataPerLayer {
-    	G4int fcount;
-    	G4String fParticleName;
+  struct ParticleDataPerLayer {
+     ParticleDataPerLayer()
+       : fCount(0) {}
+     ParticleDataPerLayer(G4int count)
+       : fCount(count) {}
+     G4int     fCount;
     };
     
-    // dynamic vector of structs
-    vector<particleDataPerLayer> particleDataVector;
-    
-    // map(k=layerName, v=vector containing information about all particles)
-    std::map<G4String,vector<particleDataPerLayer>>  fParticleDataPerLayerMap;
+    std::map<G4String,ParticleDataPerLayer>  fParticlePerLayerDataMap;    
     
   
   private:    

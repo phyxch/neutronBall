@@ -15,6 +15,8 @@
 #include "G4SystemOfUnits.hh"
 #include <iomanip>
 
+#include "G4GenericAnalysisManager.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 nbRunAction::nbRunAction(nbPrimaryGeneratorAction* kin)
@@ -49,12 +51,22 @@ void nbRunAction::BeginOfRunAction(const G4Run*)
 
   }    
       
-  //histograms
+  // create instace of analysisManager
   //
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  if ( analysisManager->IsActive() ) {
-    analysisManager->OpenFile();
-  }
+  analysisManager->SetNtupleMerging(true);
+  analysisManager->SetVerboseLevel(1);
+  analysisManager->SetFirstNtupleId(1);
+  // create and open file output.root for writing data in it
+  analysisManager->OpenFile("output.root");
+
+  // ntuple Id 1
+  analysisManager->CreateNtuple("Hits", "Hits");
+  analysisManager->CreateNtupleSColumn(1, "layerName");
+  analysisManager->CreateNtupleSColumn(1, "particleName");
+  analysisManager->FinishNtuple(1);
+  // end of ntuple with Id 1
+  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -63,13 +75,11 @@ void nbRunAction::EndOfRunAction(const G4Run*)
 {
  if (isMaster) fRun->EndOfRun();
             
- //save histograms
+ // create instance of analysisManager
  //
  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
- if ( analysisManager->IsActive() ) {
-  analysisManager->Write();
-  analysisManager->CloseFile();
- } 
+ analysisManager->Write();
+ analysisManager->CloseFile("output.root");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

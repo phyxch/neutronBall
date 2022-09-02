@@ -499,13 +499,13 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
     = new G4LogicalVolume(
                           solidShell_4,     // its solid
                           shellMaterial_4,  // its material
-                          "shellLV_3");   // its name
+                          "shellLV_4");   // its name
   
   shellPV_4 = new G4PVPlacement(
                                 0,                // no rotation
                                 G4ThreeVector(),  // at (0,0,0)
                                 shellLV_4,          // its logical volume
-                                "shellPV_3",    // its name
+                                "shellPV_4",    // its name
                                 shellLV_3,          // its mother  volume
                                 false,            // no boolean operation
                                 0,                // copy number

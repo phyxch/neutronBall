@@ -11,6 +11,8 @@
 #include "G4RunManager.hh"
 
 #include "nbRun.hh"
+#include "G4AnalysisManager.hh"
+#include "G4GenericAnalysisManager.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -31,42 +33,29 @@ nbSteppingAction::~nbSteppingAction()
 
 void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
 { 
+    // instance of analysis manager
+    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    
     // instance of run class
-    nbRun* run = static_cast<nbRun*>(G4RunManager::GetRunManager()->GetNonConstCurrentRun());
+    // nbRun* run = static_cast<nbRun*>(G4RunManager::GetRunManager()->GetNonConstCurrentRun());
     
     // get particle information
     G4ParticleDefinition* particle = aStep->GetTrack()->GetDefinition();
     G4String particleName   = particle->GetParticleName();    	
-    
-    // write you code for stepping action here
-    
-    // instances of preStep and postStep
-    // preStep -> can give you information about what happened in previous step
-    // postStep -> can give you information about what is happening in current Step 
-    // more here: https://geant4-forum.web.cern.ch/t/measuring-of-entrance-spectrum-of-particles-through-a-surface/3098
-    
-    // G4StepPoint* postStepPoint = aStep->GetPostStepPoint();
-    // G4StepPoint* preStepPoint  = aStep->GetPreStepPoint();
-    
-    // get volume name
-    // G4VPhysicalVolume* volume = aStep->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
     
     // check: if this is first step 
     G4bool isFirstStep = aStep->IsFirstStepInVolume();
     // get the name of volume
     G4String volumeName = aStep->GetTrack()->GetVolume()->GetName();
     
-    // count number of particles reached in outer layer
-    if(volumeName == "shellPV" && isFirstStep == true)
-    {
-  	// call function
-  	run->ParticleCountPerLayer(volumeName, particleName);
-    }
-    else
-    {
-    	// yes this is first step in volume
-    	G4cout<<"NANANA"<<G4endl;	
-    }
+    // store the particle data
+    // fill columns of ntuple id 1
+    analysisManager->FillNtupleSColumn(1, 0, volumeName);
+    analysisManager->FillNtupleSColumn(1, 1, particleName);
+    analysisManager->AddNtupleRow(1);
+    
+    
+    
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
