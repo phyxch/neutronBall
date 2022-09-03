@@ -362,31 +362,6 @@ void nbRun::EndOfRun()
     else G4cout << G4endl;
  }
  
- G4cout << "\n ===========================================================\n";
- G4cout << " per layer summary \n" << G4endl;
- G4cout << "\n ===========================================================\n";
- 
- G4cout<<fParticlePerLayerDataMap.size()<<G4endl; 
- 
-// std::map<G4String,vector<particleDataPerLayer>>::iterator lt;
-// for (lt = fParticleDataPerLayerMap.begin(); lt != fParticleDataPerLayerMap.end(); lt++) { 
-//    G4String layerName     = lt->first;
-//    
-//    G4cout<<"LAYER NAME: "<<G4endl;
-//    
-//    // get vector in the layer
-//    vector<particleDataPerLayer> v = lt->second;
-//    for (auto i = begin (v); i != end (v); ++i) 
-//    {
-//	G4cout<<"PARTICLE NAME: "<<i->fParticleName<<"PARTICLE COUNT: "<<i->fcount<<G4endl;
-//    }
-//    
-//    G4cout<<""<<G4endl;
-// }
- 
- //energy momentum balance
- //
-
  if (fDecayCount > 0) {
     G4double Ebmean = fEkinTot[0]/fDecayCount;
     G4double Pbmean = fPbalance[0]/fDecayCount;
