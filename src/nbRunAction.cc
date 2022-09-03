@@ -64,6 +64,13 @@ void nbRunAction::BeginOfRunAction(const G4Run*)
   analysisManager->CreateNtuple("Hits", "Hits");
   analysisManager->CreateNtupleSColumn(1, "layerName");
   analysisManager->CreateNtupleSColumn(1, "particleName");
+  analysisManager->CreateNtupleDColumn(1, "x");
+  analysisManager->CreateNtupleDColumn(1, "y");
+  analysisManager->CreateNtupleDColumn(1, "z");
+  analysisManager->CreateNtupleDColumn(1, "px");
+  analysisManager->CreateNtupleDColumn(1, "py");
+  analysisManager->CreateNtupleDColumn(1, "pz");
+  
   analysisManager->FinishNtuple(1);
   // end of ntuple with Id 1
   

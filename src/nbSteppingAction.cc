@@ -43,19 +43,31 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
     G4ParticleDefinition* particle = aStep->GetTrack()->GetDefinition();
     G4String particleName   = particle->GetParticleName();    	
     
-    // check: if this is first step 
     G4bool isFirstStep = aStep->IsFirstStepInVolume();
-    // get the name of volume
     G4String volumeName = aStep->GetTrack()->GetVolume()->GetName();
     
-    // store the particle data
-    // fill columns of ntuple id 1
-    analysisManager->FillNtupleSColumn(1, 0, volumeName);
-    analysisManager->FillNtupleSColumn(1, 1, particleName);
-    analysisManager->AddNtupleRow(1);
-    
-    
-    
+    G4double x=aStep->GetPreStepPoint()->GetPosition().x();
+    G4double y=aStep->GetPreStepPoint()->GetPosition().y();
+    G4double z=aStep->GetPreStepPoint()->GetPosition().z();
+    G4double px=aStep->GetPostStepPoint()->GetPosition().x();
+    G4double py=aStep->GetPostStepPoint()->GetPosition().y();
+    G4double pz=aStep->GetPostStepPoint()->GetPosition().z();
+
+    if(isFirstStep)
+    {
+        // store the particle data
+        // fill columns of ntuple id 1
+    	analysisManager->FillNtupleSColumn(1, 0, volumeName);
+        analysisManager->FillNtupleSColumn(1, 1, particleName);
+        analysisManager->FillNtupleDColumn(1, 2, x);
+        analysisManager->FillNtupleDColumn(1, 3, y);
+        analysisManager->FillNtupleDColumn(1, 4, z);
+        analysisManager->FillNtupleDColumn(1, 5, px);
+        analysisManager->FillNtupleDColumn(1, 6, py);
+        analysisManager->FillNtupleDColumn(1, 7, pz);
+        // add this row to ntuple id 1
+        analysisManager->AddNtupleRow(1);
+    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
