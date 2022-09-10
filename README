@@ -9,9 +9,9 @@ git clone -b test-branch https://github.com/phyxch/neutronBall.git
 # commands:
 -----------
 
-* /vis/viewer/set/background white
 * /vis/viewer/set/style surface OR wireframe
 * /vis/viewer/addCutawayPlane 0 1 0 
+* /vis/viewer/set/background white
 
 # Instructions to run simulation
 --------------------------------
