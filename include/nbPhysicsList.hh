@@ -8,12 +8,12 @@
 #ifndef PhysicsList_h
 #define PhysicsList_h 1
 
-#include "G4VUserPhysicsList.hh"
+#include "G4VModularPhysicsList.hh"
 #include "globals.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class nbPhysicsList: public G4VUserPhysicsList
+class nbPhysicsList: public G4VModularPhysicsList
 {
   public:
     // physicsList constructor
