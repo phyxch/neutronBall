@@ -26,14 +26,4 @@ git clone -b test-branch https://github.com/phyxch/neutronBall.git
 --------
 Initially beamOn was set on 100,000 particles but it takes more than 15 mins to run the simulation. Hence beamOn is set to 1000 particles only.
 
-
-## Tasks:
---------
-
-- [x] understand varible naming conventions and different data members 
-- [x] stored all raw data in ntuples
-- [ ] create new histograms 
-- [ ] read all raw ntuples data using analysis manager reader
-- [ ] perform analysis on thorium and radium decays as said by Dr. He
-
     
