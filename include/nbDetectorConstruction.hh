@@ -25,48 +25,52 @@ class G4Material;
 
 class nbDetectorConstruction : public G4VUserDetectorConstruction
 {
-public:
+    public:
 
-  // construction definition
-  nbDetectorConstruction();
-  // destructor definition
-  virtual ~nbDetectorConstruction();
-  
-public:
+      // construction definition
+      nbDetectorConstruction();
+      // destructor definition
+      virtual ~nbDetectorConstruction();
+      
+    public:
 
-  // virtual function construct() which returns physical world volume
-  virtual G4VPhysicalVolume* Construct();
-  // currently we are not using any SDs (but defined)
-  virtual void ConstructSDandField();
-  
-  // get methods
-  //
-  const G4VPhysicalVolume* GetShellPV() const;
-  
-private:
-  // methods
-  //
-  void DefineMaterials();
-  G4VPhysicalVolume* DefineVolumes();
-  
-  // data members
-  //
-  static G4ThreadLocal G4GlobalMagFieldMessenger*  fMagFieldMessenger; 
-  // magnetic field messenger
-  
-  G4double inner_r, outer_r;
-  G4int matType, matType_1, matType_2, matType_3;
-  G4Material *shellMaterial, *shellMaterial_1, *shellMaterial_2, *shellMaterial_3, *shellMaterial_4;
-  G4VPhysicalVolume  *shellPV, *shellPV_1, *shellPV_2, *shellPV_3, *shellPV_4;    // neutron ball shell physical volume
-  
-  G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
+      // virtual function construct() which returns physical world volume
+      virtual G4VPhysicalVolume* Construct();
+      // currently we are not using any SDs (but defined)
+      // virtual void ConstructSDandField();
+      
+      // get methods
+      //
+      const G4VPhysicalVolume* GetShellPV() const;
+      
+    private:
+      // methods
+      //
+      void DefineMaterials();
+      G4VPhysicalVolume* DefineVolumes();
+      
+      // data members
+      //
+      static G4ThreadLocal G4GlobalMagFieldMessenger*  fMagFieldMessenger; 
+      // magnetic field messenger
+      
+      G4double inner_r, outer_r;
+      G4int matType, matType_1, matType_2, matType_3;
+      G4Material *shellMaterial, *shellMaterial_1, *shellMaterial_2, *shellMaterial_3, *shellMaterial_4;
+      G4VPhysicalVolume  *shellPV, *shellPV_1, *shellPV_2, *shellPV_3, *shellPV_4;    // neutron ball shell physical volume
+      
+      G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps
+
+    public:
+      // user defined functions to get physical volume names of each layer
+      G4String getNameOfLayer1(); // shellPV
+      G4String getNameOfLayer2(); // shellPV_1
+      G4String getNameOfLayer3(); // shellPV_2
+      G4String getNameOfLayer4(); // shellPV_3
+      G4String getNameOfLayer5(); // shellPV_4
+      G4String getNameOfLayer6(); // world
+      
 };
-
-// inline functions
-
-inline const G4VPhysicalVolume* nbDetectorConstruction::GetShellPV() const { 
-  return shellPV; 
-}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

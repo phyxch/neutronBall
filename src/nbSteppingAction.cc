@@ -1,73 +1,72 @@
-// Created on 10/13/2021
-// 
-// Updated:
-//
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #include "nbSteppingAction.hh"
-#include "nbRunData.hh"
+
 #include "nbDetectorConstruction.hh"
-
-#include "G4Step.hh"
-#include "G4RunManager.hh"
-
 #include "nbRun.hh"
-#include "G4AnalysisManager.hh"
-#include "G4GenericAnalysisManager.hh"
+#include "nbEventAction.hh"
+#include "nbHistoManager.hh"
 
+#include "G4RunManager.hh"
+#include "G4SystemOfUnits.hh"
+#include "G4UnitsTable.hh"
+                           
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-// stepping action constructor
-nbSteppingAction::nbSteppingAction(): G4UserSteppingAction()
+nbSteppingAction::nbSteppingAction(nbDetectorConstruction* det, nbEventAction* event)
+: G4UserSteppingAction(), fDetector(det), fEventAction(event)
 {
+    
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-// stepping action destructor
 nbSteppingAction::~nbSteppingAction()
-{ 
-}
+{ }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
-
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
-{ 
-    // instance of analysis manager
-    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-    
-    // instance of run class
-    // nbRun* run = static_cast<nbRun*>(G4RunManager::GetRunManager()->GetNonConstCurrentRun());
-    
-    // get particle information
-    G4ParticleDefinition* particle = aStep->GetTrack()->GetDefinition();
-    G4String particleName   = particle->GetParticleName();    	
-    
-    G4bool isFirstStep = aStep->IsFirstStepInVolume();
-    G4String volumeName = aStep->GetTrack()->GetVolume()->GetName();
-    
-    G4double x=aStep->GetPreStepPoint()->GetPosition().x();
-    G4double y=aStep->GetPreStepPoint()->GetPosition().y();
-    G4double z=aStep->GetPreStepPoint()->GetPosition().z();
-    G4double px=aStep->GetPostStepPoint()->GetPosition().x();
-    G4double py=aStep->GetPostStepPoint()->GetPosition().y();
-    G4double pz=aStep->GetPostStepPoint()->GetPosition().z();
+{
+  // instance of G4Run
+  nbRun* run = static_cast<nbRun*>(G4RunManager::GetRunManager()->GetNonConstCurrentRun());    
+  
+  // instance of analysis manager
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-    if(isFirstStep)
-    {
-        // store the particle data
-        // fill columns of ntuple id 1
-    	analysisManager->FillNtupleSColumn(1, 0, volumeName);
-        analysisManager->FillNtupleSColumn(1, 1, particleName);
-        analysisManager->FillNtupleDColumn(1, 2, x);
-        analysisManager->FillNtupleDColumn(1, 3, y);
-        analysisManager->FillNtupleDColumn(1, 4, z);
-        analysisManager->FillNtupleDColumn(1, 5, px);
-        analysisManager->FillNtupleDColumn(1, 6, py);
-        analysisManager->FillNtupleDColumn(1, 7, pz);
-        // add this row to ntuple id 1
-        analysisManager->AddNtupleRow(1);
-    }
+  //which volume ?
+  //
+  G4String volumeName = aStep->GetTrack()->GetVolume()->GetName(); // physical volume name
+  G4int iVol = 0;
+  if (volumeName == fDetector->getNameOfLayer1())   iVol = 1;
+  if (volumeName == fDetector->getNameOfLayer2())   iVol = 2;
+  if (volumeName == fDetector->getNameOfLayer3())   iVol = 3;
+  if (volumeName == fDetector->getNameOfLayer4())   iVol = 4;
+  if (volumeName == fDetector->getNameOfLayer5())   iVol = 5;
+  if (volumeName == fDetector->getNameOfLayer6())   iVol = 6; // world
+
+  // count processes
+  // 
+  const G4StepPoint* endPoint = aStep->GetPostStepPoint();
+  const G4VProcess* process   = endPoint->GetProcessDefinedStep();
+  run->CountProcesses(process, iVol);
+  
+  // energy deposit
+  //
+  G4double edepStep = aStep->GetTotalEnergyDeposit();
+  if (edepStep <= 0.) return;
+  G4double time   = aStep->GetPreStepPoint()->GetGlobalTime();
+  G4double weight = aStep->GetPreStepPoint()->GetWeight();   
+  fEventAction->AddEdep(iVol, edepStep, time, weight);
+  
+  //fill ntuple id = 2
+  G4int id = 3;   
+  analysisManager->FillNtupleDColumn(id,0, edepStep);
+  analysisManager->FillNtupleDColumn(id,1, time/s);
+  analysisManager->FillNtupleDColumn(id,2, weight);
+  analysisManager->AddNtupleRow(id);      
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+

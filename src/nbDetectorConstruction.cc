@@ -143,19 +143,11 @@ void nbDetectorConstruction::DefineMaterials()
 
 G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 {
-
   G4String symbol;             //a=mass of a mole;
   G4double a, z, density;      //z=mean number of protons;  
-  // G4int iz, n;                 //iz=number of protons  in an isotope; 
-  // n=number of nucleons in an isotope;
-  
   G4int ncomponents, natoms, fractionmass;
-  // G4double abundance;
   
-  //
   // define Elements
-  //
-  
   G4Element* H  = new G4Element("Hydrogen",symbol="H" , z= 1., a= 1.01*g/mole);
   G4Element* C  = new G4Element("Carbon"  ,symbol="C" , z= 6., a= 12.01*g/mole);
   G4Element* N  = new G4Element("Nitrogen",symbol="N" , z= 7., a= 14.01*g/mole);
@@ -207,169 +199,205 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   OrganicMat -> AddElement(H, natoms=5);
   OrganicMat -> AddElement(N, natoms=3);
 
-  // Define soil material
-  // Based on: http://gfnun.unal.edu.co/fileadmin/content/gruposdeinvestigacion/fisicanuclear/Tesis/DanielAndrade_TG.pdf
-  auto soilOne = new G4Material("DrySoil", density = 0.6*g/cm3, ncomponents=7);
-  soilOne->AddMaterial(SiO2, fractionmass=61.3*perCent);
-  soilOne->AddMaterial(Al2O3, fractionmass=13.0*perCent);
-  soilOne->AddMaterial(Fe2O3, fractionmass=2.5*perCent);
-  soilOne->AddMaterial(CaO, fractionmass=1.6*perCent);
-  soilOne->AddMaterial(MgO, fractionmass=0.7*perCent);
-  soilOne->AddMaterial(TiO2, fractionmass=0.6*perCent);
-  soilOne->AddMaterial(OrganicMat, fractionmass=20.3*perCent);
-
-  // 10% moisture content
-  auto soilOne10W = new G4Material("DrySoil10W", density = 0.6*g/cm3, ncomponents=8);
-  soilOne10W->AddMaterial(SiO2, fractionmass=55.17*perCent);
-  soilOne10W->AddMaterial(Al2O3, fractionmass=11.7*perCent);
-  soilOne10W->AddMaterial(Fe2O3, fractionmass=2.25*perCent);
-  soilOne10W->AddMaterial(CaO, fractionmass=1.44*perCent);
-  soilOne10W->AddMaterial(MgO, fractionmass=0.63*perCent);
-  soilOne10W->AddMaterial(TiO2, fractionmass=0.54*perCent);
-  soilOne10W->AddMaterial(OrganicMat, fractionmass=18.27*perCent);
-  soilOne10W->AddMaterial(H2O, fractionmass=10.0*perCent);
-
-  // 20% moisture content. Need new density value?
-  auto soilOne20W = new G4Material("DrySoil20W", density = 0.6*g/cm3, ncomponents=8);
-  soilOne20W->AddMaterial(SiO2, fractionmass=49.04*perCent);
-  soilOne20W->AddMaterial(Al2O3, fractionmass=10.4*perCent);
-  soilOne20W->AddMaterial(Fe2O3, fractionmass=2.0*perCent);
-  soilOne20W->AddMaterial(CaO, fractionmass=1.28*perCent);
-  soilOne20W->AddMaterial(MgO, fractionmass=0.56*perCent);
-  soilOne20W->AddMaterial(TiO2, fractionmass=0.48*perCent);
-  soilOne20W->AddMaterial(OrganicMat, fractionmass=16.24*perCent);
-  soilOne20W->AddMaterial(H2O, fractionmass=20.0*perCent);
-
-  // 30% moisture content. Need new density value?
-  auto soilOne30W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=8);
-  soilOne30W->AddMaterial(SiO2, fractionmass=42.91*perCent);
-  soilOne30W->AddMaterial(Al2O3, fractionmass=9.1*perCent);
-  soilOne30W->AddMaterial(Fe2O3, fractionmass=1.75*perCent);
-  soilOne30W->AddMaterial(CaO, fractionmass=1.12*perCent);
-  soilOne30W->AddMaterial(MgO, fractionmass=0.49*perCent);
-  soilOne30W->AddMaterial(TiO2, fractionmass=0.42*perCent);
-  soilOne30W->AddMaterial(OrganicMat, fractionmass=14.21*perCent);
-  soilOne30W->AddMaterial(H2O, fractionmass=30.0*perCent);
-
+  // // Define soil material
+  // // Based on: http://gfnun.unal.edu.co/fileadmin/content/gruposdeinvestigacion/fisicanuclear/Tesis/DanielAndrade_TG.pdf
+  // auto soilOne = new G4Material("DrySoil", density = 0.6*g/cm3, ncomponents=7);
+  // soilOne->AddMaterial(SiO2, fractionmass=61.3*perCent);
+  // soilOne->AddMaterial(Al2O3, fractionmass=13.0*perCent);
+  // soilOne->AddMaterial(Fe2O3, fractionmass=2.5*perCent);
+  // soilOne->AddMaterial(CaO, fractionmass=1.6*perCent);
+  // soilOne->AddMaterial(MgO, fractionmass=0.7*perCent);
+  // soilOne->AddMaterial(TiO2, fractionmass=0.6*perCent);
+  // soilOne->AddMaterial(OrganicMat, fractionmass=20.3*perCent);
+ 
+////  
+  // // 10% moisture content
+  // auto soilOne10W = new G4Material("DrySoil10W", density = 0.6*g/cm3, ncomponents=8);
+  // soilOne10W->AddMaterial(SiO2, fractionmass=55.17*perCent);
+  // soilOne10W->AddMaterial(Al2O3, fractionmass=11.7*perCent);
+  // soilOne10W->AddMaterial(Fe2O3, fractionmass=2.25*perCent);
+  // soilOne10W->AddMaterial(CaO, fractionmass=1.44*perCent);
+  // soilOne10W->AddMaterial(MgO, fractionmass=0.63*perCent);
+  // soilOne10W->AddMaterial(TiO2, fractionmass=0.54*perCent);
+  // soilOne10W->AddMaterial(OrganicMat, fractionmass=18.27*perCent);
+  // soilOne10W->AddMaterial(H2O, fractionmass=10.0*perCent);
+  // 
+  // // 20% moisture content. Need new density value?
+  // auto soilOne20W = new G4Material("DrySoil20W", density = 0.6*g/cm3, ncomponents=8);
+  // soilOne20W->AddMaterial(SiO2, fractionmass=49.04*perCent);
+  // soilOne20W->AddMaterial(Al2O3, fractionmass=10.4*perCent);
+  // soilOne20W->AddMaterial(Fe2O3, fractionmass=2.0*perCent);
+  // soilOne20W->AddMaterial(CaO, fractionmass=1.28*perCent);
+  // soilOne20W->AddMaterial(MgO, fractionmass=0.56*perCent);
+  // soilOne20W->AddMaterial(TiO2, fractionmass=0.48*perCent);
+  // soilOne20W->AddMaterial(OrganicMat, fractionmass=16.24*perCent);
+  // soilOne20W->AddMaterial(H2O, fractionmass=20.0*perCent);
+ 
+////  
+  // // 30% moisture content. Need new density value?
+  // auto soilOne30W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=8);
+  // soilOne30W->AddMaterial(SiO2, fractionmass=42.91*perCent);
+  // soilOne30W->AddMaterial(Al2O3, fractionmass=9.1*perCent);
+  // soilOne30W->AddMaterial(Fe2O3, fractionmass=1.75*perCent);
+  // soilOne30W->AddMaterial(CaO, fractionmass=1.12*perCent);
+  // soilOne30W->AddMaterial(MgO, fractionmass=0.49*perCent);
+  // soilOne30W->AddMaterial(TiO2, fractionmass=0.42*perCent);
+  // soilOne30W->AddMaterial(OrganicMat, fractionmass=14.21*perCent);
+  // soilOne30W->AddMaterial(H2O, fractionmass=30.0*perCent);
+ 
+////    
+  // // 40% moisture content. Need new density value?
+  // auto soilOne40W = new G4Material("DrySoil40W", density = 0.6*g/cm3, ncomponents=8);
+  // soilOne40W->AddMaterial(SiO2, fractionmass=32.91*perCent);
+  // soilOne40W->AddMaterial(Al2O3, fractionmass=9.1*perCent);
+  // soilOne40W->AddMaterial(Fe2O3, fractionmass=1.75*perCent);
+  // soilOne40W->AddMaterial(CaO, fractionmass=1.12*perCent);
+  // soilOne40W->AddMaterial(MgO, fractionmass=0.49*perCent);
+  // soilOne40W->AddMaterial(TiO2, fractionmass=0.42*perCent);
+  // soilOne40W->AddMaterial(OrganicMat, fractionmass=14.21*perCent);
+  // soilOne40W->AddMaterial(H2O, fractionmass=40.0*perCent);
+  // 
+  auto soilOne = new G4Material("DrySoil", density = 0.6*g/cm3, ncomponents=1);
+  soilOne->AddMaterial(H2O, fractionmass=100.0*perCent);
+  // soilOne->AddMaterial(H2O, fractionmass=50.0*perCent);
+  auto soilOne10W = new G4Material("DrySoil10W", density = 0.6*g/cm3, ncomponents=1);
+  soilOne10W->AddMaterial(H2O, fractionmass=100.0*perCent);
+  auto soilOne20W = new G4Material("DrySoil20W", density = 0.6*g/cm3, ncomponents=1);
+  soilOne20W->AddMaterial(H2O, fractionmass=100.0*perCent);
+  auto soilOne30W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=1);
+  soilOne30W->AddMaterial(H2O, fractionmass=100.0*perCent);
+  auto soilOne40W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=1);
+  soilOne40W->AddMaterial(H2O, fractionmass=100.0*perCent);
+  
+  
   // Set materials
   auto defaultMaterial = G4Material::GetMaterial("Galactic");
 
   // shellMaterial 
-  if (matType == 1)
-    {
-      shellMaterial = G4Material::GetMaterial("G4_Pb");
-    } else if (matType == 2)
-    {
-      shellMaterial = G4Material::GetMaterial("G4_AIR");
-    } else if (matType == 3)
-    {
-      shellMaterial = G4Material::GetMaterial("liquidArgon");
-    } else if (matType == 4)
-    {
-      shellMaterial = soilOne;
-    } else if (matType == 5)
-    {
-      shellMaterial = soilOne10W;
-    } else if (matType == 6)
-    {
-      shellMaterial = soilOne20W;
-    } else if (matType == 7)
-    {
-      shellMaterial = soilOne30W;
-    } else {
-    G4cout << "Material is NOT defined! " << G4endl;
-    exit(1);
-  }
+//  if (matType == 1)
+//    {
+//      shellMaterial = G4Material::GetMaterial("G4_Pb");
+//    } else if (matType == 2)
+//    {
+//      shellMaterial = G4Material::GetMaterial("G4_AIR");
+//    } else if (matType == 3)
+//    {
+//      shellMaterial = G4Material::GetMaterial("liquidArgon");
+//    } else if (matType == 4)
+//    {
+//      shellMaterial = soilOne;
+//    } else if (matType == 5)
+//    {
+//      shellMaterial = soilOne10W;
+//    } else if (matType == 6)
+//    {
+//      shellMaterial = soilOne20W;
+//    } else if (matType == 7)
+//    {
+//      shellMaterial = soilOne30W;
+//    } else {
+//    G4cout << "Material is NOT defined! " << G4endl;
+//    exit(1);
+//  }
 
-  // shellMaterial_1 type 
-  if (matType_1 == 1)
-    {
-      shellMaterial_1 = G4Material::GetMaterial("G4_Pb");
-    } else if (matType_1 == 2)
-    {
-      shellMaterial_1 = G4Material::GetMaterial("G4_AIR");
-    } else if (matType_1 == 3)
-    {
-      shellMaterial = G4Material::GetMaterial("liquidArgon");
-    } else if (matType_1 == 4)
-    {
-      shellMaterial_1 = soilOne;
-    } else if (matType_1 == 5)
-    {
-      shellMaterial_1 = soilOne10W;
-    } else if (matType_1 == 6)
-    {
-      shellMaterial_1 = soilOne20W;
-    } else if (matType_1 == 7)
-    {
-      shellMaterial_1 = soilOne30W;
-    } else {
-    G4cout << "Material_1 is NOT defined! " << G4endl;
-    exit(1);
-  }
+//  // shellMaterial_1 type 
+//  if (matType_1 == 1)
+//    {
+//      shellMaterial_1 = G4Material::GetMaterial("G4_Pb");
+//    } else if (matType_1 == 2)
+//    {
+//      shellMaterial_1 = G4Material::GetMaterial("G4_AIR");
+//    } else if (matType_1 == 3)
+//    {
+//      shellMaterial = G4Material::GetMaterial("liquidArgon");
+//    } else if (matType_1 == 4)
+//    {
+//      shellMaterial_1 = soilOne;
+//    } else if (matType_1 == 5)
+//    {
+//      shellMaterial_1 = soilOne10W;
+//    } else if (matType_1 == 6)
+//    {
+//      shellMaterial_1 = soilOne20W;
+//    } else if (matType_1 == 7)
+//    {
+//      shellMaterial_1 = soilOne30W;
+//    } else {
+//    G4cout << "Material_1 is NOT defined! " << G4endl;
+//    exit(1);
+//  }
 
-  // shellMaterial_2 type 
-  if (matType_2 == 1)
-    {
-      shellMaterial_2 = G4Material::GetMaterial("G4_Pb");
-    } else if (matType_2 == 2)
-    {
-      shellMaterial_2 = G4Material::GetMaterial("G4_AIR");
-    } else if (matType_2 == 3)
-    {
-      shellMaterial_2 = G4Material::GetMaterial("liquidArgon");
-    } else if (matType_2 == 4)
-    {
-      shellMaterial_2 = soilOne;
-    } else if (matType_2 == 5)
-    {
-      shellMaterial_2 = soilOne10W;
-    } else if (matType_2 == 6)
-    {
-      shellMaterial_2 = soilOne20W;
-    } else if (matType_2 == 7)
-    {
-      shellMaterial_2 = soilOne30W;
-    } else {
-    G4cout << "Material_2 is NOT defined! " << G4endl;
-    exit(1);
-  }
-  
-  // shellMaterial_3 type 
-  if (matType_3 == 1)
-    {
-      shellMaterial_3 = G4Material::GetMaterial("G4_Pb");
-    } else if (matType_3 == 2)
-    {
-      shellMaterial_3 = G4Material::GetMaterial("G4_AIR");
-    } else if (matType_3 == 3)
-    {
-      shellMaterial_3 = G4Material::GetMaterial("liquidArgon");
-    } else if (matType_3 == 4)
-    {
-      shellMaterial_3 = soilOne;
-    } else if (matType_3 == 5)
-    {
-      shellMaterial_3 = soilOne10W;
-    } else if (matType_3 == 6)
-    {
-      shellMaterial_3 = soilOne20W;
-    } else if (matType_3 == 7)
-    {
-      shellMaterial_3 = soilOne30W;
-    } else {
-    G4cout << "Material_3 is NOT defined! " << G4endl;
-    exit(1);
-  }
+//  // shellMaterial_2 type 
+//  if (matType_2 == 1)
+//    {
+//      shellMaterial_2 = G4Material::GetMaterial("G4_Pb");
+//    } else if (matType_2 == 2)
+//    {
+//      shellMaterial_2 = G4Material::GetMaterial("G4_AIR");
+//    } else if (matType_2 == 3)
+//    {
+//      shellMaterial_2 = G4Material::GetMaterial("liquidArgon");
+//    } else if (matType_2 == 4)
+//    {
+//      shellMaterial_2 = soilOne;
+//    } else if (matType_2 == 5)
+//    {
+//      shellMaterial_2 = soilOne10W;
+//    } else if (matType_2 == 6)
+//    {
+//      shellMaterial_2 = soilOne20W;
+//    } else if (matType_2 == 7)
+//    {
+//      shellMaterial_2 = soilOne30W;
+//    } else {
+//    G4cout << "Material_2 is NOT defined! " << G4endl;
+//    exit(1);
+//  }
+//  
+//  // shellMaterial_3 type 
+//  if (matType_3 == 1)
+//    {
+//      shellMaterial_3 = G4Material::GetMaterial("G4_Pb");
+//    } else if (matType_3 == 2)
+//    {
+//      shellMaterial_3 = G4Material::GetMaterial("G4_AIR");
+//    } else if (matType_3 == 3)
+//    {
+//      shellMaterial_3 = G4Material::GetMaterial("liquidArgon");
+//    } else if (matType_3 == 4)
+//    {
+//      shellMaterial_3 = soilOne;
+//    } else if (matType_3 == 5)
+//    {
+//      shellMaterial_3 = soilOne10W;
+//    } else if (matType_3 == 6)
+//    {
+//      shellMaterial_3 = soilOne20W;
+//    } else if (matType_3 == 7)
+//    {
+//      shellMaterial_3 = soilOne30W;
+//    } else {
+//    G4cout << "Material_3 is NOT defined! " << G4endl;
+//    exit(1);
+//  }
 
-  shellMaterial_4 = soilOne30W; // newly added layer 4 has same materials as layer 3
+  shellMaterial = soilOne;
+  shellMaterial_1 = soilOne10W;
+  shellMaterial_2 = soilOne20W;
+  shellMaterial_3 = soilOne30W;
+  shellMaterial_4 = soilOne40W;
 
+  // Cleanup old geometry
+  G4GeometryManager::GetInstance()->OpenGeometry();
+  G4PhysicalVolumeStore::GetInstance()->Clean();
+  G4LogicalVolumeStore::GetInstance()->Clean();
+  G4SolidStore::GetInstance()->Clean();
+ 
   // Geometry parameters  
 
-  //     
+
   // World
   //
-
   auto worldSizeXY = 2.5 * outer_r;
   // auto worldSizeZ  = worldSizeXY; 
   
@@ -446,7 +474,6 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
                  fCheckOverlaps);  // checking overlaps 
   
   // 2nd layer (E 6-9 inches - 100-9)
-  
   auto solidShell_2 = new G4Sphere("Shell_2", 1.002*inner_r, 0.91*outer_r,
 				   startAnglePhi, spanningAnglePhi, 
 				   startAngleTheta, spanningAngleTheta);
@@ -510,6 +537,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
                                 false,            // no boolean operation
                                 0,                // copy number
                                 fCheckOverlaps);  // checking overlaps
+  
   //
   // print parameters
   //
@@ -549,17 +577,51 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbDetectorConstruction::ConstructSDandField()
-{ 
-  // Create global magnetic field messenger.
-  // Uniform magnetic field is then created automatically if
-  // the field value is not zero.
-  G4ThreeVector fieldValue;
-  fMagFieldMessenger = new G4GlobalMagFieldMessenger(fieldValue);
-  fMagFieldMessenger->SetVerboseLevel(1);
-  
-  // Register the field messenger for deleting
-  G4AutoDelete::Register(fMagFieldMessenger);
+//void nbDetectorConstruction::ConstructSDandField()
+//{ 
+//  // Create global magnetic field messenger.
+//  // Uniform magnetic field is then created automatically if
+//  // the field value is not zero.
+//  G4ThreeVector fieldValue;
+//  fMagFieldMessenger = new G4GlobalMagFieldMessenger(fieldValue);
+//  fMagFieldMessenger->SetVerboseLevel(1);
+//  
+//  // Register the field messenger for deleting
+//  G4AutoDelete::Register(fMagFieldMessenger);
+//}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+G4String nbDetectorConstruction::getNameOfLayer1()
+{
+    return "shellPV";
 }
+
+G4String nbDetectorConstruction::getNameOfLayer2()
+{
+    return "shellPV_1";
+}
+
+G4String nbDetectorConstruction::getNameOfLayer3()
+{
+    return "shellPV_2";
+}
+
+G4String nbDetectorConstruction::getNameOfLayer4()
+{
+    return "shellPV_3";
+}
+
+G4String nbDetectorConstruction::getNameOfLayer5()
+{
+    return "shellPV_4";
+}
+
+G4String nbDetectorConstruction::getNameOfLayer6()
+{
+    return "World";
+}
+
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

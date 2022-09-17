@@ -1,44 +1,32 @@
-// created on August 22, 2022
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#ifndef nbTrackingAction_h
-#define nbTrackingAction_h 1
+#ifndef TrackingAction_h
+#define TrackingAction_h 1
 
 #include "G4UserTrackingAction.hh"
 #include "globals.hh"
 
-class nbEventAction;
-class nbTrackingMessenger;
+class nbDetectorConstruction;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 class nbTrackingAction : public G4UserTrackingAction {
 
-  // some data members of nbTrackingAction class
-  private:
-    nbEventAction*        fEvent;
-    nbTrackingMessenger*  fTrackMessenger;
-    
-    G4double fCharge, fMass;        
-    G4bool   fFullChain;
-
-    G4double fTime_birth,  fTime_end;
-    G4double fTimeWindow1, fTimeWindow2;
-
   public:  
-    nbTrackingAction(nbEventAction*);
-   ~nbTrackingAction();
+  
+    // constructor & desstructor
+    nbTrackingAction(nbDetectorConstruction*);
+   ~nbTrackingAction() {};
    
-    // some inbuilt virtual methods for TrackingAction class
-    virtual void  PreUserTrackingAction(const G4Track*);
+    // inbuilt methods for trackingAction class
+    virtual void PreUserTrackingAction(const G4Track*);   
     virtual void PostUserTrackingAction(const G4Track*);
     
-    // some user define methods
-    void SetFullChain(G4bool flag) 
-    { 
-    	fFullChain = flag;
-    };
-    
-    void SetTimeWindow(G4double , G4double);
+  private:
+  
+    // object of detector construction class
+    nbDetectorConstruction* fDetector;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

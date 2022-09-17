@@ -1,10 +1,9 @@
-// code updated on 23 August, 2022
-// fully revamped as per rdecay01; might need to add code from previous neutronBall nbActionInitialization.hh file
-
-#ifndef nbActionInitialization_h
-#define nbActionInitialization_h 1
+#ifndef ActionInitialization_h
+#define ActionInitialization_h 1
 
 #include "G4VUserActionInitialization.hh"
+
+class nbDetectorConstruction;
 
 /// Action initialization class.
 ///
@@ -12,14 +11,18 @@
 class nbActionInitialization : public G4VUserActionInitialization
 {
   public:
-  
-    nbActionInitialization();
     
-    ~nbActionInitialization();
-
+    // constructor & destructor
+    nbActionInitialization(nbDetectorConstruction* detector);
+    virtual ~nbActionInitialization();
+    
+    // inbuilt methods in actionInitialization class
     virtual void BuildForMaster() const;
     virtual void Build() const;
-
+   
+  private:
+    // create object of detector construction class
+    nbDetectorConstruction* fDetector;
 };
 
 #endif

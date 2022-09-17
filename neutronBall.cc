@@ -2,33 +2,21 @@
 // learning resource: https://www.slac.stanford.edu/xorg/geant4/SLACTutorial14/Agenda.html
 // learning resource: https://indico.cern.ch/event/647154/contributions/2714212/attachments/1529029/2397032/BookForApplicationDevelopers.pdf
 
-// Created on 10/13/2021:  hexc, Mayur, Tien, Weisen, Austin
-// This GEANT4 simulation is to study Bonne Ball efficiency
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-// last updated on 07/06/2022: Mayur Aitavadekar
-// added physics list code in the main itself so that we do not need to created physicsList.cc code 
-
-#include "nbDetectorConstruction.hh"
-#include "nbActionInitialization.hh"
-#include "nbPhysicsList.hh"
+#include "G4Types.hh"
 
 #include "G4RunManagerFactory.hh"
-
 #include "G4UImanager.hh"
 #include "G4SteppingVerbose.hh"
-#include "G4UIcommand.hh"
-
-// header files for physics list
-#include "FTFP_BERT.hh"
-#include "G4PhysListFactory.hh"
-#include "G4RadioactiveDecayPhysics.hh"
-#include "G4DecayPhysics.hh"
-#include "G4Radioactivation.hh"
-
 #include "Randomize.hh"
 
-#include "G4VisExecutive.hh"
+#include "nbDetectorConstruction.hh"
+#include "nbPhysicsList.hh"
+#include "nbActionInitialization.hh"
+
 #include "G4UIExecutive.hh"
+#include "G4VisExecutive.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -64,12 +52,14 @@ int main(int argc,char** argv) {
   }  
 
   //set mandatory initialization classes
-  //
-  runManager->SetUserInitialization(new nbDetectorConstruction);
-  
-  runManager->SetUserInitialization(new nbPhysicsList);
+  nbDetectorConstruction* det= new nbDetectorConstruction;
+  runManager->SetUserInitialization(det);
 
-  runManager->SetUserInitialization(new nbActionInitialization);
+  nbPhysicsList* phys = new nbPhysicsList;
+  runManager->SetUserInitialization(phys);
+
+  runManager->SetUserInitialization(new nbActionInitialization(det));
+
 
   //initialize G4 kernel
   runManager->Initialize();

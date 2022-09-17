@@ -1,6 +1,3 @@
-// code updated on 23 August, 2022
-// fully revamped as per rdecay01; might need to add code from previous neutronBall nbEventAction.cc file
-
 #include "nbActionInitialization.hh"
 #include "nbPrimaryGeneratorAction.hh"
 #include "nbRunAction.hh"
@@ -10,9 +7,12 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-nbActionInitialization::nbActionInitialization()
- : G4VUserActionInitialization()
-{}
+nbActionInitialization::nbActionInitialization(nbDetectorConstruction* detector)
+ : G4VUserActionInitialization(),
+   fDetector(detector)
+{
+    
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -23,7 +23,7 @@ nbActionInitialization::~nbActionInitialization()
 
 void nbActionInitialization::BuildForMaster() const
 {
-  nbRunAction* runAction = new nbRunAction(0);
+  nbRunAction* runAction = new nbRunAction(fDetector, 0);
   SetUserAction(runAction);
 }
 
@@ -34,18 +34,17 @@ void nbActionInitialization::Build() const
   nbPrimaryGeneratorAction* primary = new nbPrimaryGeneratorAction();
   SetUserAction(primary);
     
-  nbRunAction* runAction = new nbRunAction(primary);
+  nbRunAction* runAction = new nbRunAction(fDetector, primary);
   SetUserAction(runAction);
   
-  nbEventAction* eventAction = new nbEventAction();
-  SetUserAction(eventAction);
+  nbEventAction* event = new nbEventAction();
+  SetUserAction(event);  
   
-  nbTrackingAction* trackingAction = new nbTrackingAction(eventAction);
+  nbTrackingAction* trackingAction = new nbTrackingAction(fDetector);
   SetUserAction(trackingAction);
-	
-  nbSteppingAction* steppingAction = new nbSteppingAction();
-  SetUserAction(steppingAction);
   
+  nbSteppingAction* steppingAction = new nbSteppingAction(fDetector, event);
+  SetUserAction(steppingAction);
 }  
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

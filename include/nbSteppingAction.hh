@@ -1,35 +1,36 @@
-// Created on 10/13/2021
-// 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#ifndef nbSteppingAction_h
-#define nbSteppingAction_h 1
+#ifndef SteppingAction_h
+#define SteppingAction_h 1
 
 #include "G4UserSteppingAction.hh"
+#include "globals.hh"
 
-// class nbDetectorConstruction;
+class nbDetectorConstruction;
+class nbEventAction;
 
-/// Stepping action class.
-///
-/// In UserSteppingAction() there are collected the energy deposit and track 
-/// lengths of charged particles in Absober and Gap layers and
-/// updated in nbRunData object.
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 class nbSteppingAction : public G4UserSteppingAction
 {
-
-private:
-  // const nbDetectorConstruction* fDetConstruction;
-
-public:
-  // nbSteppingAction(const nbDetectorConstruction* detectorConstruction);
+  public:
   
-  // currently I do not need any user action class in stepping action
-  nbSteppingAction();
-  ~nbSteppingAction();
+    // constructor & destructors
+    nbSteppingAction(nbDetectorConstruction*, nbEventAction*);
+   ~nbSteppingAction();
 
-  virtual void UserSteppingAction(const G4Step* step);
+    // inbuilt method in steppingAction class
+    virtual void UserSteppingAction(const G4Step*);
+    
+  private:
+    
+    // objects of detector construction & eventAction class
+    nbDetectorConstruction* fDetector;  
+    nbEventAction* fEventAction;    
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
+

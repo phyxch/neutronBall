@@ -1,12 +1,5 @@
-// code updated on 23 August, 2022
-// fully revamped as per rdecay01; might need to add code from previous neutronBall nbEventAction.hh file
-//
-// 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-#ifndef nbEventAction_h
-#define nbEventAction_h 1
+#ifndef EventAction_h
+#define EventAction_h 1
 
 #include "G4UserEventAction.hh"
 #include "globals.hh"
@@ -16,43 +9,27 @@
 class nbEventAction : public G4UserEventAction
 {
   public:
-   
-    // constructor
+    // constructors and destructors
     nbEventAction();
-    
-    // destructor
    ~nbEventAction();
-   
-  private:
-
-    G4String        fDecayChain;                   
-    G4double        fEvisTot;
 
   public:
-  
-    // virtual inbuilt method
+    
+    // inbuilt methods for eventAction class
     virtual void BeginOfEventAction(const G4Event*);
+    virtual void EndOfEventAction(const G4Event*);
     
-    // virtual inbuilt method
-    virtual void   EndOfEventAction(const G4Event*);
-    
-    
-    // user defined methods to collect some results 
-    void AddDecayChain(G4String val) 
-    {
-    	fDecayChain += val;
-    };
-    
-    void AddEvisible(G4double val)   
-    {
-    	fEvisTot    += val;
-    };
+    void AddEdep(G4int iVol, G4double Edep, G4double time, G4double weight);
+                
+  private:
+    G4double fEdep1, fEdep2, fEdep3, fEdep4, fEdep5, fEdep6;
+    G4double fWeight1, fWeight2, fWeight3, fWeight4, fWeight5, fWeight6;
+    G4double fTime0;    
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
 
-
-
     
+
