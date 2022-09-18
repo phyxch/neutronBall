@@ -38,11 +38,7 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       virtual G4VPhysicalVolume* Construct();
       // currently we are not using any SDs (but defined)
       // virtual void ConstructSDandField();
-      
-      // get methods
-      //
-      const G4VPhysicalVolume* GetShellPV() const;
-      
+     
     private:
       // methods
       //
