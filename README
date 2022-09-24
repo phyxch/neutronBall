@@ -1,13 +1,23 @@
-Radon Emanation Simulation
-==========================
+Geant4 Simulation for Radon Emanation
+=====================================
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Primary Authors: Mayur Aitavadekar, Dr. Xiaochun He
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # usage:
 --------
 
-git clone -b test-branch https://github.com/phyxch/neutronBall.git 
+1) clone from test-branch (all updated code is on test-branch)
+
+> git clone -b test-branch https://github.com/phyxch/neutronBall.git 
+
 
 # commands:
 -----------
+
+after running code in interactive mode, you can optionally use following
+commands for better visibility and understanding of detector geometry.
 
 * /vis/viewer/set/style surface OR wireframe
 * /vis/viewer/addCutawayPlane 0 1 0 
@@ -16,14 +26,22 @@ git clone -b test-branch https://github.com/phyxch/neutronBall.git
 # Instructions to run simulation
 --------------------------------
 
-* build the code in directory build_nb : using cmake ../neutronBall
-* cd build_nb
-* ./neutronBall
-* under session textbox type: /control/execute fullChain.mac
+* build code using cmake and make
 
+1) run code interative mode:
 
-## Note:
---------
-Initially beamOn was set on 100,000 particles but it takes more than 15 mins to run the simulation. Hence beamOn is set to 1000 particles only.
+> ./neutronBall
+> /control/execute u238c.mac
+
+2) run code in batch mode
+
+> ./neutronBall ../neutronBall/macros/u238c.mac
+
+# Results
+---------
+
+1) output.root file stores various results.
+2) need to develop histograms (work in progress)
+3) need to get good plots using output.root file (work in progress)
 
     
