@@ -11,12 +11,12 @@
 #
 # rdm is applied only to the different soil layers
 /process/had/rdm/noVolumes
-#/process/had/rdm/selectVolume shellLV
-#/process/had/rdm/selectVolume shellLV_1
-#/process/had/rdm/selectVolume shellLV_2
-#/process/had/rdm/selectVolume shellLV_3
+/process/had/rdm/selectVolume shellLV
+/process/had/rdm/selectVolume shellLV_1
+/process/had/rdm/selectVolume shellLV_2
+/process/had/rdm/selectVolume shellLV_3
 /process/had/rdm/selectVolume shellLV_4
-#/process/had/rdm/selectVolume World
+/process/had/rdm/selectVolume World
 #
 #
 #
