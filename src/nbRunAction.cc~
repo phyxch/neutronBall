@@ -64,26 +64,50 @@ void nbRunAction::BeginOfRunAction(const G4Run*)
   analysisManager->SetFirstNtupleId(1);
   // create and open file output.root for writing data in it
   analysisManager->OpenFile("output.root");
-   
-  analysisManager->CreateNtuple("RDecayProducts", "All Products of RDecay");
-  analysisManager->CreateNtupleDColumn(1, "pid");       //column 0
-  analysisManager->CreateNtupleDColumn(1, "z");         //column 1
-  analysisManager->CreateNtupleDColumn(1, "a");         //column 2    
-  analysisManager->CreateNtupleDColumn(1, "energy");    //column 3
-  analysisManager->CreateNtupleDColumn(1, "time");      //column 4
-  // analysisManager->CreateNtupleDColumn(1, "weight");    //column 5
+  
+  analysisManager->CreateNtuple("T1", "Emitted Particles");
+  analysisManager->CreateNtupleDColumn(1, "PID");       //column 0
+  analysisManager->CreateNtupleDColumn(1, "Energy");    //column 1
+  analysisManager->CreateNtupleDColumn(1, "Time");      //column 2
+  analysisManager->CreateNtupleDColumn(1, "Weight");    //column 3
   analysisManager->FinishNtuple(1);
   
-  analysisManager->CreateNtuple("particleData", "All data");
-  analysisManager->CreateNtupleDColumn(2, "x");       //column 0
-  analysisManager->CreateNtupleDColumn(2, "y");         //column 1
-  analysisManager->CreateNtupleDColumn(2, "z");         //column 2    
-  analysisManager->CreateNtupleDColumn(2, "pid");    //column 3
-  analysisManager->CreateNtupleDColumn(2, "z");         //column 1
-  analysisManager->CreateNtupleDColumn(2, "a");    
-  analysisManager->CreateNtupleDColumn(2, "pname");      //column 4
-  analysisManager->CreateNtupleDColumn(2, "pvolume");    //column 5
+  analysisManager->CreateNtuple("T2", "RadioIsotopes");
+  analysisManager->CreateNtupleDColumn(2, "PID");       //column 0
+  analysisManager->CreateNtupleDColumn(2, "Time");      //column 1
+  analysisManager->CreateNtupleDColumn(2, "Weight");    //column 2
   analysisManager->FinishNtuple(2);
+  
+  analysisManager->CreateNtuple("T3", "Energy depositions");
+  analysisManager->CreateNtupleDColumn(3, "Energy");    //column 0
+  analysisManager->CreateNtupleDColumn(3, "Time");      //column 1
+  analysisManager->CreateNtupleDColumn(3, "Weight");    //column 2
+  analysisManager->FinishNtuple(3);
+  
+  analysisManager->CreateNtuple("RDecayProducts", "All Products of RDecay");
+  analysisManager->CreateNtupleDColumn(4, "PID");       //column 0
+  analysisManager->CreateNtupleDColumn(4, "Z");         //column 1
+  analysisManager->CreateNtupleDColumn(4, "A");         //column 2    
+  analysisManager->CreateNtupleDColumn(4, "Energy");    //column 3
+  analysisManager->CreateNtupleDColumn(4, "Time");      //column 4
+  analysisManager->CreateNtupleDColumn(4, "Weight");    //column 5
+  analysisManager->FinishNtuple(4);
+  
+  analysisManager->CreateNtuple("particleData", "All data");
+  analysisManager->CreateNtupleDColumn(5, "X");       //column 0
+  analysisManager->CreateNtupleDColumn(5, "Y");         //column 1
+  analysisManager->CreateNtupleDColumn(5, "Z");         //column 2    
+  analysisManager->CreateNtupleDColumn(5, "pID");    //column 3
+  analysisManager->CreateNtupleDColumn(5, "pName");      //column 4
+  analysisManager->CreateNtupleDColumn(5, "pVol");    //column 5
+  analysisManager->FinishNtuple(5);
+             
+  //histograms
+  //
+  // G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  // if ( analysisManager->IsActive() ) {
+  //   analysisManager->OpenFile();
+  // }  
 
 }
 
@@ -92,6 +116,13 @@ void nbRunAction::BeginOfRunAction(const G4Run*)
 void nbRunAction::EndOfRunAction(const G4Run*)
 {
   if (isMaster) fRun->EndOfRun();    
+  
+  //save histograms      
+  // G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  // if ( analysisManager->IsActive() ) {
+  //   analysisManager->Write();
+  //   analysisManager->CloseFile();
+  // }
   
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   analysisManager->Write();
