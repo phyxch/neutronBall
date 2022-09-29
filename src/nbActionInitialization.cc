@@ -40,7 +40,7 @@ void nbActionInitialization::Build() const
   nbEventAction* event = new nbEventAction();
   SetUserAction(event);  
   
-  nbTrackingAction* trackingAction = new nbTrackingAction(fDetector);
+  nbTrackingAction* trackingAction = new nbTrackingAction(fDetector, event);
   SetUserAction(trackingAction);
   
   nbSteppingAction* steppingAction = new nbSteppingAction(fDetector, event);

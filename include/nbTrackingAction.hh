@@ -8,6 +8,7 @@
 #include "globals.hh"
 
 class nbDetectorConstruction;
+class nbEventAction;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -16,7 +17,7 @@ class nbTrackingAction : public G4UserTrackingAction {
   public:  
   
     // constructor & desstructor
-    nbTrackingAction(nbDetectorConstruction*);
+    nbTrackingAction(nbDetectorConstruction*, nbEventAction*);
    ~nbTrackingAction() {};
    
     // inbuilt methods for trackingAction class
@@ -27,6 +28,7 @@ class nbTrackingAction : public G4UserTrackingAction {
   
     // object of detector construction class
     nbDetectorConstruction* fDetector;
+    nbEventAction* fEvent;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

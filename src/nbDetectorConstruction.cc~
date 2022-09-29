@@ -111,6 +111,12 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
   // Define materials 
   DefineMaterials();
   
+  // define chemical composition
+  DefineSoilLayerMaps();
+  
+  // fill soil layers
+  FillSoilLayersWithMaps();
+  
   // Define volumes
   return DefineVolumes();
 }
@@ -118,24 +124,61 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void nbDetectorConstruction::DefineMaterials()
-{ 
-  G4double a;  // mass of a mole;
-  G4double z;  // z=mean number of protons;  
-  G4double density; 
-  
+{   
   // Lead material defined using NIST Manager
-  auto nistManager = G4NistManager::Instance();
-  nistManager->FindOrBuildMaterial("G4_Pb");
-  nistManager->FindOrBuildMaterial("G4_AIR");
+  nistManager = G4NistManager::Instance();
+  nistManager->SetVerbose(1);
   
+  //
+  // create all your materials in this function
+  //
+  
+  // define pure nist materials
+  H = nistManager->FindOrBuildMaterial("G4_H");
+ 
+  // define nist compounds
+  H2O  = nistManager->FindOrBuildMaterial("G4_WATER");
+  H2O->GetIonisation()->SetMeanExcitationEnergy(75.0*eV); // you may or may not include this line, overwrite computed meanExcitationEnergy with ICRU recommended value 
+  
+  SiO2 = nistManager->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
+  Al2O3 = nistManager->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
+  Fe2O3 = nistManager->FindOrBuildMaterial("G4_FERRIC_OXIDE");
+  CaO = nistManager->FindOrBuildMaterial("G4_CALCIUM_OXIDE");
+  MgO = nistManager->FindOrBuildMaterial("G4_MAGNESIUM_OXIDE");
+  TiO2 = nistManager->FindOrBuildMaterial("G4_TITANIUM_DIOXIDE");
+  
+  // define elements
+  elO = new G4Element("Oxygen"  ,symbol="O" , z= 8., a= 16.00*g/mole);
+  elH = new G4Element("Hydrogen",symbol="H" , z= 1., a= 1.01*g/mole);
+  elC  = nistManager->FindOrBuildElement("C");
+  elN  = nistManager->FindOrBuildElement("N");
+  
+  // create OH for material
+  OH = new G4Material("Hydroxide", density = 1.33*g/cm3, ncomponents = 2);
+  OH->AddElement(elO, natoms=1);
+  OH->AddElement(elH, natoms=1);
+  
+  // pH material to add in soil
+  pH = new G4Material("pH", density = 1.33*g/cm3, ncomponents = 2);
+  pH->AddMaterial(H, fractionmass=30.0*perCent);
+  pH->AddMaterial(OH, fractionmass=70.0*perCent);
+  
+  // organic material
+  // We assume organic soil components have 1.33 g/cm3 density. This number should be updated with
+  // specifric soil type simulation. 4/12/2019
+  OrganicMat = new G4Material("Organic", density = 1.33*g/cm3, ncomponents = 4);
+  OrganicMat->AddElement(elC, natoms=50);
+  OrganicMat->AddElement(elO, natoms=42);
+  OrganicMat->AddElement(elH, natoms=5);
+  OrganicMat->AddElement(elN, natoms=3); 
+  
+  // Vacuum
+  defaultMaterial = new G4Material("Galactic", z=1., a=1.01*g/mole,density= universe_mean_density,
+                  kStateGas, 2.73*kelvin, 3.e-18*pascal);
+ 
   // Liquid argon material
   // new G4Material("liquidArgon", z=18., a= 39.95*g/mole, density= 1.390*g/cm3);
   //        // The argon by NIST Manager is a gas with a different density
-
-  // Vacuum
-  new G4Material("Galactic", z=1., a=1.01*g/mole,density= universe_mean_density,
-                  kStateGas, 2.73*kelvin, 3.e-18*pascal);
-
   // Print materials
   // G4cout << *(G4Material::GetMaterialTable()) << G4endl;
 }
@@ -143,127 +186,7 @@ void nbDetectorConstruction::DefineMaterials()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
-{
-  // some variables to create user defined materials
-  G4String symbol;              // periodic table symbol        
-  G4double a;                   // mass of a mole;
-  G4double z;                   // z=mean number of protons;  
-  G4double density;             // density of material
-  G4int ncomponents, natoms;    // parameters
-  G4double fractionmass;        // parameters    
-
-  // instance of NIST manager which contains inbuilt materials and elements
-  G4NistManager* man = G4NistManager::Instance();
-  man->SetVerbose(1);
-  
-  // define pure nist materials
-  G4Material* H = man->FindOrBuildMaterial("G4_H");
- 
-  // define nist compounds
-  G4Material* H2O  = man->FindOrBuildMaterial("G4_WATER");
-  H2O->GetIonisation()->SetMeanExcitationEnergy(75.0*eV); // you may or may not include this line, overwrite computed meanExcitationEnergy with ICRU recommended value 
-  
-  G4Material* SiO2 = man->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
-  G4Material* Al2O3 = man->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
-  G4Material* Fe2O3 = man->FindOrBuildMaterial("G4_FERRIC_OXIDE");
-  G4Material* CaO = man->FindOrBuildMaterial("G4_CALCIUM_OXIDE");
-  G4Material* MgO = man->FindOrBuildMaterial("G4_MAGNESIUM_OXIDE");
-  G4Material* TiO2 = man->FindOrBuildMaterial("G4_TITANIUM_DIOXIDE");
-  
-  // define elements
-  G4Element* elO = new G4Element("Oxygen"  ,symbol="O" , z= 8., a= 16.00*g/mole);
-  G4Element* elH = new G4Element("Hydrogen",symbol="H" , z= 1., a= 1.01*g/mole);
-  G4Element* elC  = man->FindOrBuildElement("C");
-  G4Element* elN  = man->FindOrBuildElement("N");
-  
-  // create OH for material
-  G4Material* OH = new G4Material("Hydroxide", density = 1.33*g/cm3, ncomponents = 2);
-  OH->AddElement(elO, natoms=1);
-  OH->AddElement(elH, natoms=1);
-  
-  // pH material to add in soil
-  G4Material* pH = new G4Material("pH", density = 1.33*g/cm3, ncomponents = 2);
-  pH->AddMaterial(H, fractionmass=80.0*perCent);
-  pH->AddMaterial(OH, fractionmass=20.0*perCent);
-  
-  // organic material
-  // We assume organic soil components have 1.33 g/cm3 density. This number should be updated with
-  // specifric soil type simulation. 4/12/2019
-  G4Material* OrganicMat = new G4Material("Organic", density = 1.33*g/cm3, ncomponents = 4);
-  OrganicMat->AddElement(elC, natoms=50);
-  OrganicMat->AddElement(elO, natoms=42);
-  OrganicMat->AddElement(elH, natoms=5);
-  OrganicMat->AddElement(elN, natoms=3);
-  
-  
-  // create soil layers
-  // Based on: http://gfnun.unal.edu.co/fileadmin/content/gruposdeinvestigacion/fisicanuclear/Tesis/DanielAndrade_TG.pdf
-  // layer 1
-  auto soilOne = new G4Material("DrySoil", density = 0.6*g/cm3, ncomponents=8);
-  soilOne->AddMaterial(SiO2, fractionmass=46.3*perCent);   
-  soilOne->AddMaterial(pH, fractionmass=15.0*perCent);      //pH
-  soilOne->AddMaterial(Al2O3, fractionmass=13.0*perCent);
-  soilOne->AddMaterial(Fe2O3, fractionmass=2.5*perCent);
-  soilOne->AddMaterial(CaO, fractionmass=1.6*perCent);
-  soilOne->AddMaterial(MgO, fractionmass=0.7*perCent);
-  soilOne->AddMaterial(TiO2, fractionmass=0.6*perCent);
-  soilOne->AddMaterial(OrganicMat, fractionmass=20.3*perCent);
- 
-  // layer 2
-  // 10% moisture content
-  auto soilOne10W = new G4Material("DrySoil10W", density = 0.6*g/cm3, ncomponents=9);
-  soilOne10W->AddMaterial(SiO2, fractionmass=40.17*perCent);
-  soilOne10W->AddMaterial(pH, fractionmass=15.0*perCent);          //pH
-  soilOne10W->AddMaterial(Al2O3, fractionmass=11.7*perCent);
-  soilOne10W->AddMaterial(Fe2O3, fractionmass=2.25*perCent);
-  soilOne10W->AddMaterial(CaO, fractionmass=1.44*perCent);
-  soilOne10W->AddMaterial(MgO, fractionmass=0.63*perCent);
-  soilOne10W->AddMaterial(TiO2, fractionmass=0.54*perCent);
-  soilOne10W->AddMaterial(OrganicMat, fractionmass=18.27*perCent);
-  soilOne10W->AddMaterial(H2O, fractionmass=10.0*perCent);
-  
-  // layer 3
-  // 20% moisture content. Need new density value?
-  auto soilOne20W = new G4Material("DrySoil20W", density = 0.6*g/cm3, ncomponents=9);
-  soilOne20W->AddMaterial(SiO2, fractionmass=34.04*perCent);
-  soilOne20W->AddMaterial(pH, fractionmass=15.0*perCent);          // pH
-  soilOne20W->AddMaterial(Al2O3, fractionmass=10.4*perCent);
-  soilOne20W->AddMaterial(Fe2O3, fractionmass=2.0*perCent);
-  soilOne20W->AddMaterial(CaO, fractionmass=1.28*perCent);
-  soilOne20W->AddMaterial(MgO, fractionmass=0.56*perCent);
-  soilOne20W->AddMaterial(TiO2, fractionmass=0.48*perCent);
-  soilOne20W->AddMaterial(OrganicMat, fractionmass=16.24*perCent);
-  soilOne20W->AddMaterial(H2O, fractionmass=20.0*perCent);
- 
-  // layer 4
-  // 30% moisture content. Need new density value?
-  auto soilOne30W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=9);
-  soilOne30W->AddMaterial(SiO2, fractionmass=27.91*perCent);
-  soilOne30W->AddMaterial(pH, fractionmass=15.0*perCent);
-  soilOne30W->AddMaterial(Al2O3, fractionmass=9.1*perCent);
-  soilOne30W->AddMaterial(Fe2O3, fractionmass=1.75*perCent);
-  soilOne30W->AddMaterial(CaO, fractionmass=1.12*perCent);
-  soilOne30W->AddMaterial(MgO, fractionmass=0.49*perCent);
-  soilOne30W->AddMaterial(TiO2, fractionmass=0.42*perCent);
-  soilOne30W->AddMaterial(OrganicMat, fractionmass=14.21*perCent);
-  soilOne30W->AddMaterial(H2O, fractionmass=30.0*perCent);
-    
-  // layer 5 (inner most)
-  // 40% moisture content. Need new density value?
-  auto soilOne40W = new G4Material("DrySoil40W", density = 0.6*g/cm3, ncomponents=9);
-  soilOne40W->AddMaterial(SiO2, fractionmass=17.91*perCent);
-  soilOne40W->AddMaterial(pH, fractionmass=15.0*perCent);
-  soilOne40W->AddMaterial(Al2O3, fractionmass=9.1*perCent);
-  soilOne40W->AddMaterial(Fe2O3, fractionmass=1.75*perCent);
-  soilOne40W->AddMaterial(CaO, fractionmass=1.12*perCent);
-  soilOne40W->AddMaterial(MgO, fractionmass=0.49*perCent);
-  soilOne40W->AddMaterial(TiO2, fractionmass=0.42*perCent);
-  soilOne40W->AddMaterial(OrganicMat, fractionmass=14.21*perCent);
-  soilOne40W->AddMaterial(H2O, fractionmass=40.0*perCent);
-  
-  // Set materials
-  auto defaultMaterial = G4Material::GetMaterial("Galactic");
-  
+{  
   // assign constructed layers to detector materials which will be inserted in logical volumes
   shellMaterial = soilOne;
   shellMaterial_1 = soilOne10W;
@@ -461,51 +384,149 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-//void nbDetectorConstruction::ConstructSDandField()
-//{ 
-//  // Create global magnetic field messenger.
-//  // Uniform magnetic field is then created automatically if
-//  // the field value is not zero.
-//  G4ThreeVector fieldValue;
-//  fMagFieldMessenger = new G4GlobalMagFieldMessenger(fieldValue);
-//  fMagFieldMessenger->SetVerboseLevel(1);
-//  
-//  // Register the field messenger for deleting
-//  G4AutoDelete::Register(fMagFieldMessenger);
-//}
+void nbDetectorConstruction::DefineSoilLayerMaps()
+{
+    // define chemical composition maps
+    // use these maps in soil layers
+    // you can add or delete any material composition
+    // in any map
+    // just make sure that summation = 100*perCent
+    
+    // first layer composition
+    chem_composition_1 = {
+        {SiO2, 46.3*perCent},
+        {pH, 15.0*perCent},             // pH
+        {Al2O3, 13.0*perCent},
+        {Fe2O3, 2.5*perCent},
+        {CaO, 1.6*perCent},
+        {MgO, 0.7*perCent},
+        {TiO2, 0.6*perCent},
+        {OrganicMat, 20.3*perCent}      // organicMat
+    };
+    
+    // second layer composition
+    chem_composition_2 = {
+        {SiO2, 40.17*perCent},
+        {pH, 15.0*perCent},             // pH
+        {Al2O3, 11.7*perCent},
+        {Fe2O3, 2.25*perCent},
+        {CaO, 1.44*perCent},
+        {MgO, 0.63*perCent},
+        {TiO2, 0.54*perCent},
+        {OrganicMat, 18.27*perCent},
+        {H2O, 10.0*perCent}
+    };
+    
+    // third layer composition
+    chem_composition_3 = {
+        {SiO2, 34.04*perCent},
+        {pH, 15.0*perCent},             // pH
+        {Al2O3, 10.4*perCent},
+        {Fe2O3, 2.0*perCent},
+        {CaO, 1.28*perCent},
+        {MgO, 0.56*perCent},
+        {TiO2, 0.48*perCent},
+        {OrganicMat, 16.24*perCent},
+        {H2O, 20.0*perCent}
+    };
+    
+    // fourth layer composition
+    chem_composition_4 = {
+        {SiO2, 27.91*perCent},
+        {pH, 15.0*perCent},             // pH
+        {Al2O3, 9.1*perCent},
+        {Fe2O3, 1.75*perCent},
+        {CaO, 1.12*perCent},
+        {MgO, 0.49*perCent},
+        {TiO2, 0.42*perCent},
+        {OrganicMat, 14.21*perCent},    // organicMat
+        {H2O, 30.0*perCent}
+    };  
+    
+    // fifth layer composition
+    chem_composition_5 = {
+        {SiO2, 17.91*perCent},
+        {pH, 15.0*perCent},
+        {Al2O3, 9.1*perCent},
+        {Fe2O3, 1.75*perCent},
+        {CaO, 1.12*perCent},
+        {MgO, 0.49*perCent},
+        {TiO2, 0.42*perCent},
+        {OrganicMat, 14.21*perCent},
+        {H2O, 40.0*perCent}
+    };
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void nbDetectorConstruction::FillSoilLayersWithMaps()
+{
+    // create soil layers
+  // Based on: http://gfnun.unal.edu.co/fileadmin/content/gruposdeinvestigacion/fisicanuclear/Tesis/DanielAndrade_TG.pdf
+  // layer 1
+  soilOne = new G4Material("DrySoil", density = 0.6*g/cm3, ncomponents=chem_composition_1.size());
+  for (it = chem_composition_1.begin(); it != chem_composition_1.end(); it++) {
+        soilOne->AddMaterial(it->first, fractionmass=it->second);
+  }
+  
+  // layer 2
+  // 10% moisture content
+  soilOne10W = new G4Material("DrySoil10W", density = 0.6*g/cm3, ncomponents=chem_composition_2.size());
+  for (it = chem_composition_2.begin(); it != chem_composition_2.end(); it++) {
+        soilOne10W->AddMaterial(it->first, fractionmass=it->second);
+  }
+  
+  
+  // layer 3
+  // 20% moisture content. Need new density value?
+  soilOne20W = new G4Material("DrySoil20W", density = 0.6*g/cm3, ncomponents=chem_composition_3.size());
+  for (it = chem_composition_3.begin(); it != chem_composition_3.end(); it++) {
+        soilOne20W->AddMaterial(it->first, fractionmass=it->second);
+  }
+  
+  // layer 4
+  // 30% moisture content. Need new density value?
+  soilOne30W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=chem_composition_4.size());
+  for (it = chem_composition_4.begin(); it != chem_composition_4.end(); it++) {
+        soilOne30W->AddMaterial(it->first, fractionmass=it->second);
+  }
+    
+  // layer 5 (inner most)
+  // 40% moisture content. Need new density value?
+  soilOne40W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=chem_composition_5.size());
+  for (it = chem_composition_5.begin(); it != chem_composition_5.end(); it++) {
+        soilOne40W->AddMaterial(it->first, fractionmass=it->second);
+  }
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 G4String nbDetectorConstruction::getNameOfLayer1()
 {
-    return "shellPV";
+    return "shellPV"; // this is first layer beneath the surface
 }
 
 G4String nbDetectorConstruction::getNameOfLayer2()
 {
-    return "shellPV_1";
+    return "shellPV_1"; // the second layer below that
 }
 
 G4String nbDetectorConstruction::getNameOfLayer3()
 {
-    return "shellPV_2";
+    return "shellPV_2"; // the third layer below that
 }
 
 G4String nbDetectorConstruction::getNameOfLayer4()
 {
-    return "shellPV_3";
+    return "shellPV_3"; // the fourth layer below that
 }
 
 G4String nbDetectorConstruction::getNameOfLayer5()
 {
-    return "shellPV_4";
+    return "shellPV_4"; // the fifth layer below that
 }
 
-G4String nbDetectorConstruction::getNameOfLayer6()
+G4String nbDetectorConstruction::getWorld()
 {
-    return "World";
+    return "World"; // return world
 }
-
-
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

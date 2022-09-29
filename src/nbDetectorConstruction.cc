@@ -83,8 +83,8 @@ nbDetectorConstruction::nbDetectorConstruction()
 	}
   }
 
-  inner_r = inputVal[0]*cm;
-  outer_r = inputVal[1]*cm;
+  inner_r = inputVal[0]*nm;
+  outer_r = inputVal[1]*nm;
   matType = (G4int)inputVal[2];
   matType_1 = (G4int)inputVal[3];
   matType_2 = (G4int)inputVal[4];
@@ -160,8 +160,8 @@ void nbDetectorConstruction::DefineMaterials()
   
   // pH material to add in soil
   pH = new G4Material("pH", density = 1.33*g/cm3, ncomponents = 2);
-  pH->AddMaterial(H, fractionmass=80.0*perCent);
-  pH->AddMaterial(OH, fractionmass=20.0*perCent);
+  pH->AddMaterial(H, fractionmass=30.0*perCent);
+  pH->AddMaterial(OH, fractionmass=70.0*perCent);
   
   // organic material
   // We assume organic soil components have 1.33 g/cm3 density. This number should be updated with
@@ -503,30 +503,30 @@ void nbDetectorConstruction::FillSoilLayersWithMaps()
 
 G4String nbDetectorConstruction::getNameOfLayer1()
 {
-    return "shellPV";
+    return "shellPV"; // this is first layer beneath the surface
 }
 
 G4String nbDetectorConstruction::getNameOfLayer2()
 {
-    return "shellPV_1";
+    return "shellPV_1"; // the second layer below that
 }
 
 G4String nbDetectorConstruction::getNameOfLayer3()
 {
-    return "shellPV_2";
+    return "shellPV_2"; // the third layer below that
 }
 
 G4String nbDetectorConstruction::getNameOfLayer4()
 {
-    return "shellPV_3";
+    return "shellPV_3"; // the fourth layer below that
 }
 
 G4String nbDetectorConstruction::getNameOfLayer5()
 {
-    return "shellPV_4";
+    return "shellPV_4"; // the fifth layer below that
 }
 
-G4String nbDetectorConstruction::getNameOfLayer6()
+G4String nbDetectorConstruction::getWorld()
 {
-    return "World";
+    return "World"; // return world
 }

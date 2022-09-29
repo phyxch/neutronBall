@@ -92,6 +92,15 @@ void nbRunAction::BeginOfRunAction(const G4Run*)
   analysisManager->CreateNtupleDColumn(4, "Time");      //column 4
   analysisManager->CreateNtupleDColumn(4, "Weight");    //column 5
   analysisManager->FinishNtuple(4);
+  
+  analysisManager->CreateNtuple("particleData", "All data");
+  analysisManager->CreateNtupleDColumn(5, "X");       //column 0
+  analysisManager->CreateNtupleDColumn(5, "Y");         //column 1
+  analysisManager->CreateNtupleDColumn(5, "Z");         //column 2    
+  analysisManager->CreateNtupleDColumn(5, "pID");    //column 3
+  analysisManager->CreateNtupleDColumn(5, "pName");      //column 4
+  analysisManager->CreateNtupleDColumn(5, "pVol");    //column 5
+  analysisManager->FinishNtuple(5);
              
   //histograms
   //

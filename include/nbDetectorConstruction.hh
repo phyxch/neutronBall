@@ -109,7 +109,7 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       G4String getNameOfLayer3(); // shellPV_2
       G4String getNameOfLayer4(); // shellPV_3
       G4String getNameOfLayer5(); // shellPV_4
-      G4String getNameOfLayer6(); // world
+      G4String getWorld(); // world
 };
 
 #endif

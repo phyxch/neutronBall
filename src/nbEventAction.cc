@@ -11,10 +11,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 nbEventAction::nbEventAction()
-:G4UserEventAction(),
- fEdep1(0.), fEdep2(0.), fEdep3(0.), fEdep4(0.), fEdep5(0.), fEdep6(0.), 
- fWeight1(0.), fWeight2(0.), fWeight3(0.), fWeight4(0.), fWeight5(0.), fWeight6(0.),
- fTime0(-1*s)
+:G4UserEventAction()
 { 
     
 } 
@@ -28,42 +25,42 @@ nbEventAction::~nbEventAction()
 
 void nbEventAction::BeginOfEventAction(const G4Event*)
 {
-  fEdep1 = fEdep2 = fEdep3 = fEdep4 = fEdep5 = fEdep6 = 0.;
-  fWeight1 = fWeight2 = fWeight3 = fWeight4 = fWeight5 = fWeight6 = 0.;
-  fTime0 = -1*s;
+  // fEdep1 = fEdep2 = fEdep3 = fEdep4 = fEdep5 = fEdep6 = 0.;
+  // fWeight1 = fWeight2 = fWeight3 = fWeight4 = fWeight5 = fWeight6 = 0.;
+  // fTime0 = -1*s;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbEventAction::AddEdep(G4int iVol, G4double edep,
-                                      G4double time, G4double weight)
-{
-  // initialize t0
-  if (fTime0 < 0.) fTime0 = time;
-  
-  // out of time window ?
-  const G4double TimeWindow (1*microsecond);
-  if (std::fabs(time - fTime0) > TimeWindow) return;
-  
-  if (iVol == 1) { fEdep1 += edep; fWeight1 += edep*weight;}  // layer 1
-  if (iVol == 2) { fEdep2 += edep; fWeight2 += edep*weight;}  // layer 2
-  if (iVol == 3) { fEdep3 += edep; fWeight3 += edep*weight;}  // layer 3
-  if (iVol == 4) { fEdep4 += edep; fWeight4 += edep*weight;}  // layer 4
-  if (iVol == 5) { fEdep5 += edep; fWeight5 += edep*weight;}  // layer 5
-  if (iVol == 6) { fEdep6 += edep; fWeight6 += edep*weight;}  // layer 6 (world)
-}
+// void nbEventAction::AddEdep(G4int iVol, G4double edep,
+//                                       G4double time, G4double weight)
+// {
+//   initialize t0
+//   if (fTime0 < 0.) fTime0 = time;
+//   
+//   out of time window ?
+//   const G4double TimeWindow (1*microsecond);
+//   if (std::fabs(time - fTime0) > TimeWindow) return;
+//   
+//   if (iVol == 1) { fEdep1 += edep; fWeight1 += edep*weight;}  // layer 1
+//   if (iVol == 2) { fEdep2 += edep; fWeight2 += edep*weight;}  // layer 2
+//   if (iVol == 3) { fEdep3 += edep; fWeight3 += edep*weight;}  // layer 3
+//   if (iVol == 4) { fEdep4 += edep; fWeight4 += edep*weight;}  // layer 4
+//   if (iVol == 5) { fEdep5 += edep; fWeight5 += edep*weight;}  // layer 5
+//   if (iVol == 6) { fEdep6 += edep; fWeight6 += edep*weight;}  // layer 6 (world)
+// }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void nbEventAction::EndOfEventAction(const G4Event*)
 {
- // instance of analysis manager
- G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
- 
- // total energy deposition
- G4double Etot = fEdep1 + fEdep2 + fEdep3 + fEdep4 + fEdep5 + fEdep6;
- // total weight
- G4double Wtot = (fWeight1 + fWeight2 + fWeight3 + fWeight4 + fWeight5 + fWeight6)/Etot;
+ // // instance of analysis manager
+ // G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+ // 
+ // // total energy deposition
+ // G4double Etot = fEdep1 + fEdep2 + fEdep3 + fEdep4 + fEdep5 + fEdep6;
+ // // total weight
+ // G4double Wtot = (fWeight1 + fWeight2 + fWeight3 + fWeight4 + fWeight5 + fWeight6)/Etot;
  
  // pulse height in target
  //
@@ -100,10 +97,10 @@ void nbEventAction::EndOfEventAction(const G4Event*)
 
  // pass energies to Run
  //  
- nbRun* run = static_cast<nbRun*>(
-            G4RunManager::GetRunManager()->GetNonConstCurrentRun());
-             
- run->AddEdep (fEdep1, fEdep2, fEdep3, fEdep4, fEdep5, fEdep6);             
+ // nbRun* run = static_cast<nbRun*>(
+ //            G4RunManager::GetRunManager()->GetNonConstCurrentRun());
+ //             
+ // run->AddEdep (fEdep1, fEdep2, fEdep3, fEdep4, fEdep5, fEdep6);             
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
