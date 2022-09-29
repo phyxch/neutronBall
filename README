@@ -23,6 +23,10 @@ commands for better visibility and understanding of detector geometry.
 * /vis/viewer/addCutawayPlane 0 1 0 
 * /vis/viewer/set/background white
 
+
+More commands to use in macros and interactive console can be found here:
+https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
+
 # Instructions to run simulation
 --------------------------------
 
