@@ -33,10 +33,10 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
   const G4ParticleDefinition* particle = track->GetParticleDefinition();  
-  G4String name   = particle->GetParticleName();
-  G4int pid       = particle->GetPDGEncoding();
-  G4int Z         = particle->GetAtomicNumber();
-  G4int A         = particle->GetAtomicMass();
+  G4String pName   = particle->GetParticleName();
+  G4double pID       = particle->GetPDGEncoding();
+  G4double Z         = particle->GetAtomicNumber();
+  G4double A         = particle->GetAtomicMass();
   G4double charge = particle->GetPDGCharge();    
   G4double energy = track->GetKineticEnergy();
   G4double time   = track->GetGlobalTime();
@@ -44,20 +44,24 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
   G4double x = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
   G4double y = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
   G4double z = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
+  G4int trackID      = track->GetTrackID();
 
   //which volume ?
   //
-  G4String volumeName = track->GetVolume()->GetName(); // return physical volume name
+  G4String pVolume = track->GetVolume()->GetName(); // return physical volume name
   G4int iVol = 0;
-  if (volumeName == fDetector->getNameOfLayer1())   iVol = 1;
-  if (volumeName == fDetector->getNameOfLayer2())   iVol = 2;
-  if (volumeName == fDetector->getNameOfLayer3())   iVol = 3;
-  if (volumeName == fDetector->getNameOfLayer4())   iVol = 4;
-  if (volumeName == fDetector->getNameOfLayer5())   iVol = 5;
-  if (volumeName == fDetector->getWorld())          iVol = 6; // let's say iVol = 6 is world
+  if (pVolume == fDetector->getNameOfLayer1())   iVol = 1;
+  if (pVolume == fDetector->getNameOfLayer2())   iVol = 2;
+  if (pVolume == fDetector->getNameOfLayer3())   iVol = 3;
+  if (pVolume == fDetector->getNameOfLayer4())   iVol = 4;
+  if (pVolume == fDetector->getNameOfLayer5())   iVol = 5;
+  if (pVolume == fDetector->getWorld())          iVol = 6; // let's say iVol = 6 is world
   
   // count all particles regardless of PID == 1 or PID != 1
-  run->ParticleCount(name,energy,iVol);
+  run->ParticleCount(pName,energy,iVol);
+  
+  
+
   
   // if the track is secondary
   if(track->GetTrackID() != 1)
@@ -67,9 +71,9 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
       if (processType == fRadioactiveDecay) {
         //fill ntuple id = 1
         G4int id = 1;
-        analysisManager->FillNtupleDColumn(id,0, double(pid));
-        analysisManager->FillNtupleDColumn(id,1, double(Z));
-        analysisManager->FillNtupleDColumn(id,2, double(A));
+        analysisManager->FillNtupleDColumn(id,0, pID);
+        analysisManager->FillNtupleDColumn(id,1, Z);
+        analysisManager->FillNtupleDColumn(id,2, A);
         analysisManager->FillNtupleDColumn(id,3, energy);
         analysisManager->FillNtupleDColumn(id,4, time/s);
         // analysisManager->FillNtupleDColumn(id,5, weight);

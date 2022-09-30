@@ -66,9 +66,9 @@ void nbRunAction::BeginOfRunAction(const G4Run*)
   analysisManager->OpenFile("output.root");
    
   analysisManager->CreateNtuple("RDecayProducts", "All Products of RDecay");
-  analysisManager->CreateNtupleDColumn(1, "pid");       //column 0
-  analysisManager->CreateNtupleDColumn(1, "z");         //column 1
-  analysisManager->CreateNtupleDColumn(1, "a");         //column 2    
+  analysisManager->CreateNtupleDColumn(1, "pID");       //column 0
+  analysisManager->CreateNtupleDColumn(1, "Z");         //column 1
+  analysisManager->CreateNtupleDColumn(1, "A");         //column 2    
   analysisManager->CreateNtupleDColumn(1, "energy");    //column 3
   analysisManager->CreateNtupleDColumn(1, "time");      //column 4
   // analysisManager->CreateNtupleDColumn(1, "weight");    //column 5
@@ -78,11 +78,11 @@ void nbRunAction::BeginOfRunAction(const G4Run*)
   analysisManager->CreateNtupleDColumn(2, "x");       //column 0
   analysisManager->CreateNtupleDColumn(2, "y");         //column 1
   analysisManager->CreateNtupleDColumn(2, "z");         //column 2    
-  analysisManager->CreateNtupleDColumn(2, "pid");    //column 3
-  analysisManager->CreateNtupleDColumn(2, "z");         //column 1
-  analysisManager->CreateNtupleDColumn(2, "a");    
-  analysisManager->CreateNtupleDColumn(2, "pname");      //column 4
-  analysisManager->CreateNtupleDColumn(2, "pvolume");    //column 5
+  analysisManager->CreateNtupleDColumn(2, "pID");    //column 3
+  analysisManager->CreateNtupleDColumn(2, "Z");         //column 1
+  analysisManager->CreateNtupleDColumn(2, "A");    
+  analysisManager->CreateNtupleSColumn(2, "pName");      //column 4
+  analysisManager->CreateNtupleIColumn(2, "pVolume");    //column 5
   analysisManager->FinishNtuple(2);
 
 }

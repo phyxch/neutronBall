@@ -32,47 +32,44 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   // instance of G4Run
   nbRun* run = static_cast<nbRun*>(G4RunManager::GetRunManager()->GetNonConstCurrentRun()); 
   
+  // instance of analysisManager
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   
-     
-  // 
-  // // instance of analysis manager
-  // G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();   
+  // get volume of the current step
+  G4String pVolume = aStep->GetTrack()->GetVolume()->GetName();
+  G4int iVol = 0;
+  if (pVolume == fDetector->getNameOfLayer1())   iVol = 1;
+  if (pVolume == fDetector->getNameOfLayer2())   iVol = 2;
+  if (pVolume == fDetector->getNameOfLayer3())   iVol = 3;
+  if (pVolume == fDetector->getNameOfLayer4())   iVol = 4;
+  if (pVolume == fDetector->getNameOfLayer5())   iVol = 5;
+  if (pVolume == fDetector->getWorld())          iVol = 6; // let's say iVol = 6 is world
+  
+  const G4ParticleDefinition* particle = aStep->GetTrack()->GetParticleDefinition();  
+  
+  G4String pName   = particle->GetParticleName();
+  G4int pID       = particle->GetPDGEncoding();
+  G4int Z         = particle->GetAtomicNumber();
+  G4int A         = particle->GetAtomicMass();
+  G4double x=aStep->GetPostStepPoint()->GetPosition().x()/nanometer;
+  G4double y=aStep->GetPostStepPoint()->GetPosition().y()/nanometer;
+  G4double z=aStep->GetPostStepPoint()->GetPosition().z()/nanometer;
+  
+  // fill ntuple with id = 2
+  G4int id = 2;
+  analysisManager->FillNtupleDColumn(id,0, x);
+  analysisManager->FillNtupleDColumn(id,1, y);
+  analysisManager->FillNtupleDColumn(id,2, z);
+  analysisManager->FillNtupleDColumn(id,3, pID);
+  analysisManager->FillNtupleDColumn(id,4, Z);
+  analysisManager->FillNtupleDColumn(id,5, A);
+  analysisManager->FillNtupleSColumn(id,6, pName);
+  analysisManager->FillNtupleIColumn(id,7, iVol);
 
-  // //which volume ?
-  // //
-  // G4String volumeName = aStep->GetTrack()->GetVolume()->GetName(); // physical volume name
-  // G4int iVol = 0;
-  // if (volumeName == fDetector->getNameOfLayer1())   iVol = 1;
-  // if (volumeName == fDetector->getNameOfLayer2())   iVol = 2;
-  // if (volumeName == fDetector->getNameOfLayer3())   iVol = 3;
-  // if (volumeName == fDetector->getNameOfLayer4())   iVol = 4;
-  // if (volumeName == fDetector->getNameOfLayer5())   iVol = 5;
-  // if (volumeName == fDetector->getNameOfLayer6())   iVol = 6; // world
+  analysisManager->AddNtupleRow(id);  
+  
+  
 
-  // // const G4ParticleDefinition* particle = aStep->GetTrack()->GetParticleDefinition();  
-  // // G4String name   = particle->GetParticleName();
-  // // run->ParticleCount(name,aStep->GetTrack()->GetKineticEnergy(),iVol);
-
-  // // count processes
-  // // 
-  // const G4StepPoint* endPoint = aStep->GetPostStepPoint();
-  // const G4VProcess* process   = endPoint->GetProcessDefinedStep();
-  // run->CountProcesses(process, iVol);
-  // 
-  // // energy deposit
-  // //
-  // G4double edepStep = aStep->GetTotalEnergyDeposit();
-  // if (edepStep <= 0.) return;
-  // G4double time   = aStep->GetPreStepPoint()->GetGlobalTime();
-  // G4double weight = aStep->GetPreStepPoint()->GetWeight();   
-  // fEventAction->AddEdep(iVol, edepStep, time, weight);
-  // 
-  // //fill ntuple id = 2
-  // G4int id = 3;   
-  // analysisManager->FillNtupleDColumn(id,0, edepStep);
-  // analysisManager->FillNtupleDColumn(id,1, time/s);
-  // analysisManager->FillNtupleDColumn(id,2, weight);
-  // analysisManager->AddNtupleRow(id);      
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
