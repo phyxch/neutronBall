@@ -44,8 +44,11 @@ https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
 # Results
 ---------
 
-1) output.root file stores various results.
-2) need to develop histograms (work in progress)
-3) need to get good plots using output.root file (work in progress)
+* output.root file stores various results.
+* it contains 2 trees: particleData and RDecayProducts.
+
+
+
+
 
     
