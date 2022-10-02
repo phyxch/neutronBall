@@ -52,3 +52,4 @@ https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
 
 * output.root file stores various results.
 * it contains 2 trees: particleData and RDecayProducts.
+* set pH at run time via detector messenger. add command in macro.
