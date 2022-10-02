@@ -45,17 +45,10 @@ target_link_libraries(neutronBall ${Geant4_LIBRARIES})
 # relies on these scripts being in the current working directory.
 #
 set(nb_SCRIPTS
-  nb.out
-  nb.in
   gui.mac
   init_vis.mac
-  plotHisto.C
-  plotNtuple.C
   config.txt
-  run1.mac
-  run2.mac
   vis.mac
-  fullChain.mac
   u238c.mac
   )
 

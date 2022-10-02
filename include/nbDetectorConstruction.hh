@@ -27,6 +27,7 @@ using namespace std;
 class G4VPhysicalVolume;
 class G4GlobalMagFieldMessenger;
 class G4Material;
+class nbDetectorMessenger;
 
 /// Detector construction class to define materials and geometry.
 /// The detector consists of concentric spherical shells. One can have as many shell as we want.
@@ -91,6 +92,13 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       G4int ncomponents, natoms;    // parameters
       G4double fractionmass;        // parameters
       
+      
+      // H and OH concentration in pH material is set dynamically
+      // via detector messenger
+      // declare their variables
+      G4double fractionMassForH;
+      G4double fractionMassForOH;
+      
       // map iterator
       map<G4Material*, G4double>::iterator it;
       
@@ -110,6 +118,13 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       G4String getNameOfLayer4(); // shellPV_3
       G4String getNameOfLayer5(); // shellPV_4
       G4String getWorld(); // world
+      
+    
+    public:
+      // create pointer to detector messenger
+      nbDetectorMessenger* fdetectorMessenger;
+      void updatepH(G4int pHValue);
+      
 };
 
 #endif

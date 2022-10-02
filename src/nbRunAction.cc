@@ -15,14 +15,46 @@
 #include "Randomize.hh"
 #include <iomanip>
 
+#include "G4AnalysisManager.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* prim)
   : G4UserRunAction(),
     fDetector(det), fPrimary(prim), fRun(0), fHistoManager(0)
 {
- // Book predefined histograms
- fHistoManager = new nbHistoManager(); 
+  // create instace of analysisManager
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  
+  analysisManager->SetDefaultFileType("root");
+  analysisManager->SetNtupleMerging(true);
+  
+  analysisManager->SetFileName("B5");
+  
+  analysisManager->SetVerboseLevel(1);
+  analysisManager->SetFirstNtupleId(1);
+  // create and open file output.root for writing data in it
+  // analysisManager->OpenFile("output.root");
+   
+  analysisManager->CreateNtuple("RDecayProducts", "All Products of RDecay");
+  analysisManager->CreateNtupleDColumn(1, "pID");       //column 0
+  analysisManager->CreateNtupleDColumn(1, "Z");         //column 1
+  analysisManager->CreateNtupleDColumn(1, "A");         //column 2    
+  analysisManager->CreateNtupleDColumn(1, "energy");    //column 3
+  analysisManager->CreateNtupleDColumn(1, "time");      //column 4
+  // analysisManager->CreateNtupleDColumn(1, "weight");    //column 5
+  analysisManager->FinishNtuple(1);
+  
+  analysisManager->CreateNtuple("particleData", "All data");
+  analysisManager->CreateNtupleDColumn(2, "x");       //column 0
+  analysisManager->CreateNtupleDColumn(2, "y");         //column 1
+  analysisManager->CreateNtupleDColumn(2, "z");         //column 2    
+  analysisManager->CreateNtupleDColumn(2, "pID");    //column 3
+  analysisManager->CreateNtupleDColumn(2, "Z");         //column 1
+  analysisManager->CreateNtupleDColumn(2, "A");    
+  analysisManager->CreateNtupleSColumn(2, "pName");      //column 4
+  analysisManager->CreateNtupleIColumn(2, "pVolume");    //column 5
+  analysisManager->FinishNtuple(2);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -57,33 +89,16 @@ void nbRunAction::BeginOfRunAction(const G4Run*)
     fRun->SetPrimary(particle, energy);
   }
   
-  // create instace of analysisManager
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  analysisManager->SetNtupleMerging(true);
-  analysisManager->SetVerboseLevel(1);
-  analysisManager->SetFirstNtupleId(1);
-  // create and open file output.root for writing data in it
-  analysisManager->OpenFile("output.root");
-   
-  analysisManager->CreateNtuple("RDecayProducts", "All Products of RDecay");
-  analysisManager->CreateNtupleDColumn(1, "pID");       //column 0
-  analysisManager->CreateNtupleDColumn(1, "Z");         //column 1
-  analysisManager->CreateNtupleDColumn(1, "A");         //column 2    
-  analysisManager->CreateNtupleDColumn(1, "energy");    //column 3
-  analysisManager->CreateNtupleDColumn(1, "time");      //column 4
-  // analysisManager->CreateNtupleDColumn(1, "weight");    //column 5
-  analysisManager->FinishNtuple(1);
-  
-  analysisManager->CreateNtuple("particleData", "All data");
-  analysisManager->CreateNtupleDColumn(2, "x");       //column 0
-  analysisManager->CreateNtupleDColumn(2, "y");         //column 1
-  analysisManager->CreateNtupleDColumn(2, "z");         //column 2    
-  analysisManager->CreateNtupleDColumn(2, "pID");    //column 3
-  analysisManager->CreateNtupleDColumn(2, "Z");         //column 1
-  analysisManager->CreateNtupleDColumn(2, "A");    
-  analysisManager->CreateNtupleSColumn(2, "pName");      //column 4
-  analysisManager->CreateNtupleIColumn(2, "pVolume");    //column 5
-  analysisManager->FinishNtuple(2);
+  // Get analysis manager
+  auto analysisManager = G4AnalysisManager::Instance();
+
+  // Reset histograms from previous run
+  analysisManager->Reset();
+
+  // Open an output file
+  // The default file name is set in RunAction::RunAction(),
+  // it can be overwritten in a macro
+  analysisManager->OpenFile();
 
 }
 
@@ -93,10 +108,9 @@ void nbRunAction::EndOfRunAction(const G4Run*)
 {
   if (isMaster) fRun->EndOfRun();    
   
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  auto analysisManager = G4AnalysisManager::Instance();
   analysisManager->Write();
-  analysisManager->CloseFile("output.root");
-      
+  analysisManager->CloseFile(false);      
   // show Rndm status
   if (isMaster) G4Random::showEngineStatus();
 }

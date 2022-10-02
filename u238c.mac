@@ -16,7 +16,7 @@
 /process/had/rdm/selectVolume shellLV_2
 /process/had/rdm/selectVolume shellLV_3
 /process/had/rdm/selectVolume shellLV_4
-/process/had/rdm/selectVolume World
+# /process/had/rdm/selectVolume World
 #
 #
 #
@@ -26,6 +26,16 @@
 /gun/ion 92 238
 #
 #
-#
+#set file name
+/analysis/setFileName mainFile
+# run
+/run/printProgress 100
+/run/beamOn 1000
+
+# change pH; default is 4
+/nb/det/pH/setH 5
+
+# set different file name
+/analysis/setFileName tempFile
 /run/printProgress 100
 /run/beamOn 1000

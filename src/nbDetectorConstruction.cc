@@ -18,6 +18,8 @@
 
 #include "nbDetectorConstruction.hh"
 
+#include "nbDetectorMessenger.hh"
+
 #include "G4Material.hh"
 #include "G4NistManager.hh"
 
@@ -37,6 +39,7 @@
 #include "G4VisAttributes.hh"
 #include "G4Colour.hh"
 
+#include "G4RunManager.hh"
 #include "G4PhysicalConstants.hh"
 #include "G4SystemOfUnits.hh"
 #include <string>
@@ -45,19 +48,19 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-// set messenger value
-G4ThreadLocal G4GlobalMagFieldMessenger* nbDetectorConstruction::fMagFieldMessenger = nullptr; 
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 // constructor to initialization values of shellPV, overlap checks 
 // set data member values from config.txt file
 nbDetectorConstruction::nbDetectorConstruction()
  : G4VUserDetectorConstruction(),
    shellPV(nullptr),
-   fCheckOverlaps(true)
+   fCheckOverlaps(true),
+   fractionMassForH(0.),
+   fractionMassForOH(0.),
+   fdetectorMessenger(0)
 {
 
+  // read the data through configuration file
   std::string line;
   // char varName[10];
   G4double inputVal[6];
@@ -93,7 +96,14 @@ nbDetectorConstruction::nbDetectorConstruction()
   G4cout << "inner_r: " << inner_r << "   outer_r: " << outer_r << "   matType_1: " << matType_1 << G4endl;
   G4cout << "inner_r: " << inner_r << "   outer_r: " << outer_r << "   matType_2: " << matType_2 << G4endl;
   G4cout << "inner_r: " << inner_r << "   outer_r: " << outer_r << "   matType_3: " << matType_3 << G4endl;
-
+  
+  // set the values for H and OH concentration by default
+  fractionMassForH = (4.00*100.00)/14.00;
+  fractionMassForOH = 100.00-fractionMassForH;
+  
+  // call detector messenger
+  fdetectorMessenger = new nbDetectorMessenger(this);
+  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -101,6 +111,7 @@ nbDetectorConstruction::nbDetectorConstruction()
 // destructor
 nbDetectorConstruction::~nbDetectorConstruction()
 { 
+    delete fdetectorMessenger;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -153,6 +164,8 @@ void nbDetectorConstruction::DefineMaterials()
   elC  = nistManager->FindOrBuildElement("C");
   elN  = nistManager->FindOrBuildElement("N");
   
+  //////////////////////////// pH section ////////////////////////////
+
   // create OH for material
   OH = new G4Material("Hydroxide", density = 1.33*g/cm3, ncomponents = 2);
   OH->AddElement(elO, natoms=1);
@@ -160,8 +173,13 @@ void nbDetectorConstruction::DefineMaterials()
   
   // pH material to add in soil
   pH = new G4Material("pH", density = 1.33*g/cm3, ncomponents = 2);
-  pH->AddMaterial(H, fractionmass=30.0*perCent);
-  pH->AddMaterial(OH, fractionmass=70.0*perCent);
+  pH->AddMaterial(H, fractionmass=fractionMassForH*perCent);
+  pH->AddMaterial(OH, fractionmass=fractionMassForOH*perCent);
+  
+  G4cout << "H concentration = " << fractionMassForH << G4endl;
+  G4cout << "OH concentration = " << fractionMassForOH << G4endl;
+  
+  //////////////////////////// end pH section ////////////////////////////
   
   // organic material
   // We assume organic soil components have 1.33 g/cm3 density. This number should be updated with
@@ -501,6 +519,18 @@ void nbDetectorConstruction::FillSoilLayersWithMaps()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+void nbDetectorConstruction::updatepH(G4int pHValue)
+{
+    // write code to update value of
+    // fractionMassForH and fractionMassForOH 
+    fractionMassForH = ((pHValue*100)/14);
+    fractionMassForOH = (100.00 - fractionMassForH);
+    
+    G4RunManager::GetRunManager()->PhysicsHasBeenModified();
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 G4String nbDetectorConstruction::getNameOfLayer1()
 {
     return "shellPV"; // this is first layer beneath the surface
@@ -530,3 +560,5 @@ G4String nbDetectorConstruction::getWorld()
 {
     return "World"; // return world
 }
+
+

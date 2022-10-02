@@ -1,3 +1,4 @@
+
 // created on 23 August, 2022
 // 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -17,7 +18,7 @@ class nbHistoManager
    nbHistoManager();
   ~nbHistoManager();
 
-  private:
+  public:
     void Book();
     G4String fFileName;
 };
@@ -25,5 +26,3 @@ class nbHistoManager
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
-
-

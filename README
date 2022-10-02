@@ -1,10 +1,14 @@
+===================================== 
 Geant4 Simulation for Radon Emanation
 =====================================
 
+This is Gean4 simulation for verification of the effects of soil characteristics on Radon Emanation.
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Primary Authors: Mayur Aitavadekar, Dr. Xiaochun He
+Authors: Mayur Aitavadekar, Dr. Xiaochun He
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+--------
 # usage:
 --------
 
@@ -12,7 +16,7 @@ Primary Authors: Mayur Aitavadekar, Dr. Xiaochun He
 
 > git clone -b test-branch https://github.com/phyxch/neutronBall.git 
 
-
+-----------
 # commands:
 -----------
 
@@ -27,6 +31,7 @@ commands for better visibility and understanding of detector geometry.
 More commands to use in macros and interactive console can be found here:
 https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
 
+--------------------------------
 # Instructions to run simulation
 --------------------------------
 
@@ -39,16 +44,11 @@ https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
 
 2) run code in batch mode
 
-> ./neutronBall ../neutronBall/macros/u238c.mac
+> ./neutronBall ../neutronBall/u238c.mac
 
+---------
 # Results
 ---------
 
 * output.root file stores various results.
 * it contains 2 trees: particleData and RDecayProducts.
-
-
-
-
-
-    
