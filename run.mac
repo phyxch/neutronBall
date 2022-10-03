@@ -26,4 +26,5 @@
 /gun/ion 92 238
 #
 #
-/control/execute u238PH.mac
+/run/printProgress 100
+/run/beamOn 1000
