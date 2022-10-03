@@ -50,6 +50,5 @@ https://www.hep.ph.ic.ac.uk/~yoshiu/COMET/comet_g4HTMLdoc/
 # Results
 ---------
 
-* output.root file stores various results.
-* it contains 2 trees: particleData and RDecayProducts.
-* set pH at run time via detector messenger. add command in macro.
+* u238PH.mac macro generates multiple root files with varying pH values
+* tut1.C macro uses these root files to generate plot of radon counts vs pH.
