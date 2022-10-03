@@ -71,12 +71,14 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
     public:
      
       // define common material variables here
-      G4Material *H, *H2O, *SiO2, *Al2O3, *Fe2O3, *CaO, *MgO, *TiO2, *OH;
+      G4Material *H, *H2O, *SiO2, *Al2O3, *Fe2O3, *CaO, *MgO, *TiO2, *OH, *Mn2O3, *Fe, *Mn, *Ra;
       G4Material *pH;
       G4Material *OrganicMat;
       G4Material *defaultMaterial;
       
+      // define common elements
       G4Element *elO, *elH, *elC, *elN;
+      G4Element *elMn, *elFe, *elRa;
       
       // define soil layer variables of type G4Material here
       G4Material *soilOne, *soilOne10W, *soilOne20W, *soilOne30W, *soilOne40W;
@@ -98,6 +100,7 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       // declare their variables
       G4double fractionMassForH;
       G4double fractionMassForOH;
+      G4double pHValue;
       
       // map iterator
       map<G4Material*, G4double>::iterator it;
@@ -123,7 +126,7 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
     public:
       // create pointer to detector messenger
       nbDetectorMessenger* fdetectorMessenger;
-      void updatepH(G4int pHValue);
+      void updatepH(G4double pHValue);
       
 };
 

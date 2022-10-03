@@ -50,6 +50,7 @@ set(nb_SCRIPTS
   config.txt
   vis.mac
   u238c.mac
+  tut1.C
   )
 
 foreach(_script ${nb_SCRIPTS})

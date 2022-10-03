@@ -8,6 +8,7 @@ class nbDetectorConstruction;
 class G4UIdirectory;
 class G4UIcmdWithAString;
 class G4UIcmdWithAnInteger;
+class G4UIcmdWithADouble;
 class G4UIcmdWithADoubleAndUnit;
 class G4UIcmdWithoutParameter;
 
@@ -34,7 +35,7 @@ private:
   G4UIdirectory*                pHDir;
   
   // set concentration of H in pH material 
-  G4UIcmdWithAnInteger*    pHSetterCmdForH;
+  G4UIcmdWithADouble* pHSetterCmdForH;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

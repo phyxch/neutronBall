@@ -29,7 +29,7 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
   analysisManager->SetDefaultFileType("root");
   analysisManager->SetNtupleMerging(true);
   
-  analysisManager->SetFileName("B5");
+  analysisManager->SetFileName("output");
   
   analysisManager->SetVerboseLevel(1);
   analysisManager->SetFirstNtupleId(1);
@@ -42,7 +42,8 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
   analysisManager->CreateNtupleDColumn(1, "A");         //column 2    
   analysisManager->CreateNtupleDColumn(1, "energy");    //column 3
   analysisManager->CreateNtupleDColumn(1, "time");      //column 4
-  // analysisManager->CreateNtupleDColumn(1, "weight");    //column 5
+  analysisManager->CreateNtupleDColumn(1, "pH");        //column 5
+  analysisManager->CreateNtupleSColumn(1, "pName");        //column 6
   analysisManager->FinishNtuple(1);
   
   analysisManager->CreateNtuple("particleData", "All data");

@@ -57,6 +57,7 @@ nbDetectorConstruction::nbDetectorConstruction()
    fCheckOverlaps(true),
    fractionMassForH(0.),
    fractionMassForOH(0.),
+   pHValue(4.0),
    fdetectorMessenger(0)
 {
 
@@ -98,7 +99,8 @@ nbDetectorConstruction::nbDetectorConstruction()
   G4cout << "inner_r: " << inner_r << "   outer_r: " << outer_r << "   matType_3: " << matType_3 << G4endl;
   
   // set the values for H and OH concentration by default
-  fractionMassForH = (4.00*100.00)/14.00;
+  pHValue = 4;
+  fractionMassForH = (pHValue*100.00)/14.00;
   fractionMassForOH = 100.00-fractionMassForH;
   
   // call detector messenger
@@ -146,6 +148,9 @@ void nbDetectorConstruction::DefineMaterials()
   
   // define pure nist materials
   H = nistManager->FindOrBuildMaterial("G4_H");
+  Fe = nistManager->FindOrBuildMaterial("G4_Fe");
+  Mn = nistManager->FindOrBuildMaterial("G4_Mn");
+  Ra = nistManager->FindOrBuildMaterial("G4_Ra");
  
   // define nist compounds
   H2O  = nistManager->FindOrBuildMaterial("G4_WATER");
@@ -157,12 +162,17 @@ void nbDetectorConstruction::DefineMaterials()
   CaO = nistManager->FindOrBuildMaterial("G4_CALCIUM_OXIDE");
   MgO = nistManager->FindOrBuildMaterial("G4_MAGNESIUM_OXIDE");
   TiO2 = nistManager->FindOrBuildMaterial("G4_TITANIUM_DIOXIDE");
-  
+ 
   // define elements
   elO = new G4Element("Oxygen"  ,symbol="O" , z= 8., a= 16.00*g/mole);
   elH = new G4Element("Hydrogen",symbol="H" , z= 1., a= 1.01*g/mole);
   elC  = nistManager->FindOrBuildElement("C");
   elN  = nistManager->FindOrBuildElement("N");
+  elMn = nistManager->FindOrBuildElement("Mn");
+  
+  Mn2O3 = new G4Material("ManganeseOxide", density = 4.5*g/cm3, ncomponents = 2);
+  Mn2O3->AddElement(elMn, natoms=2);
+  Mn2O3->AddElement(elO, natoms=3);
   
   //////////////////////////// pH section ////////////////////////////
 
@@ -412,66 +422,68 @@ void nbDetectorConstruction::DefineSoilLayerMaps()
     
     // first layer composition
     chem_composition_1 = {
-        {SiO2, 46.3*perCent},
-        {pH, 15.0*perCent},             // pH
-        {Al2O3, 13.0*perCent},
-        {Fe2O3, 2.5*perCent},
-        {CaO, 1.6*perCent},
-        {MgO, 0.7*perCent},
-        {TiO2, 0.6*perCent},
-        {OrganicMat, 20.3*perCent}      // organicMat
+        {Fe2O3, 20.0*perCent},
+        {Mn2O3, 20.0*perCent},             // pH
+        {pH, 20.0*perCent},
+        {Ra, 15*perCent},
+        {OrganicMat, 20.0*perCent}
+        // {Fe2O3, 46.3*perCent},
+        // {pH, 15.0*perCent},             // pH
+        // {Al2O3, 13.0*perCent},
+        // {SiO2, 2.5*perCent},
+        // {CaO, 1.6*perCent},
+        // {MgO, 0.7*perCent},
+        // {TiO2, 0.6*perCent},
+        // {OrganicMat, 20.3*perCent}      // organicMat
     };
     
     // second layer composition
     chem_composition_2 = {
-        {SiO2, 40.17*perCent},
-        {pH, 15.0*perCent},             // pH
-        {Al2O3, 11.7*perCent},
-        {Fe2O3, 2.25*perCent},
-        {CaO, 1.44*perCent},
-        {MgO, 0.63*perCent},
-        {TiO2, 0.54*perCent},
-        {OrganicMat, 18.27*perCent},
+        {Fe, 20.0*perCent},
+        {Mn, 20.0*perCent},             // pH
+        {pH, 20.0*perCent},
+        {Ra, 15.00*perCent},
+        {OrganicMat, 15.0*perCent},
         {H2O, 10.0*perCent}
     };
     
     // third layer composition
     chem_composition_3 = {
-        {SiO2, 34.04*perCent},
-        {pH, 15.0*perCent},             // pH
-        {Al2O3, 10.4*perCent},
-        {Fe2O3, 2.0*perCent},
-        {CaO, 1.28*perCent},
-        {MgO, 0.56*perCent},
-        {TiO2, 0.48*perCent},
-        {OrganicMat, 16.24*perCent},
-        {H2O, 20.0*perCent}
+        {Fe, 20.0*perCent},
+        {Mn, 20.0*perCent},             // pH
+        {pH, 20.0*perCent},
+        {Ra, 15.00*perCent},
+        {OrganicMat, 15.0*perCent},
+        {H2O, 10.0*perCent}
+        // {Fe2O3, 34.04*perCent},
+        // {pH, 15.0*perCent},             // pH
+        // {Al2O3, 10.4*perCent},
+        // {SiO2, 2.0*perCent},
+        // {CaO, 1.28*perCent},
+        // {MgO, 0.56*perCent},
+        // {TiO2, 0.48*perCent},
+        // {OrganicMat, 16.24*perCent},
+        // {H2O, 20.0*perCent}
     };
     
     // fourth layer composition
     chem_composition_4 = {
-        {SiO2, 27.91*perCent},
-        {pH, 15.0*perCent},             // pH
-        {Al2O3, 9.1*perCent},
-        {Fe2O3, 1.75*perCent},
-        {CaO, 1.12*perCent},
-        {MgO, 0.49*perCent},
-        {TiO2, 0.42*perCent},
-        {OrganicMat, 14.21*perCent},    // organicMat
-        {H2O, 30.0*perCent}
+        {Fe, 20.0*perCent},
+        {Mn, 20.0*perCent},             // pH
+        {pH, 20.0*perCent},
+        {Ra, 15.00*perCent},
+        {OrganicMat, 15.0*perCent},
+        {H2O, 10.0*perCent}
     };  
     
     // fifth layer composition
     chem_composition_5 = {
-        {SiO2, 17.91*perCent},
-        {pH, 15.0*perCent},
-        {Al2O3, 9.1*perCent},
-        {Fe2O3, 1.75*perCent},
-        {CaO, 1.12*perCent},
-        {MgO, 0.49*perCent},
-        {TiO2, 0.42*perCent},
-        {OrganicMat, 14.21*perCent},
-        {H2O, 40.0*perCent}
+        {Fe, 20.0*perCent},
+        {Mn, 20.0*perCent},             // pH
+        {pH, 20.0*perCent},
+        {Ra, 15.00*perCent},
+        {OrganicMat, 15.0*perCent},
+        {H2O, 10.0*perCent}
     };
 }
 
@@ -519,8 +531,9 @@ void nbDetectorConstruction::FillSoilLayersWithMaps()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbDetectorConstruction::updatepH(G4int pHValue)
+void nbDetectorConstruction::updatepH(G4double value)
 {
+    pHValue = value;
     // write code to update value of
     // fractionMassForH and fractionMassForOH 
     fractionMassForH = ((pHValue*100)/14);

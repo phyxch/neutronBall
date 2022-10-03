@@ -19,12 +19,17 @@
 nbTrackingAction::nbTrackingAction(nbDetectorConstruction* det, nbEventAction* EA)
 :G4UserTrackingAction(), fDetector(det), fEvent(EA)
 {
+    
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
 {
+  
+  // G4cout << "pH value = "<<fDetector->pHValue<<G4endl;
+  // G4cout << "H value = "<<fDetector->fractionMassForH<<G4endl;
+  // G4cout << "OH value = "<<fDetector->fractionMassForOH<<G4endl;
   
   // instance of G4Run
   nbRun* run = static_cast<nbRun*>(G4RunManager::GetRunManager()->GetNonConstCurrentRun());    
@@ -41,9 +46,9 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
   G4double energy = track->GetKineticEnergy();
   G4double time   = track->GetGlobalTime();
   // G4double weight = track->GetWeight();
-  G4double x = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
-  G4double y = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
-  G4double z = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
+  G4double x = track->GetStep()->GetPostStepPoint()->GetPosition().x()/nanometer;
+  G4double y = track->GetStep()->GetPostStepPoint()->GetPosition().x()/nanometer;
+  G4double z = track->GetStep()->GetPostStepPoint()->GetPosition().x()/nanometer;
   G4int trackID      = track->GetTrackID();
 
   //which volume ?
@@ -76,7 +81,8 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
         analysisManager->FillNtupleDColumn(id,2, A);
         analysisManager->FillNtupleDColumn(id,3, energy);
         analysisManager->FillNtupleDColumn(id,4, time/s);
-        // analysisManager->FillNtupleDColumn(id,5, weight);
+        analysisManager->FillNtupleDColumn(id,5, fDetector->pHValue);
+        analysisManager->FillNtupleSColumn(id,6, pName);
         analysisManager->AddNtupleRow(id);
       }
   }
