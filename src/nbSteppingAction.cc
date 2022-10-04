@@ -51,9 +51,9 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   G4int pID       = particle->GetPDGEncoding();
   G4int Z         = particle->GetAtomicNumber();
   G4int A         = particle->GetAtomicMass();
-  G4double x=aStep->GetPostStepPoint()->GetPosition().x()/nanometer;
-  G4double y=aStep->GetPostStepPoint()->GetPosition().y()/nanometer;
-  G4double z=aStep->GetPostStepPoint()->GetPosition().z()/nanometer;
+  G4double x=aStep->GetPostStepPoint()->GetPosition().x()/cm;
+  G4double y=aStep->GetPostStepPoint()->GetPosition().y()/cm;
+  G4double z=aStep->GetPostStepPoint()->GetPosition().z()/cm;
   
   // fill ntuple with id = 2
   G4int id = 2;

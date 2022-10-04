@@ -1,0 +1,8 @@
+# layerNumber, materialName, fractionmass
+inner_r,0.0
+outer_r,20.00
+layer1,Air,100.00
+layer2,Air,100.00
+layer3,Air,100.00
+layer4,Air,100.00
+layer5,Air,100,00

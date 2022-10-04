@@ -46,9 +46,9 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
   G4double energy = track->GetKineticEnergy();
   G4double time   = track->GetGlobalTime();
   // G4double weight = track->GetWeight();
-  G4double x = track->GetStep()->GetPostStepPoint()->GetPosition().x()/nanometer;
-  G4double y = track->GetStep()->GetPostStepPoint()->GetPosition().x()/nanometer;
-  G4double z = track->GetStep()->GetPostStepPoint()->GetPosition().x()/nanometer;
+  G4double x = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
+  G4double y = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
+  G4double z = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
   G4int trackID      = track->GetTrackID();
 
   //which volume ?

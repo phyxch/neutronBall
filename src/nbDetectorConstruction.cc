@@ -45,7 +45,7 @@
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
-
+using namespace std;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 
@@ -60,43 +60,6 @@ nbDetectorConstruction::nbDetectorConstruction()
    pHValue(4.0),
    fdetectorMessenger(0)
 {
-
-  // read the data through configuration file
-  std::string line;
-  // char varName[10];
-  G4double inputVal[6];
-  std::ifstream nbConfig("config.txt");
-  G4int i = 0;
-  if (nbConfig.is_open())
-  {
-	while (getline(nbConfig, line))
-	{
-	  char* token = strtok((char *)line.c_str(), ",\t");
-	  int num = 0;
-	  while (token != NULL)
-	    {
-	      G4cout << token << G4endl;
-	      if (num++ != 0) inputVal[i++] = atoi(token);
-	      token = strtok(NULL,",\t");
-		/*
-		  G4cout << line << G4endl;
-		  strtok(line.c_str(), " ,\t");
-		  inputVal[i++] = atoi(strtok(NULL, " ,\t"));
-		*/
-	    }
-	}
-  }
-
-  inner_r = inputVal[0]*nm;
-  outer_r = inputVal[1]*nm;
-  matType = (G4int)inputVal[2];
-  matType_1 = (G4int)inputVal[3];
-  matType_2 = (G4int)inputVal[4];
-  matType_3 = (G4int)inputVal[5];
-  G4cout << "inner_r: " << inner_r << "   outer_r: " << outer_r << "   matType: " << matType << G4endl;
-  G4cout << "inner_r: " << inner_r << "   outer_r: " << outer_r << "   matType_1: " << matType_1 << G4endl;
-  G4cout << "inner_r: " << inner_r << "   outer_r: " << outer_r << "   matType_2: " << matType_2 << G4endl;
-  G4cout << "inner_r: " << inner_r << "   outer_r: " << outer_r << "   matType_3: " << matType_3 << G4endl;
   
   // set the values for H and OH concentration by default
   pHValue = 4;
@@ -124,9 +87,151 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
   // Define materials 
   DefineMaterials();
   
-  // define chemical composition
-  DefineSoilLayerMaps();
+  // this is core material data map
+  // all the materials you defined in DefineMaterials() should be
+  // mentioned here
+  map<G4String, G4Material*> StringToMaterialMapper = {
+        {"Fe", Fe},
+        {"Fe2O3", Fe2O3},         // pH
+        {"Mn", Mn},
+        {"Mn2O3", Mn2O3},
+        {"Ra", Ra},
+        {"Air", Air},
+        {"H2O", H2O},
+        {"OH",OH},
+        {"MgO", MgO},
+        {"TiO2", TiO2},
+        {"CaO", CaO},
+        {"pH", pH}
+  };
   
+  // read the config file
+  G4String layerName;
+  // read the data through configuration file
+  std::ifstream infile ("mainConfig.txt");
+
+  std::string line;
+
+  while (std::getline(infile, line))
+  {
+    vector<string> row_values;
+
+    split(line, ',', row_values);
+    
+    if(row_values[0] == "inner_r") inner_r = stod(row_values[1])*mm;    
+    else if(row_values[0] == "outer_r") outer_r = stod(row_values[1])*mm;    
+    else
+    {
+        if(row_values[0] == "layer1")
+        {
+            int flag = 0;
+            for (const auto& itr: StringToMaterialMapper) 
+            {
+                if(itr.first == row_values[1])
+                {
+                    flag = 1;
+                    auto materialName = itr.second;
+                    G4double fractionMass = stod(row_values[2]);
+                    chem_composition_1.insert({materialName, fractionMass*perCent});
+                    break;
+                }
+                
+            }
+            if(flag == 0)
+            {
+                G4cout<<row_values[1]<<" is not found in your datamap"<<G4endl;
+                exit(0);
+            }
+        }
+        else if(row_values[0] == "layer2")
+        {
+            int flag = 0;
+            for (const auto& itr: StringToMaterialMapper) 
+            {
+                if(itr.first == row_values[1])
+                {
+                    flag = 1;
+                    auto materialName = itr.second;
+                    G4double fractionMass = stod(row_values[2]);
+                    chem_composition_2.insert({materialName, fractionMass*perCent});
+                    break;
+                }
+                
+            }
+            if(flag == 0)
+            {
+                G4cout<<row_values[1]<<" is not found in your datamap"<<G4endl;
+                exit(0);
+            }
+        }
+        else if(row_values[0] == "layer3")
+        {
+            int flag = 0;
+            for (const auto& itr: StringToMaterialMapper) 
+            {
+                if(itr.first == row_values[1])
+                {
+                    flag = 1;
+                    auto materialName = itr.second;
+                    G4double fractionMass = stod(row_values[2]);
+                    chem_composition_3.insert({materialName, fractionMass*perCent});
+                    break;
+                }
+            }
+            if(flag == 0)
+            {
+                G4cout<<row_values[1]<<" is not found in your datamap"<<G4endl;
+                exit(0);
+            }
+        }
+        else if(row_values[0] == "layer4")
+        {
+            int flag = 0;
+            for (const auto& itr: StringToMaterialMapper) 
+            {
+                if(itr.first == row_values[1])
+                {
+                    flag = 1;
+                    auto materialName = itr.second;
+                    G4double fractionMass = stod(row_values[2]);
+                    chem_composition_4.insert({materialName, fractionMass*perCent});
+                    break;
+                }
+            }
+            if(flag == 0)
+            {
+                G4cout<<row_values[1]<<" is not found in your datamap"<<G4endl;
+                exit(0);
+            }
+        }
+        else if(row_values[0] == "layer5")
+        {
+            int flag = 0;
+            for (const auto& itr: StringToMaterialMapper) 
+            {
+                if(itr.first == row_values[1])
+                {
+                    flag = 1;
+                    G4cout<<itr.second<<G4endl;
+                    auto materialName = itr.second;
+                    G4double fractionMass = stod(row_values[2]);
+                    chem_composition_5.insert({materialName, fractionMass*perCent});
+                    break;
+                }
+            }
+            if(flag == 0)
+            {
+                G4cout<<row_values[1]<<" is not found in your datamap"<<G4endl;
+                exit(0);
+            }
+        }
+    }
+    
+  }
+  
+  G4cout << "inner_r : " << inner_r << G4endl;
+  G4cout << "outer_r : " << outer_r << G4endl;
+
   // fill soil layers
   FillSoilLayersWithMaps();
   
@@ -156,6 +261,7 @@ void nbDetectorConstruction::DefineMaterials()
   H2O  = nistManager->FindOrBuildMaterial("G4_WATER");
   H2O->GetIonisation()->SetMeanExcitationEnergy(75.0*eV); // you may or may not include this line, overwrite computed meanExcitationEnergy with ICRU recommended value 
   
+  Air = nistManager->FindOrBuildMaterial("G4_AIR");
   SiO2 = nistManager->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
   Al2O3 = nistManager->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
   Fe2O3 = nistManager->FindOrBuildMaterial("G4_FERRIC_OXIDE");
@@ -186,8 +292,8 @@ void nbDetectorConstruction::DefineMaterials()
   pH->AddMaterial(H, fractionmass=fractionMassForH*perCent);
   pH->AddMaterial(OH, fractionmass=fractionMassForOH*perCent);
   
-  G4cout << "H concentration = " << fractionMassForH << G4endl;
-  G4cout << "OH concentration = " << fractionMassForOH << G4endl;
+  // G4cout << "H concentration = " << fractionMassForH << G4endl;
+  // G4cout << "OH concentration = " << fractionMassForOH << G4endl;
   
   //////////////////////////// end pH section ////////////////////////////
   
@@ -412,83 +518,6 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbDetectorConstruction::DefineSoilLayerMaps()
-{
-    // define chemical composition maps
-    // use these maps in soil layers
-    // you can add or delete any material composition
-    // in any map
-    // just make sure that summation = 100*perCent
-    
-    // first layer composition
-    chem_composition_1 = {
-        {Fe2O3, 20.0*perCent},
-        {Mn2O3, 20.0*perCent},             // pH
-        {pH, 20.0*perCent},
-        {Ra, 15*perCent},
-        {OrganicMat, 20.0*perCent}
-        // {Fe2O3, 46.3*perCent},
-        // {pH, 15.0*perCent},             // pH
-        // {Al2O3, 13.0*perCent},
-        // {SiO2, 2.5*perCent},
-        // {CaO, 1.6*perCent},
-        // {MgO, 0.7*perCent},
-        // {TiO2, 0.6*perCent},
-        // {OrganicMat, 20.3*perCent}      // organicMat
-    };
-    
-    // second layer composition
-    chem_composition_2 = {
-        {Fe, 20.0*perCent},
-        {Mn, 20.0*perCent},             // pH
-        {pH, 20.0*perCent},
-        {Ra, 15.00*perCent},
-        {OrganicMat, 15.0*perCent},
-        {H2O, 10.0*perCent}
-    };
-    
-    // third layer composition
-    chem_composition_3 = {
-        {Fe, 20.0*perCent},
-        {Mn, 20.0*perCent},             // pH
-        {pH, 20.0*perCent},
-        {Ra, 15.00*perCent},
-        {OrganicMat, 15.0*perCent},
-        {H2O, 10.0*perCent}
-        // {Fe2O3, 34.04*perCent},
-        // {pH, 15.0*perCent},             // pH
-        // {Al2O3, 10.4*perCent},
-        // {SiO2, 2.0*perCent},
-        // {CaO, 1.28*perCent},
-        // {MgO, 0.56*perCent},
-        // {TiO2, 0.48*perCent},
-        // {OrganicMat, 16.24*perCent},
-        // {H2O, 20.0*perCent}
-    };
-    
-    // fourth layer composition
-    chem_composition_4 = {
-        {Fe, 20.0*perCent},
-        {Mn, 20.0*perCent},             // pH
-        {pH, 20.0*perCent},
-        {Ra, 15.00*perCent},
-        {OrganicMat, 15.0*perCent},
-        {H2O, 10.0*perCent}
-    };  
-    
-    // fifth layer composition
-    chem_composition_5 = {
-        {Fe, 20.0*perCent},
-        {Mn, 20.0*perCent},             // pH
-        {pH, 20.0*perCent},
-        {Ra, 15.00*perCent},
-        {OrganicMat, 15.0*perCent},
-        {H2O, 10.0*perCent}
-    };
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 void nbDetectorConstruction::FillSoilLayersWithMaps()
 {
     // create soil layers
@@ -523,7 +552,7 @@ void nbDetectorConstruction::FillSoilLayersWithMaps()
     
   // layer 5 (inner most)
   // 40% moisture content. Need new density value?
-  soilOne40W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=chem_composition_5.size());
+  soilOne40W = new G4Material("DrySoil40W", density = 0.6*g/cm3, ncomponents=chem_composition_5.size());
   for (it = chem_composition_5.begin(); it != chem_composition_5.end(); it++) {
         soilOne40W->AddMaterial(it->first, fractionmass=it->second);
   }
@@ -573,5 +602,15 @@ G4String nbDetectorConstruction::getWorld()
 {
     return "World"; // return world
 }
+
+void nbDetectorConstruction::split(const std::string &s, char delim, std::vector<std::string> &elems) {
+    std::stringstream ss;
+    ss.str(s);
+    std::string item;
+    while (std::getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+}
+
 
 

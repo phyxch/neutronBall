@@ -47,11 +47,12 @@ target_link_libraries(neutronBall ${Geant4_LIBRARIES})
 set(nb_SCRIPTS
   gui.mac
   init_vis.mac
-  config.txt
+  configOct3.txt
   vis.mac
   u238PH.mac
   plotPH.C
   run.mac
+  mainConfig.txt
   )
 
 foreach(_script ${nb_SCRIPTS})

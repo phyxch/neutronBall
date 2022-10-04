@@ -54,6 +54,9 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       void DefineMaterials();
       void DefineSoilLayerMaps();
       void FillSoilLayersWithMaps();
+      
+      // function for file reading
+      void split(const std::string &s, char delim, std::vector<std::string> &elems);
       G4VPhysicalVolume* DefineVolumes();
       
       // data members
@@ -75,6 +78,7 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       G4Material *pH;
       G4Material *OrganicMat;
       G4Material *defaultMaterial;
+      G4Material *Air;
       
       // define common elements
       G4Element *elO, *elH, *elC, *elN;
@@ -107,6 +111,7 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       
       // this snippet creates static maps for soil construction layers
       // maps to store framaction masses 
+      map<G4String, G4Material*> StringToMaterialMapper;
       map<G4Material*, G4double> chem_composition_1;
       map<G4Material*, G4double> chem_composition_2;
       map<G4Material*, G4double> chem_composition_3;
