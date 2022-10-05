@@ -322,17 +322,17 @@ void nbDetectorConstruction::DefineMaterials()
 G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 {  
   // assign constructed layers to detector materials which will be inserted in logical volumes
-  // shellMaterial = soilOne;
-  // shellMaterial_1 = soilOne10W;
-  // shellMaterial_2 = soilOne20W;
-  // shellMaterial_3 = soilOne30W;
-  // shellMaterial_4 = soilOne40W;
+  shellMaterial = soilOne;
+  shellMaterial_1 = soilOne10W;
+  shellMaterial_2 = soilOne20W;
+  shellMaterial_3 = soilOne30W;
+  shellMaterial_4 = soilOne40W;
   
-  shellMaterial = Air;
-  shellMaterial_1 = Air;
-  shellMaterial_2 = Air;
-  shellMaterial_3 = Air;
-  shellMaterial_4 = Air;
+  // shellMaterial = Air;
+  // shellMaterial_1 = Air;
+  // shellMaterial_2 = Air;
+  // shellMaterial_3 = Air;
+  // shellMaterial_4 = Air;
 
   // Cleanup old geometry
   G4GeometryManager::GetInstance()->OpenGeometry();
