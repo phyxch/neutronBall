@@ -54,26 +54,6 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   G4double x=aStep->GetPostStepPoint()->GetPosition().x()/cm;
   G4double y=aStep->GetPostStepPoint()->GetPosition().y()/cm;
   G4double z=aStep->GetPostStepPoint()->GetPosition().z()/cm;
-  G4double pVelocity=aStep->GetPostStepPoint()->GetVelocity();
-  G4double pKE=aStep->GetPostStepPoint()->GetKineticEnergy();
-  G4double pX=aStep->GetPostStepPoint()->GetMomentum().x();
-  G4double pY=aStep->GetPostStepPoint()->GetMomentum().y();
-  G4double pZ=aStep->GetPostStepPoint()->GetMomentum().z();
-  
-  if(A == 222 || z == 86)
-  {
-      G4cout<<"x position: "<<x<<G4endl;
-      G4cout<<"y position: "<<y<<G4endl;
-      G4cout<<"z position: "<<z<<G4endl;
-      G4cout<<"Atomic number(Z): "<<Z<<G4endl;
-      G4cout<<"Atomic mass number(A): "<<A<<G4endl;
-      G4cout<<"velocity: "<<pVelocity<<G4endl;
-      G4cout<<"kinetic energy: "<<pKE<<G4endl;
-      G4cout<<"x-direction momentum: "<<pX<<G4endl;
-      G4cout<<"y-direction momentum: "<<pX<<G4endl;
-      G4cout<<"z-direction momentum: "<<pZ<<G4endl;
-      
-  }
   
   // fill ntuple with id = 2
   G4int id = 2;
@@ -85,11 +65,11 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   analysisManager->FillNtupleDColumn(id,5, A);
   analysisManager->FillNtupleSColumn(id,6, pName);
   analysisManager->FillNtupleIColumn(id,7, iVol);
-  analysisManager->FillNtupleDColumn(id,8, pVelocity);
-  analysisManager->FillNtupleDColumn(id,9, pKE);
-  analysisManager->FillNtupleDColumn(id,10, pX);
-  analysisManager->FillNtupleDColumn(id,11, pY);
-  analysisManager->FillNtupleDColumn(id,12, pZ);
+  analysisManager->FillNtupleIColumn(id,8, pVelocity);
+  analysisManager->FillNtupleIColumn(id,9, pKE);
+  analysisManager->FillNtupleIColumn(id,10, pX);
+  analysisManager->FillNtupleIColumn(id,11, pY);
+  analysisManager->FillNtupleIColumn(id,12, pZ);
   // add row
   analysisManager->AddNtupleRow(id);
 }

@@ -55,6 +55,11 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
   analysisManager->CreateNtupleDColumn(2, "A");    
   analysisManager->CreateNtupleSColumn(2, "pName");      //column 4
   analysisManager->CreateNtupleIColumn(2, "pVolume");    //column 5
+  analysisManager->CreateNtupleDColumn(2, "pVelocity");
+  analysisManager->CreateNtupleDColumn(2, "pKE");
+  analysisManager->CreateNtupleDColumn(2, "pX");
+  analysisManager->CreateNtupleDColumn(2, "pY");
+  analysisManager->CreateNtupleDColumn(2, "pZ");
   analysisManager->FinishNtuple(2);
 }
 

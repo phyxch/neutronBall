@@ -90,7 +90,7 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
   // this is core material data map
   // all the materials you defined in DefineMaterials() should be
   // mentioned here
-  map<G4String, G4Material*> StringToMaterialMapper = {
+  StringToMaterialMapper = {
         {"Fe", Fe},
         {"Fe2O3", Fe2O3},         // pH
         {"Mn", Mn},
@@ -327,6 +327,12 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   shellMaterial_2 = soilOne20W;
   shellMaterial_3 = soilOne30W;
   shellMaterial_4 = soilOne40W;
+  
+  // shellMaterial = Air;
+  // shellMaterial_1 = Air;
+  // shellMaterial_2 = Air;
+  // shellMaterial_3 = Air;
+  // shellMaterial_4 = Air;
 
   // Cleanup old geometry
   G4GeometryManager::GetInstance()->OpenGeometry();
