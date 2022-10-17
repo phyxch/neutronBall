@@ -60,20 +60,20 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   G4double pY=aStep->GetPostStepPoint()->GetMomentum().y();
   G4double pZ=aStep->GetPostStepPoint()->GetMomentum().z();
   
-  if(A == 222 || z == 86)
-  {
-      G4cout<<"x position: "<<x<<G4endl;
-      G4cout<<"y position: "<<y<<G4endl;
-      G4cout<<"z position: "<<z<<G4endl;
-      G4cout<<"Atomic number(Z): "<<Z<<G4endl;
-      G4cout<<"Atomic mass number(A): "<<A<<G4endl;
-      G4cout<<"velocity: "<<pVelocity<<G4endl;
-      G4cout<<"kinetic energy: "<<pKE<<G4endl;
-      G4cout<<"x-direction momentum: "<<pX<<G4endl;
-      G4cout<<"y-direction momentum: "<<pX<<G4endl;
-      G4cout<<"z-direction momentum: "<<pZ<<G4endl;
-      
-  }
+  // if(A == 222 || z == 86)
+  // {
+  //     G4cout<<"x position: "<<x<<G4endl;
+  //     G4cout<<"y position: "<<y<<G4endl;
+  //     G4cout<<"z position: "<<z<<G4endl;
+  //     G4cout<<"Atomic number(Z): "<<Z<<G4endl;
+  //     G4cout<<"Atomic mass number(A): "<<A<<G4endl;
+  //     G4cout<<"velocity: "<<pVelocity<<G4endl;
+  //     G4cout<<"kinetic energy: "<<pKE<<G4endl;
+  //     G4cout<<"x-direction momentum: "<<pX<<G4endl;
+  //     G4cout<<"y-direction momentum: "<<pX<<G4endl;
+  //     G4cout<<"z-direction momentum: "<<pZ<<G4endl;
+  //     
+  // }
   
   // fill ntuple with id = 2
   G4int id = 2;

@@ -65,9 +65,6 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
   // count all particles regardless of PID == 1 or PID != 1
   run->ParticleCount(pName,energy,iVol);
   
-  
-
-  
   // if the track is secondary
   if(track->GetTrackID() != 1)
   {
@@ -86,6 +83,23 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
         analysisManager->AddNtupleRow(id);
       }
   }
+  else
+  {
+      G4int id = 1;
+      analysisManager->FillNtupleDColumn(id,0, pID);
+      analysisManager->FillNtupleDColumn(id,1, Z);
+      analysisManager->FillNtupleDColumn(id,2, A);
+      analysisManager->FillNtupleDColumn(id,3, energy);
+      analysisManager->FillNtupleDColumn(id,4, time/s);
+      analysisManager->FillNtupleDColumn(id,5, fDetector->pHValue);
+      analysisManager->FillNtupleSColumn(id,6, pName);
+      analysisManager->AddNtupleRow(id);
+  }
+  
+  
+  // if it is parent track then also track it
+  // store it's information
+  
   
   // ion
   // https://apc.u-paris.fr/~franco/g4doxy/html/G4TrackStatus_8hh.html

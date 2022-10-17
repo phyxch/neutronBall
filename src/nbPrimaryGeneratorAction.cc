@@ -23,7 +23,11 @@ nbPrimaryGeneratorAction::nbPrimaryGeneratorAction()
 
   fParticleGun->SetParticleEnergy(0*eV);
   fParticleGun->SetParticlePosition(G4ThreeVector(0.,0.,0.));
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.));          
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.)); 
+  
+  // if you're setting a particle through the gun
+  // use following decay energy in setting particle energy  
+  // link: https://www.ld-didactic.de/software/524221en/Content/Appendix/Ra226Series.htm         
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
