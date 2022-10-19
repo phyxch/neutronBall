@@ -47,7 +47,6 @@ target_link_libraries(neutronBall ${Geant4_LIBRARIES})
 set(nb_SCRIPTS
   gui.mac
   init_vis.mac
-  configOct3.txt
   vis.mac
   u238PH.mac
   plotPH.C

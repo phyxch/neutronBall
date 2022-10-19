@@ -1,8 +1,11 @@
 # layerNumber, materialName, fractionmass
-inner_r,0.0
-outer_r,20.00
-layer1,Air,100.00
-layer2,Air,100.00
-layer3,Air,100.00
-layer4,Air,100.00
-layer5,Air,100,00
+r1,100.0
+r2,94.00
+r3,91.00
+r4,47.00
+r5,20.00
+layer1,Air
+layer2,Air
+layer3,Air
+layer4,Air
+layer5,Air

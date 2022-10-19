@@ -36,6 +36,23 @@ private:
   
   // set concentration of H in pH material 
   G4UIcmdWithADouble* pHSetterCmdForH;
+  
+  // set material of each soil layer
+  G4UIcmdWithAString* layer1MatCmd;
+  G4UIcmdWithAString* layer2MatCmd;
+  G4UIcmdWithAString* layer3MatCmd;
+  G4UIcmdWithAString* layer4MatCmd;
+  G4UIcmdWithAString* layer5MatCmd;
+  
+  // set height of each soil layer
+  G4UIcmdWithADoubleAndUnit* layer1HeightCmd;
+  G4UIcmdWithADoubleAndUnit* layer2HeightCmd;
+  G4UIcmdWithADoubleAndUnit* layer3HeightCmd;
+  G4UIcmdWithADoubleAndUnit* layer4HeightCmd;
+  G4UIcmdWithADoubleAndUnit* layer5HeightCmd;
+  
+  
+
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

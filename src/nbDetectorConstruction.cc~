@@ -131,8 +131,7 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
                 {
                     flag = 1;
                     auto materialName = itr.second;
-                    G4double fractionMass = stod(row_values[2]);
-                    chem_composition_1.insert({materialName, fractionMass*perCent});
+                    shellMaterial = materialName;
                     break;
                 }
                 
@@ -152,8 +151,9 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
                 {
                     flag = 1;
                     auto materialName = itr.second;
-                    G4double fractionMass = stod(row_values[2]);
-                    chem_composition_2.insert({materialName, fractionMass*perCent});
+                    shellMaterial_1 = materialName;
+                    // G4double fractionMass = stod(row_values[2]);
+                    // chem_composition_2.insert({materialName, fractionMass*perCent});
                     break;
                 }
                 
@@ -173,8 +173,7 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
                 {
                     flag = 1;
                     auto materialName = itr.second;
-                    G4double fractionMass = stod(row_values[2]);
-                    chem_composition_3.insert({materialName, fractionMass*perCent});
+                    shellMaterial_2 = materialName;
                     break;
                 }
             }
@@ -193,8 +192,7 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
                 {
                     flag = 1;
                     auto materialName = itr.second;
-                    G4double fractionMass = stod(row_values[2]);
-                    chem_composition_4.insert({materialName, fractionMass*perCent});
+                    shellMaterial_3 = materialName;
                     break;
                 }
             }
@@ -214,8 +212,7 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
                     flag = 1;
                     G4cout<<itr.second<<G4endl;
                     auto materialName = itr.second;
-                    G4double fractionMass = stod(row_values[2]);
-                    chem_composition_5.insert({materialName, fractionMass*perCent});
+                    shellMaterial_4 = materialName;
                     break;
                 }
             }
@@ -226,14 +223,22 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
             }
         }
     }
-    
   }
-  
+
   G4cout << "inner_r : " << inner_r << G4endl;
   G4cout << "outer_r : " << outer_r << G4endl;
-
+  
+  
+  // assign default material air for all layers
+  shellMaterial = Air;
+  shellMaterial_1 = Air;
+  shellMaterial_2 = Air;
+  shellMaterial_3 = Air;
+  shellMaterial_4 = Air;
+  
+  
   // fill soil layers
-  FillSoilLayersWithMaps();
+  //FillSoilLayersWithMaps();
   
   // Define volumes
   return DefineVolumes();
@@ -328,12 +333,8 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   // shellMaterial_3 = soilOne30W;
   // shellMaterial_4 = soilOne40W;
   
-  shellMaterial = H2O;
-  shellMaterial_1 = Air;
-  shellMaterial_2 = Air;
-  shellMaterial_3 = Air;
-  shellMaterial_4 = Air;
-
+  
+  
   // Cleanup old geometry
   G4GeometryManager::GetInstance()->OpenGeometry();
   G4PhysicalVolumeStore::GetInstance()->Clean();
@@ -529,39 +530,39 @@ void nbDetectorConstruction::FillSoilLayersWithMaps()
     // create soil layers
   // Based on: http://gfnun.unal.edu.co/fileadmin/content/gruposdeinvestigacion/fisicanuclear/Tesis/DanielAndrade_TG.pdf
   // layer 1
-  soilOne = new G4Material("DrySoil", density = 0.6*g/cm3, ncomponents=chem_composition_1.size());
-  for (it = chem_composition_1.begin(); it != chem_composition_1.end(); it++) {
-        soilOne->AddMaterial(it->first, fractionmass=it->second);
-  }
+  // soilOne = new G4Material("DrySoil", density = 0.6*g/cm3, ncomponents=chem_composition_1.size());
+  // for (it = chem_composition_1.begin(); it != chem_composition_1.end(); it++) {
+  //       soilOne->AddMaterial(it->first, fractionmass=it->second);
+  // }
   
   // layer 2
   // 10% moisture content
-  soilOne10W = new G4Material("DrySoil10W", density = 0.6*g/cm3, ncomponents=chem_composition_2.size());
-  for (it = chem_composition_2.begin(); it != chem_composition_2.end(); it++) {
-        soilOne10W->AddMaterial(it->first, fractionmass=it->second);
-  }
+  // soilOne10W = new G4Material("DrySoil10W", density = 0.6*g/cm3, ncomponents=chem_composition_2.size());
+  // for (it = chem_composition_2.begin(); it != chem_composition_2.end(); it++) {
+  //       soilOne10W->AddMaterial(it->first, fractionmass=it->second);
+  // }
   
   
   // layer 3
   // 20% moisture content. Need new density value?
-  soilOne20W = new G4Material("DrySoil20W", density = 0.6*g/cm3, ncomponents=chem_composition_3.size());
-  for (it = chem_composition_3.begin(); it != chem_composition_3.end(); it++) {
-        soilOne20W->AddMaterial(it->first, fractionmass=it->second);
-  }
+  // soilOne20W = new G4Material("DrySoil20W", density = 0.6*g/cm3, ncomponents=chem_composition_3.size());
+  // for (it = chem_composition_3.begin(); it != chem_composition_3.end(); it++) {
+  //       soilOne20W->AddMaterial(it->first, fractionmass=it->second);
+  // }
   
   // layer 4
   // 30% moisture content. Need new density value?
-  soilOne30W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=chem_composition_4.size());
-  for (it = chem_composition_4.begin(); it != chem_composition_4.end(); it++) {
-        soilOne30W->AddMaterial(it->first, fractionmass=it->second);
-  }
+  // soilOne30W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=chem_composition_4.size());
+  // for (it = chem_composition_4.begin(); it != chem_composition_4.end(); it++) {
+  //       soilOne30W->AddMaterial(it->first, fractionmass=it->second);
+  // }
     
   // layer 5 (inner most)
   // 40% moisture content. Need new density value?
-  soilOne40W = new G4Material("DrySoil40W", density = 0.6*g/cm3, ncomponents=chem_composition_5.size());
-  for (it = chem_composition_5.begin(); it != chem_composition_5.end(); it++) {
-        soilOne40W->AddMaterial(it->first, fractionmass=it->second);
-  }
+  // soilOne40W = new G4Material("DrySoil40W", density = 0.6*g/cm3, ncomponents=chem_composition_5.size());
+  // for (it = chem_composition_5.begin(); it != chem_composition_5.end(); it++) {
+  //       soilOne40W->AddMaterial(it->first, fractionmass=it->second);
+  // }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -576,6 +577,12 @@ void nbDetectorConstruction::updatepH(G4double value)
     
     G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
+
+void nbDetectorConstruction::setLayer1Height(G4double height) {}
+void nbDetectorConstruction::setLayer2Height(G4double height) {}
+void nbDetectorConstruction::setLayer3Height(G4double height) {}
+void nbDetectorConstruction::setLayer4Height(G4double height) {}
+void nbDetectorConstruction::setLayer5Height(G4double height) {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -608,6 +615,9 @@ G4String nbDetectorConstruction::getWorld()
 {
     return "World"; // return world
 }
+
+
+
 
 void nbDetectorConstruction::split(const std::string &s, char delim, std::vector<std::string> &elems) {
     std::stringstream ss;

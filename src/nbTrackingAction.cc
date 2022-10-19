@@ -38,10 +38,10 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
   const G4ParticleDefinition* particle = track->GetParticleDefinition();  
-  G4String pName   = particle->GetParticleName();
-  G4double pID       = particle->GetPDGEncoding();
-  G4double Z         = particle->GetAtomicNumber();
-  G4double A         = particle->GetAtomicMass();
+  G4String pName  = particle->GetParticleName();
+  G4double pID    = particle->GetPDGEncoding();
+  G4double Z      = particle->GetAtomicNumber();
+  G4double A      = particle->GetAtomicMass();
   G4double charge = particle->GetPDGCharge();    
   G4double energy = track->GetKineticEnergy();
   G4double time   = track->GetGlobalTime();
@@ -95,11 +95,6 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
       analysisManager->FillNtupleSColumn(id,6, pName);
       analysisManager->AddNtupleRow(id);
   }
-  
-  
-  // if it is parent track then also track it
-  // store it's information
-  
   
   // ion
   // https://apc.u-paris.fr/~franco/g4doxy/html/G4TrackStatus_8hh.html

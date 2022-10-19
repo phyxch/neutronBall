@@ -53,13 +53,16 @@ using namespace std;
 // set data member values from config.txt file
 nbDetectorConstruction::nbDetectorConstruction()
  : G4VUserDetectorConstruction(),
-   shellPV(nullptr),
+   shellPV_1(nullptr),
    fCheckOverlaps(true),
    fractionMassForH(0.),
    fractionMassForOH(0.),
    pHValue(4.0),
    fdetectorMessenger(0)
 {
+  // initialize StringToMaterialMapper
+  
+  
   
   // set the values for H and OH concentration by default
   pHValue = 4;
@@ -92,7 +95,8 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
   // mentioned here
   StringToMaterialMapper = {
         {"Fe", Fe},
-        {"Fe2O3", Fe2O3},         // pH
+        {"Fe2O3", Fe2O3},
+        {"Al2O3", Al2O3},
         {"Mn", Mn},
         {"Mn2O3", Mn2O3},
         {"Ra", Ra},
@@ -105,7 +109,7 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
         {"pH", pH}
   };
   
-  // read the config file
+  // read the config file for getting default radius of each layer
   G4String layerName;
   // read the data through configuration file
   std::ifstream infile ("mainConfig.txt");
@@ -118,8 +122,11 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
 
     split(line, ',', row_values);
     
-    if(row_values[0] == "inner_r") inner_r = stod(row_values[1])*mm;    
-    else if(row_values[0] == "outer_r") outer_r = stod(row_values[1])*mm;    
+    if(row_values[0] == "r1") r1 = stod(row_values[1])*cm;    
+    else if(row_values[0] == "r2") r2 = stod(row_values[1])*cm; 
+    else if(row_values[0] == "r3") r3 = stod(row_values[1])*cm; 
+    else if(row_values[0] == "r4") r4 = stod(row_values[1])*cm; 
+    else if(row_values[0] == "r5") r5 = stod(row_values[1])*cm; 
     else
     {
         if(row_values[0] == "layer1")
@@ -131,8 +138,7 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
                 {
                     flag = 1;
                     auto materialName = itr.second;
-                    G4double fractionMass = stod(row_values[2]);
-                    chem_composition_1.insert({materialName, fractionMass*perCent});
+                    shellMaterial_1 = materialName;
                     break;
                 }
                 
@@ -152,8 +158,9 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
                 {
                     flag = 1;
                     auto materialName = itr.second;
-                    G4double fractionMass = stod(row_values[2]);
-                    chem_composition_2.insert({materialName, fractionMass*perCent});
+                    shellMaterial_2 = materialName;
+                    // G4double fractionMass = stod(row_values[2]);
+                    // chem_composition_2.insert({materialName, fractionMass*perCent});
                     break;
                 }
                 
@@ -173,8 +180,7 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
                 {
                     flag = 1;
                     auto materialName = itr.second;
-                    G4double fractionMass = stod(row_values[2]);
-                    chem_composition_3.insert({materialName, fractionMass*perCent});
+                    shellMaterial_3 = materialName;
                     break;
                 }
             }
@@ -193,8 +199,7 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
                 {
                     flag = 1;
                     auto materialName = itr.second;
-                    G4double fractionMass = stod(row_values[2]);
-                    chem_composition_4.insert({materialName, fractionMass*perCent});
+                    shellMaterial_4 = materialName;
                     break;
                 }
             }
@@ -214,8 +219,7 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
                     flag = 1;
                     G4cout<<itr.second<<G4endl;
                     auto materialName = itr.second;
-                    G4double fractionMass = stod(row_values[2]);
-                    chem_composition_5.insert({materialName, fractionMass*perCent});
+                    shellMaterial_5 = materialName;
                     break;
                 }
             }
@@ -226,14 +230,16 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
             }
         }
     }
-    
   }
-  
-  G4cout << "inner_r : " << inner_r << G4endl;
-  G4cout << "outer_r : " << outer_r << G4endl;
 
+  G4cout << "r1 : " << r1 << G4endl;
+  G4cout << "r2 : " << r2 << G4endl; 
+  G4cout << "r3 : " << r3 << G4endl; 
+  G4cout << "r4 : " << r4 << G4endl; 
+  G4cout << "r5 : " << r5 << G4endl; 
+   
   // fill soil layers
-  FillSoilLayersWithMaps();
+  //FillSoilLayersWithMaps();
   
   // Define volumes
   return DefineVolumes();
@@ -328,12 +334,6 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   // shellMaterial_3 = soilOne30W;
   // shellMaterial_4 = soilOne40W;
   
-  shellMaterial = Air;
-  shellMaterial_1 = Air;
-  shellMaterial_2 = Air;
-  shellMaterial_3 = Air;
-  shellMaterial_4 = Air;
-
   // Cleanup old geometry
   G4GeometryManager::GetInstance()->OpenGeometry();
   G4PhysicalVolumeStore::GetInstance()->Clean();
@@ -345,7 +345,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 
   // World
   //
-  auto worldSizeXY = 2.5 * outer_r;
+  auto worldSizeXY = 2.5 * r1;
   // auto worldSizeZ  = worldSizeXY; 
   
   auto worldS 
@@ -380,30 +380,9 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   G4double spanningAngleTheta = 180.0*deg; //90
 
   // Outer shell
-  auto solidShell = new G4Sphere("Shell", inner_r, outer_r,
+  auto solidShell_1 = new G4Sphere("Shell", 0, r1,
 			       startAnglePhi, spanningAnglePhi, 
 			       startAngleTheta, spanningAngleTheta);  
-  auto shellLV
-    = new G4LogicalVolume(
-                 solidShell,     // its solid
-                 shellMaterial,  // its material
-                 "shellLV");   // its name
-                                   
-  shellPV = new G4PVPlacement(
-                 0,                // no rotation
-                 G4ThreeVector(),  // at (0,0,0)
-                 shellLV,          // its logical volume                         
-                 "shellPV",    // its name
-                 worldLV,          // its mother  volume
-                 false,            // no boolean operation
-                 0,                // copy number
-                 fCheckOverlaps);  // checking overlaps
-
-  // 1st layer (A/Ap 0-6 inches)
-  auto solidShell_1 = new G4Sphere("Shell_1", 1.001*inner_r,0.94*outer_r,
-				 startAnglePhi, spanningAnglePhi, 
-				 startAngleTheta, spanningAngleTheta);
-  
   auto shellLV_1
     = new G4LogicalVolume(
                  solidShell_1,     // its solid
@@ -415,35 +394,34 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
                  G4ThreeVector(),  // at (0,0,0)
                  shellLV_1,          // its logical volume                         
                  "shellPV_1",    // its name
-                 shellLV,          // its mother  volume
+                 worldLV,          // its mother  volume
+                 false,            // no boolean operation
+                 0,                // copy number
+                 fCheckOverlaps);  // checking overlaps
+
+  // 1st layer (A/Ap 0-6 inches)
+  auto solidShell_2 = new G4Sphere("Shell_1", 0, r2,
+				 startAnglePhi, spanningAnglePhi, 
+				 startAngleTheta, spanningAngleTheta);
+  
+  auto shellLV_2
+    = new G4LogicalVolume(
+                 solidShell_2,     // its solid
+                 shellMaterial_2,  // its material
+                 "shellLV_2");   // its name
+                                   
+  shellPV_2 = new G4PVPlacement(
+                 0,                // no rotation
+                 G4ThreeVector(),  // at (0,0,0)
+                 shellLV_2,          // its logical volume                         
+                 "shellPV_2",    // its name
+                 shellLV_1,          // its mother  volume
                  false,            // no boolean operation
                  0,                // copy number
                  fCheckOverlaps);  // checking overlaps 
   
   // 2nd layer (E 6-9 inches - 100-9)
-  auto solidShell_2 = new G4Sphere("Shell_2", 1.002*inner_r, 0.91*outer_r,
-				   startAnglePhi, spanningAnglePhi, 
-				   startAngleTheta, spanningAngleTheta);
-  
-  auto shellLV_2
-    = new G4LogicalVolume(
-			  solidShell_2,     // its solid
-			  shellMaterial_2,  // its material
-			  "shellLV_2");   // its name
-  
-  shellPV_2 = new G4PVPlacement(
-				0,                // no rotation
-				G4ThreeVector(),  // at (0,0,0)
-				shellLV_2,          // its logical volume                         
-				"shellPV_2",    // its name
-				shellLV_1,          // its mother  volume
-				false,            // no boolean operation
-				0,                // copy number
-				fCheckOverlaps);  // checking overlaps 
-  
-  
-  // 3rd layer (Be, Bt, Bc 9-53 inches - 100-53 = 47)
-  auto solidShell_3 = new G4Sphere("Shell_3", 1.003*inner_r, 0.47*outer_r,
+  auto solidShell_3 = new G4Sphere("Shell_2", 0, r3,
 				   startAnglePhi, spanningAnglePhi, 
 				   startAngleTheta, spanningAngleTheta);
   
@@ -464,37 +442,49 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 				fCheckOverlaps);  // checking overlaps 
   
   
-  // 4th layer (C 53-80 inches - 100-80 = 20)
-  auto solidShell_4 = new G4Sphere("Shell_4", 1.003*inner_r, 0.20*outer_r,
-                                   startAnglePhi, spanningAnglePhi, 
-                                   startAngleTheta, spanningAngleTheta);
+  // 3rd layer (Be, Bt, Bc 9-53 inches - 100-53 = 47)
+  auto solidShell_4 = new G4Sphere("Shell_3", 0, r4,
+				   startAnglePhi, spanningAnglePhi, 
+				   startAngleTheta, spanningAngleTheta);
   
   auto shellLV_4
     = new G4LogicalVolume(
-                          solidShell_4,     // its solid
-                          shellMaterial_4,  // its material
-                          "shellLV_4");   // its name
+			  solidShell_4,     // its solid
+			  shellMaterial_4,  // its material
+			  "shellLV_4");   // its name
   
   shellPV_4 = new G4PVPlacement(
+				0,                // no rotation
+				G4ThreeVector(),  // at (0,0,0)
+				shellLV_4,          // its logical volume                         
+				"shellPV_4",    // its name
+				shellLV_3,          // its mother  volume
+				false,            // no boolean operation
+				0,                // copy number
+				fCheckOverlaps);  // checking overlaps 
+  
+  
+  // 4th layer (C 53-80 inches - 100-80 = 20)
+  auto solidShell_5 = new G4Sphere("Shell_4", 0, r5,
+                                   startAnglePhi, spanningAnglePhi, 
+                                   startAngleTheta, spanningAngleTheta);
+  
+  auto shellLV_5
+    = new G4LogicalVolume(
+                          solidShell_5,     // its solid
+                          shellMaterial_5,  // its material
+                          "shellLV_5");   // its name
+  
+  shellPV_5 = new G4PVPlacement(
                                 0,                // no rotation
                                 G4ThreeVector(),  // at (0,0,0)
-                                shellLV_4,          // its logical volume
-                                "shellPV_4",    // its name
-                                shellLV_3,          // its mother  volume
+                                shellLV_5,          // its logical volume
+                                "shellPV_5",    // its name
+                                shellLV_4,          // its mother  volume
                                 false,            // no boolean operation
                                 0,                // copy number
                                 fCheckOverlaps);  // checking overlaps
-  
-  //
-  // print parameters
-  //
-  G4cout
-    << G4endl 
-    << "------------------------------------------------------------" << G4endl
-    << "---> The shell dimension:  inner_r " << inner_r  << "   outer_r " 
-    << outer_r  << G4endl
-    << "------------------------------------------------------------" << G4endl;
-  
+
   //                                        
   // Visualization attributes
   //
@@ -502,19 +492,19 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 
   auto simpleShellVisAtt= new G4VisAttributes(G4Colour(0.3,0.4,0.5));
   simpleShellVisAtt->SetVisibility(true);
-  shellLV->SetVisAttributes(simpleShellVisAtt);
+  shellLV_1->SetVisAttributes(simpleShellVisAtt);
 
   auto simpleShellVisAtt_1= new G4VisAttributes(G4Colour(0.3,0.4,0.1));
   simpleShellVisAtt_1->SetVisibility(true);
-  shellLV_1->SetVisAttributes(simpleShellVisAtt_1);
+  shellLV_2->SetVisAttributes(simpleShellVisAtt_1);
 
   auto simpleShellVisAtt_2= new G4VisAttributes(G4Colour(0.3,0.3,0.2));
   simpleShellVisAtt_2->SetVisibility(true);
-  shellLV_2->SetVisAttributes(simpleShellVisAtt_2);
+  shellLV_3->SetVisAttributes(simpleShellVisAtt_2);
 
   auto simpleShellVisAtt_3= new G4VisAttributes(G4Colour(0.3,0.1,0.2));
   simpleShellVisAtt_3->SetVisibility(true);
-  shellLV_3->SetVisAttributes(simpleShellVisAtt_3);
+  shellLV_4->SetVisAttributes(simpleShellVisAtt_3);
   
   //
   // Always return the physical World
@@ -529,39 +519,39 @@ void nbDetectorConstruction::FillSoilLayersWithMaps()
     // create soil layers
   // Based on: http://gfnun.unal.edu.co/fileadmin/content/gruposdeinvestigacion/fisicanuclear/Tesis/DanielAndrade_TG.pdf
   // layer 1
-  soilOne = new G4Material("DrySoil", density = 0.6*g/cm3, ncomponents=chem_composition_1.size());
-  for (it = chem_composition_1.begin(); it != chem_composition_1.end(); it++) {
-        soilOne->AddMaterial(it->first, fractionmass=it->second);
-  }
+  // soilOne = new G4Material("DrySoil", density = 0.6*g/cm3, ncomponents=chem_composition_1.size());
+  // for (it = chem_composition_1.begin(); it != chem_composition_1.end(); it++) {
+  //       soilOne->AddMaterial(it->first, fractionmass=it->second);
+  // }
   
   // layer 2
   // 10% moisture content
-  soilOne10W = new G4Material("DrySoil10W", density = 0.6*g/cm3, ncomponents=chem_composition_2.size());
-  for (it = chem_composition_2.begin(); it != chem_composition_2.end(); it++) {
-        soilOne10W->AddMaterial(it->first, fractionmass=it->second);
-  }
+  // soilOne10W = new G4Material("DrySoil10W", density = 0.6*g/cm3, ncomponents=chem_composition_2.size());
+  // for (it = chem_composition_2.begin(); it != chem_composition_2.end(); it++) {
+  //       soilOne10W->AddMaterial(it->first, fractionmass=it->second);
+  // }
   
   
   // layer 3
   // 20% moisture content. Need new density value?
-  soilOne20W = new G4Material("DrySoil20W", density = 0.6*g/cm3, ncomponents=chem_composition_3.size());
-  for (it = chem_composition_3.begin(); it != chem_composition_3.end(); it++) {
-        soilOne20W->AddMaterial(it->first, fractionmass=it->second);
-  }
+  // soilOne20W = new G4Material("DrySoil20W", density = 0.6*g/cm3, ncomponents=chem_composition_3.size());
+  // for (it = chem_composition_3.begin(); it != chem_composition_3.end(); it++) {
+  //       soilOne20W->AddMaterial(it->first, fractionmass=it->second);
+  // }
   
   // layer 4
   // 30% moisture content. Need new density value?
-  soilOne30W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=chem_composition_4.size());
-  for (it = chem_composition_4.begin(); it != chem_composition_4.end(); it++) {
-        soilOne30W->AddMaterial(it->first, fractionmass=it->second);
-  }
+  // soilOne30W = new G4Material("DrySoil30W", density = 0.6*g/cm3, ncomponents=chem_composition_4.size());
+  // for (it = chem_composition_4.begin(); it != chem_composition_4.end(); it++) {
+  //       soilOne30W->AddMaterial(it->first, fractionmass=it->second);
+  // }
     
   // layer 5 (inner most)
   // 40% moisture content. Need new density value?
-  soilOne40W = new G4Material("DrySoil40W", density = 0.6*g/cm3, ncomponents=chem_composition_5.size());
-  for (it = chem_composition_5.begin(); it != chem_composition_5.end(); it++) {
-        soilOne40W->AddMaterial(it->first, fractionmass=it->second);
-  }
+  // soilOne40W = new G4Material("DrySoil40W", density = 0.6*g/cm3, ncomponents=chem_composition_5.size());
+  // for (it = chem_composition_5.begin(); it != chem_composition_5.end(); it++) {
+  //       soilOne40W->AddMaterial(it->first, fractionmass=it->second);
+  // }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -579,35 +569,197 @@ void nbDetectorConstruction::updatepH(G4double value)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+void nbDetectorConstruction::setLayer1Material(G4String matName) 
+{
+    int flag = 0;
+    for (const auto& itr: StringToMaterialMapper) 
+    {
+        if(itr.first == matName)
+        {
+            flag = 1;
+            auto materialName = itr.second;
+            shellMaterial_1 = materialName;
+            
+            G4cout<<"layer 1 is set to material: "<<matName<<G4endl;
+            
+            break;
+        }
+    }
+    if(flag == 0)
+    {
+        G4cout<<matName<<" is not found in your datamap"<<G4endl;
+        exit(0);
+    }
+}
+
+void nbDetectorConstruction::setLayer2Material(G4String matName) 
+{
+    int flag = 0;
+    for (const auto& itr: StringToMaterialMapper) 
+    {
+        if(itr.first == matName)
+        {
+            flag = 1;
+            auto materialName = itr.second;
+            shellMaterial_2 = materialName;
+            
+            G4cout<<"layer 2 is set to material: "<<matName<<G4endl;
+            
+            break;
+        }
+    }
+    if(flag == 0)
+    {
+        G4cout<<matName<<" is not found in your datamap"<<G4endl;
+        exit(0);
+    }
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void nbDetectorConstruction::setLayer3Material(G4String matName) 
+{
+    int flag = 0;
+    for (const auto& itr: StringToMaterialMapper) 
+    {
+        if(itr.first == matName)
+        {
+            flag = 1;
+            auto materialName = itr.second;
+            shellMaterial_3 = materialName;
+            
+            G4cout<<"layer 3 is set to material: "<<matName<<G4endl;
+            
+            break;
+        }
+    }
+    if(flag == 0)
+    {
+        G4cout<<matName<<" is not found in your datamap"<<G4endl;
+        exit(0);
+    }
+}
+
+void nbDetectorConstruction::setLayer4Material(G4String matName) 
+{
+    int flag = 0;
+    for (const auto& itr: StringToMaterialMapper) 
+    {
+        if(itr.first == matName)
+        {
+            flag = 1;
+            auto materialName = itr.second;
+            shellMaterial_4 = materialName;
+            
+            G4cout<<"layer 4 is set to material: "<<matName<<G4endl;
+            
+            break;
+        }
+    }
+    if(flag == 0)
+    {
+        G4cout<<matName<<" is not found in your datamap"<<G4endl;
+        exit(0);
+    }
+}
+
+void nbDetectorConstruction::setLayer5Material(G4String matName) 
+{
+    int flag = 0;
+    for (const auto& itr: StringToMaterialMapper) 
+    {
+        if(itr.first == matName)
+        {
+            flag = 1;
+            auto materialName = itr.second;
+            shellMaterial_5 = materialName;
+            
+            G4cout<<"layer 5 is set to material: "<<matName<<G4endl;
+            
+            break;
+        }
+    }
+    if(flag == 0)
+    {
+        G4cout<<matName<<" is not found in your datamap"<<G4endl;
+        exit(0);
+    }
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void nbDetectorConstruction::setLayer1Height(G4double height) 
+{
+    r1 = height;
+    G4cout << "r1 is changed to " << r1 << G4endl;
+    G4RunManager::GetRunManager()->ReinitializeGeometry();
+}
+
+void nbDetectorConstruction::setLayer2Height(G4double height) 
+{
+    r2 = height;
+    G4cout << "r2 is changed to " << r2 << G4endl;
+    G4RunManager::GetRunManager()->ReinitializeGeometry();
+    // G4RunManager::GetRunManager()->PhysicsHasBeenModified();
+}
+
+void nbDetectorConstruction::setLayer3Height(G4double height) 
+{
+    r3 = height;
+    G4cout << "r3 is changed to " << r3 << G4endl;
+    G4RunManager::GetRunManager()->ReinitializeGeometry();
+    // G4RunManager::GetRunManager()->PhysicsHasBeenModified();
+}
+
+void nbDetectorConstruction::setLayer4Height(G4double height) 
+{
+    r4 = height;
+    G4cout << "r4 is changed to " << r4 << G4endl;
+    G4RunManager::GetRunManager()->ReinitializeGeometry();
+    // G4RunManager::GetRunManager()->PhysicsHasBeenModified();
+}
+
+void nbDetectorConstruction::setLayer5Height(G4double height) 
+{
+    r5 = height;
+    G4cout << "r5 is changed to " << r5 << G4endl;
+    G4RunManager::GetRunManager()->ReinitializeGeometry();
+    // G4RunManager::GetRunManager()->PhysicsHasBeenModified();
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 G4String nbDetectorConstruction::getNameOfLayer1()
 {
-    return "shellPV"; // this is first layer beneath the surface
+    return "shellPV_1"; // this is first layer beneath the surface
 }
 
 G4String nbDetectorConstruction::getNameOfLayer2()
 {
-    return "shellPV_1"; // the second layer below that
+    return "shellPV_2"; // the second layer below that
 }
 
 G4String nbDetectorConstruction::getNameOfLayer3()
 {
-    return "shellPV_2"; // the third layer below that
+    return "shellPV_3"; // the third layer below that
 }
 
 G4String nbDetectorConstruction::getNameOfLayer4()
 {
-    return "shellPV_3"; // the fourth layer below that
+    return "shellPV_4"; // the fourth layer below that
 }
 
 G4String nbDetectorConstruction::getNameOfLayer5()
 {
-    return "shellPV_4"; // the fifth layer below that
+    return "shellPV_5"; // the fifth layer below that
 }
 
 G4String nbDetectorConstruction::getWorld()
 {
     return "World"; // return world
 }
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void nbDetectorConstruction::split(const std::string &s, char delim, std::vector<std::string> &elems) {
     std::stringstream ss;
