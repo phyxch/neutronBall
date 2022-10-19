@@ -12,6 +12,11 @@
 #include "G4SystemOfUnits.hh"
 #include "Randomize.hh"
 
+#include <stdio.h>      /* printf, scanf, puts, NULL */
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+#include <math.h>       /* cos */
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 nbPrimaryGeneratorAction::nbPrimaryGeneratorAction()
@@ -23,7 +28,26 @@ nbPrimaryGeneratorAction::nbPrimaryGeneratorAction()
 
   fParticleGun->SetParticleEnergy(0*eV);
   fParticleGun->SetParticlePosition(G4ThreeVector(0.,0.,0.));
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.)); 
+  
+  // we need to setup momentum
+  G4double p, px, py, pz;
+  G4double theta, phi, PI;
+  
+  p = 0; // not calculated yet
+  
+  srand (time(NULL));
+  
+  theta = rand() % 180 + 1; 
+  phi = rand() % 100 + 1; 
+  PI = 3.14159265;
+  
+  G4cout << "theta = " << theta <<  "Phi = " << phi << G4endl;
+  
+  pz = p * cos (theta*PI / 180.0);
+  px = p * sin (theta*PI / 180.0) * cos (phi*PI / 180.0);
+  py = p * sin (theta*PI / 180.0) * sin (phi*PI / 180.0);
+  
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(px,py,pz)); 
   
   // if you're setting a particle through the gun
   // use following decay energy in setting particle energy  

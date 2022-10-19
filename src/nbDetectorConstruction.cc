@@ -60,10 +60,6 @@ nbDetectorConstruction::nbDetectorConstruction()
    pHValue(4.0),
    fdetectorMessenger(0)
 {
-  // initialize StringToMaterialMapper
-  
-  
-  
   // set the values for H and OH concentration by default
   pHValue = 4;
   fractionMassForH = (pHValue*100.00)/14.00;
@@ -383,7 +379,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
   auto solidShell_1 = new G4Sphere("Shell", 0, r1,
 			       startAnglePhi, spanningAnglePhi, 
 			       startAngleTheta, spanningAngleTheta);  
-  auto shellLV_1
+  shellLV_1
     = new G4LogicalVolume(
                  solidShell_1,     // its solid
                  shellMaterial_1,  // its material
@@ -404,7 +400,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 				 startAnglePhi, spanningAnglePhi, 
 				 startAngleTheta, spanningAngleTheta);
   
-  auto shellLV_2
+  shellLV_2
     = new G4LogicalVolume(
                  solidShell_2,     // its solid
                  shellMaterial_2,  // its material
@@ -425,7 +421,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 				   startAnglePhi, spanningAnglePhi, 
 				   startAngleTheta, spanningAngleTheta);
   
-  auto shellLV_3
+  shellLV_3
     = new G4LogicalVolume(
 			  solidShell_3,     // its solid
 			  shellMaterial_3,  // its material
@@ -447,7 +443,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
 				   startAnglePhi, spanningAnglePhi, 
 				   startAngleTheta, spanningAngleTheta);
   
-  auto shellLV_4
+  shellLV_4
     = new G4LogicalVolume(
 			  solidShell_4,     // its solid
 			  shellMaterial_4,  // its material
@@ -469,7 +465,7 @@ G4VPhysicalVolume* nbDetectorConstruction::DefineVolumes()
                                    startAnglePhi, spanningAnglePhi, 
                                    startAngleTheta, spanningAngleTheta);
   
-  auto shellLV_5
+  shellLV_5
     = new G4LogicalVolume(
                           solidShell_5,     // its solid
                           shellMaterial_5,  // its material
@@ -579,9 +575,9 @@ void nbDetectorConstruction::setLayer1Material(G4String matName)
             flag = 1;
             auto materialName = itr.second;
             shellMaterial_1 = materialName;
-            
+            if(shellLV_1) { shellLV_1->SetMaterial(shellMaterial_1); }
+            G4RunManager::GetRunManager()->PhysicsHasBeenModified();
             G4cout<<"layer 1 is set to material: "<<matName<<G4endl;
-            
             break;
         }
     }
@@ -602,9 +598,9 @@ void nbDetectorConstruction::setLayer2Material(G4String matName)
             flag = 1;
             auto materialName = itr.second;
             shellMaterial_2 = materialName;
-            
+            if(shellLV_2) { shellLV_2->SetMaterial(shellMaterial_2); }
+            G4RunManager::GetRunManager()->PhysicsHasBeenModified();
             G4cout<<"layer 2 is set to material: "<<matName<<G4endl;
-            
             break;
         }
     }
@@ -627,9 +623,9 @@ void nbDetectorConstruction::setLayer3Material(G4String matName)
             flag = 1;
             auto materialName = itr.second;
             shellMaterial_3 = materialName;
-            
+            if(shellLV_3) { shellLV_3->SetMaterial(shellMaterial_3); }
+            G4RunManager::GetRunManager()->PhysicsHasBeenModified();
             G4cout<<"layer 3 is set to material: "<<matName<<G4endl;
-            
             break;
         }
     }
@@ -650,9 +646,9 @@ void nbDetectorConstruction::setLayer4Material(G4String matName)
             flag = 1;
             auto materialName = itr.second;
             shellMaterial_4 = materialName;
-            
+            if(shellLV_4) { shellLV_4->SetMaterial(shellMaterial_4); }
+            G4RunManager::GetRunManager()->PhysicsHasBeenModified();
             G4cout<<"layer 4 is set to material: "<<matName<<G4endl;
-            
             break;
         }
     }
@@ -673,9 +669,9 @@ void nbDetectorConstruction::setLayer5Material(G4String matName)
             flag = 1;
             auto materialName = itr.second;
             shellMaterial_5 = materialName;
-            
+            if(shellLV_5) { shellLV_5->SetMaterial(shellMaterial_5); }
+            G4RunManager::GetRunManager()->PhysicsHasBeenModified();
             G4cout<<"layer 5 is set to material: "<<matName<<G4endl;
-            
             break;
         }
     }
@@ -700,7 +696,6 @@ void nbDetectorConstruction::setLayer2Height(G4double height)
     r2 = height;
     G4cout << "r2 is changed to " << r2 << G4endl;
     G4RunManager::GetRunManager()->ReinitializeGeometry();
-    // G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
 
 void nbDetectorConstruction::setLayer3Height(G4double height) 
@@ -708,7 +703,6 @@ void nbDetectorConstruction::setLayer3Height(G4double height)
     r3 = height;
     G4cout << "r3 is changed to " << r3 << G4endl;
     G4RunManager::GetRunManager()->ReinitializeGeometry();
-    // G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
 
 void nbDetectorConstruction::setLayer4Height(G4double height) 
@@ -716,7 +710,6 @@ void nbDetectorConstruction::setLayer4Height(G4double height)
     r4 = height;
     G4cout << "r4 is changed to " << r4 << G4endl;
     G4RunManager::GetRunManager()->ReinitializeGeometry();
-    // G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
 
 void nbDetectorConstruction::setLayer5Height(G4double height) 
@@ -724,7 +717,6 @@ void nbDetectorConstruction::setLayer5Height(G4double height)
     r5 = height;
     G4cout << "r5 is changed to " << r5 << G4endl;
     G4RunManager::GetRunManager()->ReinitializeGeometry();
-    // G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
