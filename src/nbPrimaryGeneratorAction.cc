@@ -29,25 +29,7 @@ nbPrimaryGeneratorAction::nbPrimaryGeneratorAction()
   fParticleGun->SetParticleEnergy(0*eV);
   fParticleGun->SetParticlePosition(G4ThreeVector(0.,0.,0.));
   
-  // we need to setup momentum
-  G4double p, px, py, pz;
-  G4double theta, phi, PI;
-  
-  p = 0; // not calculated yet
-  
-  srand (time(NULL));
-  
-  theta = rand() % 180 + 1; 
-  phi = rand() % 100 + 1; 
-  PI = 3.14159265;
-  
-  G4cout << "theta = " << theta <<  "Phi = " << phi << G4endl;
-  
-  pz = p * cos (theta*PI / 180.0);
-  px = p * sin (theta*PI / 180.0) * cos (phi*PI / 180.0);
-  py = p * sin (theta*PI / 180.0) * sin (phi*PI / 180.0);
-  
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(px,py,pz)); 
+
   
   // if you're setting a particle through the gun
   // use following decay energy in setting particle energy  
@@ -65,13 +47,39 @@ nbPrimaryGeneratorAction::~nbPrimaryGeneratorAction()
 
 void nbPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
+
+  // we need to setup momentum
+  G4double p, px, py, pz;
+  G4double theta, phi, PI;
+  
+  p = 191.108*MeV; // not calculated yet
+  /*
+  srand (time(NULL));
+  
+  theta = rand() % 180 + 1; 
+  phi = rand() % 100 + 1; 
+
+  */
+
+  PI = 3.14159265;
+  theta = 180*G4UniformRand();
+  phi = 360*G4UniformRand();
+  
+  G4cout << "theta = " << theta <<  "   Phi = " << phi << G4endl;
+  
+  pz = p * cos (theta*PI / 180.0);
+  px = p * sin (theta*PI / 180.0) * cos (phi*PI / 360.0);
+  py = p * sin (theta*PI / 180.0) * sin (phi*PI / 360.0);
+  
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(px,py,pz)); 
+
   if (fParticleGun->GetParticleDefinition() == G4Geantino::Geantino()) {  
-    G4int Z = 10, A = 24;
+    G4int Z = 86, A = 222;
     G4double ionCharge   = 0.*eplus;
     G4double excitEnergy = 0.*keV;
     
     G4ParticleDefinition* ion
-       = G4IonTable::GetIonTable()->GetIon(Z,A,excitEnergy);
+      = G4IonTable::GetIonTable()->GetIon(Z,A,excitEnergy);
     fParticleGun->SetParticleDefinition(ion);
     fParticleGun->SetParticleCharge(ionCharge);
   }    

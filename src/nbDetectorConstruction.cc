@@ -233,7 +233,8 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
   G4cout << "r3 : " << r3 << G4endl; 
   G4cout << "r4 : " << r4 << G4endl; 
   G4cout << "r5 : " << r5 << G4endl; 
-   
+
+  
   // fill soil layers
   //FillSoilLayersWithMaps();
   
@@ -311,12 +312,18 @@ void nbDetectorConstruction::DefineMaterials()
   // Vacuum
   defaultMaterial = new G4Material("Galactic", z=1., a=1.01*g/mole,density= universe_mean_density,
                   kStateGas, 2.73*kelvin, 3.e-18*pascal);
- 
+
+  shellMaterial_1 = defaultMaterial;
+  shellMaterial_2 = defaultMaterial;
+  shellMaterial_3 = defaultMaterial;
+  shellMaterial_4 = defaultMaterial;
+  shellMaterial_5 = defaultMaterial;
+  
   // Liquid argon material
   // new G4Material("liquidArgon", z=18., a= 39.95*g/mole, density= 1.390*g/cm3);
   //        // The argon by NIST Manager is a gas with a different density
   // Print materials
-  // G4cout << *(G4Material::GetMaterialTable()) << G4endl;
+  G4cout << *(G4Material::GetMaterialTable()) << G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
