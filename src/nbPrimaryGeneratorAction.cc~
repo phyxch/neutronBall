@@ -59,7 +59,7 @@ void nbPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   theta = 180*G4UniformRand();
   phi = 360*G4UniformRand();
   
-  // G4cout << "theta = " << theta <<  "   Phi = " << phi << G4endl;
+  G4cout << "theta = " << theta <<  "   Phi = " << phi << G4endl;
   
   pz = p * cos (theta*PI / 180.0);
   px = p * sin (theta*PI / 180.0) * cos (phi*PI / 360.0);

@@ -40,12 +40,6 @@ class nbRunAction : public G4UserRunAction
     nbPrimaryGeneratorAction*    fPrimary;
     nbRun*                       fRun;    
     nbHistoManager*              fHistoManager;
-    
-  public:
-    
-    // root output filename
-    G4String rootOutputFile;
-    G4String descFile;
         
 };
 

@@ -17,11 +17,6 @@
 
 #include "G4AnalysisManager.hh"
 
-#include <cstdio>
-#include <ctime>
-#include <iostream>
-#include <fstream> 
-
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* prim)
@@ -34,25 +29,7 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
   analysisManager->SetDefaultFileType("root");
   analysisManager->SetNtupleMerging(true);
   
-  // we need to setfile name dynamically
-  std::time_t rawtime;
-  std::tm* timeinfo;
-  char rootOutputFileBuffer [80];
-  char descFileBuffer [80];
-
-  std::time(&rawtime);
-  timeinfo = std::localtime(&rawtime);
-
-  std::strftime(rootOutputFileBuffer,80,"%Y-%m-%d-%H-%M-%S",timeinfo);
-  std::strftime(descFileBuffer,80,"%Y-%m-%d-%H-%M-%S.txt",timeinfo);
-  
-  rootOutputFile = rootOutputFileBuffer; // root file
-  descFile = descFileBuffer;             // description file
-  
-  G4cout <<"root file: " << rootOutputFile << G4endl;
-  G4cout <<"desc file: " << descFile << G4endl;
-   
-  analysisManager->SetFileName(rootOutputFile);
+  analysisManager->SetFileName("output");
   
   analysisManager->SetVerboseLevel(1);
   analysisManager->SetFirstNtupleId(1);
@@ -104,7 +81,7 @@ G4Run* nbRunAction::GenerateRun()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbRunAction::BeginOfRunAction(const G4Run* aRun)
+void nbRunAction::BeginOfRunAction(const G4Run*)
 {    
   // save Rndm status
   G4RunManager::GetRunManager()->SetRandomNumberStore(false);
@@ -117,18 +94,6 @@ void nbRunAction::BeginOfRunAction(const G4Run* aRun)
     G4double energy = fPrimary->GetParticleGun()->GetParticleEnergy();
     fRun->SetPrimary(particle, energy);
   }
-  
-  // create desc file and write data to it 
-  std::ofstream outfile (descFile);
-  outfile << "no of events: "+std::to_string(aRun->GetNumberOfEventToBeProcessed()) << std::endl;
-  outfile << "primary particle: Rn222" << std::endl;
-  outfile << "layer 1 material: "+fDetector->shellLV_1->GetMaterial()->GetName() << std::endl;
-  outfile << "layer 2 material: "+fDetector->shellLV_2->GetMaterial()->GetName() << std::endl;
-  outfile << "layer 3 material: "+fDetector->shellLV_3->GetMaterial()->GetName() << std::endl;
-  outfile << "layer 4 material: "+fDetector->shellLV_4->GetMaterial()->GetName() << std::endl;
-  outfile << "layer 5 material: "+fDetector->shellLV_5->GetMaterial()->GetName() << std::endl;
-  outfile.close();
-  //
   
   // Get analysis manager
   auto analysisManager = G4AnalysisManager::Instance();
