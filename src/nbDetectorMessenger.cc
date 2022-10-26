@@ -45,7 +45,7 @@ nbDetectorMessenger::nbDetectorMessenger(nbDetectorConstruction* det)
   // following commands set heights for each soil layer
   detDir = new G4UIdirectory("/nb/det/height/");
   layerHeightCmd = new G4UIcmdWithAString("/nb/det/height/setHeight",this);
-  layerHeightCmd->SetGuidance("e.g. 55cm <space> 3 means 55cm for 3rd layer");
+  layerHeightCmd->SetGuidance("e.g. 55 <space> 3 means 55cm for 3rd layer");
   layerHeightCmd->SetGuidance("Let Hi be the height of each layer where i from 1 to 5");
   layerHeightCmd->SetGuidance("Then you must set Ti as: H1 > H2 > H3 > H4 > H5");
   layerHeightCmd->SetParameterName("height<space>layerNumber",false);
