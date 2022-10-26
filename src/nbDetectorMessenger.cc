@@ -9,6 +9,9 @@
 #include "G4UIcmdWithADouble.hh"
 #include "G4UIcmdWithoutParameter.hh"
 
+#include "G4PhysicalConstants.hh"
+#include "G4SystemOfUnits.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 nbDetectorMessenger::nbDetectorMessenger(nbDetectorConstruction* det)
@@ -31,82 +34,22 @@ nbDetectorMessenger::nbDetectorMessenger(nbDetectorConstruction* det)
   pHSetterCmdForH->SetParameterName("pH",false);    
   pHSetterCmdForH->AvailableForStates(G4State_PreInit,G4State_Idle);
 
-  // following commands set materials for each soil layer
-  // set layer 1 material
-  layer1MatCmd = new G4UIcmdWithAString("/nb/det/setMaterialL1",this);
-  layer1MatCmd->SetGuidance("set material for layer 1");
-  layer1MatCmd->SetGuidance("Type: Air/H2O/Al2O3/Fe2O3");
-  layer1MatCmd->SetParameterName("layer1Mat",false);
-  layer1MatCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
   
-  // set layer 2 material
-  layer2MatCmd = new G4UIcmdWithAString("/nb/det/setMaterialL2",this);
-  layer2MatCmd->SetGuidance("set material for layer 2");
-  layer2MatCmd->SetGuidance("Type: Air/H2O/Al2O3/Fe2O3");
-  layer2MatCmd->SetParameterName("layer2Mat",false);
-  layer2MatCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
-  
-  // set layer 3 material
-  layer3MatCmd = new G4UIcmdWithAString("/nb/det/setMaterialL3",this);
-  layer3MatCmd->SetGuidance("set material for layer 3");
-  layer3MatCmd->SetGuidance("Type: Air/H2O/Al2O3/Fe2O3");
-  layer3MatCmd->SetParameterName("layer3Mat",false);
-  layer3MatCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
-  
-  // set layer 4 material
-  layer4MatCmd = new G4UIcmdWithAString("/nb/det/setMaterialL4",this);
-  layer4MatCmd->SetGuidance("set material for layer 4");
-  layer4MatCmd->SetGuidance("Type: Air/H2O/Al2O3/Fe2O3");
-  layer4MatCmd->SetParameterName("layer4Mat",false);
-  layer4MatCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
-  
-  // set layer 5 material
-  layer5MatCmd = new G4UIcmdWithAString("/nb/det/setMaterialL5",this);
-  layer5MatCmd->SetGuidance("set material for layer 5");
-  layer5MatCmd->SetGuidance("Type: Air/H2O/Al2O3/Fe2O3");
-  layer5MatCmd->SetParameterName("layer5Mat",false);
-  layer5MatCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
-  
+  detDir = new G4UIdirectory("/nb/det/mat/");
+  layerMatCmd = new G4UIcmdWithAString("/nb/det/mat/setMaterial",this);
+  layerMatCmd->SetGuidance("set material with material name and layer number.");
+  layerMatCmd->SetGuidance("Type: Air/H2O/Al2O3/Fe2O3");
+  layerMatCmd->SetParameterName("materialName<space>layerNumber",false);
+  layerMatCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+
   // following commands set heights for each soil layer
-  // layer 1 height largest layer
-  layer1HeightCmd = new G4UIcmdWithADoubleAndUnit("/nb/det/setHeightL1",this);
-  layer1HeightCmd->SetGuidance("Set height for layer 1. Let Hi be the height of each layer where i from 1 to 5");
-  layer1HeightCmd->SetGuidance("Then you must set Ti as: H1 > H2 > H3 > H4 > H5");
-  layer1HeightCmd->SetUnitCategory("Length");
-  layer1HeightCmd->SetParameterName("layer1Height",false);
-  layer1HeightCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
-  
-  // layer 1 height largest layer
-  layer2HeightCmd = new G4UIcmdWithADoubleAndUnit("/nb/det/setHeightL2",this);
-  layer2HeightCmd->SetGuidance("Set height for layer 2. Let Hi be the height of each layer where i from 1 to 5");
-  layer2HeightCmd->SetGuidance("Then you must set Ti as: H1 > H2 > H3 > H4 > H5");
-  layer2HeightCmd->SetUnitCategory("Length");
-  layer2HeightCmd->SetParameterName("layer2Height",false);
-  layer2HeightCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
-  
-  // layer 3 height largest layer
-  layer3HeightCmd = new G4UIcmdWithADoubleAndUnit("/nb/det/setHeightL3",this);
-  layer3HeightCmd->SetGuidance("Set height for layer 3. Let Hi be the height of each layer where i from 1 to 5");
-  layer3HeightCmd->SetGuidance("Then you must set Ti as: H1 > H2 > H3 > H4 > H5");
-  layer3HeightCmd->SetUnitCategory("Length");
-  layer3HeightCmd->SetParameterName("layer3Height",false);
-  layer3HeightCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
-  
-  // layer 4 height largest layer
-  layer4HeightCmd = new G4UIcmdWithADoubleAndUnit("/nb/det/setHeightL4",this);
-  layer4HeightCmd->SetGuidance("Set height for layer 4. Let Hi be the height of each layer where i from 1 to 5");
-  layer4HeightCmd->SetGuidance("Then you must set Ti as: H1 > H2 > H3 > H4 > H5");
-  layer4HeightCmd->SetUnitCategory("Length");
-  layer4HeightCmd->SetParameterName("layer4Height",false);
-  layer4HeightCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
-  
-  // layer 5 height largest layer
-  layer5HeightCmd = new G4UIcmdWithADoubleAndUnit("/nb/det/setHeightL5",this);
-  layer5HeightCmd->SetGuidance("Set height for layer 5. Let Hi be the height of each layer where i from 1 to 5");
-  layer5HeightCmd->SetGuidance("Then you must set Ti as: H1 > H2 > H3 > H4 > H5");
-  layer5HeightCmd->SetUnitCategory("Length");
-  layer5HeightCmd->SetParameterName("layer5Height",false);
-  layer5HeightCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+  detDir = new G4UIdirectory("/nb/det/height/");
+  layerHeightCmd = new G4UIcmdWithAString("/nb/det/height/setHeight",this);
+  layerHeightCmd->SetGuidance("e.g. 55cm <space> 3 means 55cm for 3rd layer");
+  layerHeightCmd->SetGuidance("Let Hi be the height of each layer where i from 1 to 5");
+  layerHeightCmd->SetGuidance("Then you must set Ti as: H1 > H2 > H3 > H4 > H5");
+  layerHeightCmd->SetParameterName("height<space>layerNumber",false);
+  layerHeightCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -115,16 +58,8 @@ nbDetectorMessenger::~nbDetectorMessenger()
 {
   delete pHSetterCmdForH;
 
-  delete layer2MatCmd;
-  delete layer3MatCmd;
-  delete layer4MatCmd;
-  delete layer5MatCmd;
-
-  delete layer5HeightCmd;
-  delete layer4HeightCmd;
-  delete layer3HeightCmd;
-  delete layer2HeightCmd;
-  delete layer1HeightCmd;
+  delete layerMatCmd;
+  delete layerHeightCmd;
   
   delete detDir;
   delete nbDir;  
@@ -135,61 +70,51 @@ nbDetectorMessenger::~nbDetectorMessenger()
 void nbDetectorMessenger::SetNewValue(G4UIcommand* command, G4String newValue)
 { 
    
-  if(command == pHSetterCmdForH)
+  if (command == pHSetterCmdForH)
   { 
     // set update pH at runtime 
     fDetector->updatepH(pHSetterCmdForH->GetNewDoubleValue(newValue)); 
   }
   
-  if (command == layer1MatCmd)
+  if (command == layerMatCmd)
   { 
-    fDetector->setLayer1Material(newValue);
+    // split the string
+    vector<string> row_values;
+    split(newValue, ' ', row_values);
+    
+    G4String matName = (G4String) row_values[0];
+    int layerNumber = std::stoi(row_values[1]);
+    
+    G4cout << "material name : " << matName << G4endl;
+    G4cout << "layer number : " << layerNumber << G4endl;
+     
+    fDetector->setLayerMaterial(matName, layerNumber);
   }
   
-  if (command == layer2MatCmd)
+  if (command == layerHeightCmd) 
   { 
-    fDetector->setLayer2Material(newValue);
+    // split the string
+    vector<string> row_values;
+    split(newValue, ' ', row_values);
+    
+    G4double layerHeight = std::stod(row_values[0])*cm;
+    int layerNumber = std::stoi(row_values[1]);
+    
+    G4cout << "layer height : " << layerHeight << G4endl;
+    G4cout << "layer number : " << layerNumber << G4endl;
+    
+    fDetector->setLayerHeight(layerHeight, layerNumber);
   }
-  
-  if (command == layer3MatCmd)
-  { 
-    fDetector->setLayer3Material(newValue);
-  }
-  
-  if (command == layer4MatCmd)
-  { 
-    fDetector->setLayer4Material(newValue);
-  }
-  
-  if (command == layer5MatCmd)
-  { 
-    fDetector->setLayer5Material(newValue);
-  }
-  
-  if (command == layer1HeightCmd) 
-  { 
-    fDetector->setLayer1Height(layer1HeightCmd->GetNewDoubleValue(newValue));
-  }
-  
-  if (command == layer2HeightCmd) 
-  { 
-    fDetector->setLayer2Height(layer2HeightCmd->GetNewDoubleValue(newValue));
-  }
-  
-  if (command == layer3HeightCmd) 
-  { 
-    fDetector->setLayer3Height(layer3HeightCmd->GetNewDoubleValue(newValue));
-  }
-  
-  if (command == layer4HeightCmd) 
-  { 
-    fDetector->setLayer4Height(layer4HeightCmd->GetNewDoubleValue(newValue));
-  }
-  
-  if (command == layer5HeightCmd) 
-  { 
-    fDetector->setLayer5Height(layer5HeightCmd->GetNewDoubleValue(newValue));
-  }
+ 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......    
+
+void nbDetectorMessenger::split(const std::string &s, char delim, std::vector<std::string> &elems) {
+    std::stringstream ss;
+    ss.str(s);
+    std::string item;
+    while (std::getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+}

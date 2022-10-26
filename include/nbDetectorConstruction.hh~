@@ -135,8 +135,18 @@ class nbDetectorConstruction : public G4VUserDetectorConstruction
       
       // function definitions for detector messenger
       void updatepH(G4double pHValue);
-      void setLayerMaterial(G4String matName, int layerNumber);
-      void setLayerHeight(G4double height, int layerNumber);        
+      
+      void setLayer1Material(G4String matName);
+      void setLayer2Material(G4String matName);
+      void setLayer3Material(G4String matName);
+      void setLayer4Material(G4String matName);
+      void setLayer5Material(G4String matName);
+      
+      void setLayer1Height(G4double height); 
+      void setLayer2Height(G4double height); 
+      void setLayer3Height(G4double height); 
+      void setLayer4Height(G4double height); 
+      void setLayer5Height(G4double height); 
 };
 
 #endif

@@ -13,6 +13,7 @@
 #include "G4HadronicProcessType.hh"
 
 #include "G4SystemOfUnits.hh"
+#include "G4ParticleTypes.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -47,9 +48,16 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
   G4double time   = track->GetGlobalTime();
   // G4double weight = track->GetWeight();
   G4double x = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
-  G4double y = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
-  G4double z = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
+  G4double y = track->GetStep()->GetPostStepPoint()->GetPosition().y()/cm;
+  G4double z = track->GetStep()->GetPostStepPoint()->GetPosition().z()/cm;
   G4int trackID      = track->GetTrackID();
+
+  // if particle is anti neutrino; kill
+  if (particle == G4AntiNeutrinoE::AntiNeutrinoE())
+  {
+      G4Track* tr = (G4Track*) track;
+      tr->SetTrackStatus(fStopAndKill);
+  }
 
   //which volume ?
   //
@@ -117,4 +125,4 @@ void nbTrackingAction::PostUserTrackingAction(const G4Track* )
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-
+    

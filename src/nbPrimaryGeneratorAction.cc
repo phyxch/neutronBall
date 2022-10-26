@@ -48,18 +48,12 @@ nbPrimaryGeneratorAction::~nbPrimaryGeneratorAction()
 void nbPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
 
-  // we need to setup momentum
+  // we need to setup momentum (mv)
   G4double p, px, py, pz;
   G4double theta, phi, PI;
   
-  p = 191.108*MeV; // not calculated yet
-  /*
-  srand (time(NULL));
+  p = 191.108*MeV; // this is calculated using two body decay
   
-  theta = rand() % 180 + 1; 
-  phi = rand() % 100 + 1; 
-
-  */
 
   PI = 3.14159265;
   theta = 180*G4UniformRand();
