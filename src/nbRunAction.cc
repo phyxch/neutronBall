@@ -127,6 +127,11 @@ void nbRunAction::BeginOfRunAction(const G4Run* aRun)
   outfile << "layer 3 material: "+fDetector->shellLV_3->GetMaterial()->GetName() << std::endl;
   outfile << "layer 4 material: "+fDetector->shellLV_4->GetMaterial()->GetName() << std::endl;
   outfile << "layer 5 material: "+fDetector->shellLV_5->GetMaterial()->GetName() << std::endl;
+  outfile << "layer 1 Radius: "+std::to_string(fDetector->r1/cm) << std::endl;
+  outfile << "layer 2 Radius: "+std::to_string(fDetector->r2/cm) << std::endl;
+  outfile << "layer 3 Radius: "+std::to_string(fDetector->r3/cm) << std::endl;
+  outfile << "layer 4 Radius: "+std::to_string(fDetector->r4/cm) << std::endl;
+  outfile << "layer 5 Radius: "+std::to_string(fDetector->r5/cm) << std::endl;
   outfile.close();
   //
   

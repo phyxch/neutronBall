@@ -109,7 +109,8 @@ G4VPhysicalVolume* nbDetectorConstruction::Construct()
         {"MgO", MgO},
         {"TiO2", TiO2},
         {"CaO", CaO},
-        {"pH", pH}
+        {"pH", pH},
+        {"Galactic", defaultMaterial}
   };
   
   // read the config file for getting default radius of each layer

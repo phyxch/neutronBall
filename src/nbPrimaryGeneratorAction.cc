@@ -64,8 +64,12 @@ void nbPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   pz = p * cos (theta*PI / 180.0);
   px = p * sin (theta*PI / 180.0) * cos (phi*PI / 360.0);
   py = p * sin (theta*PI / 180.0) * sin (phi*PI / 360.0);
-  
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(px,py,pz)); 
+    
+  // G4cout<<"px : "<<px<<G4endl;
+  // G4cout<<"py : "<<py<<G4endl;
+  // G4cout<<"pz : "<<pz<<G4endl;    
+    
+  fParticleGun->SetParticleMomentum(G4ThreeVector(px,py,pz)); 
 
   if (fParticleGun->GetParticleDefinition() == G4Geantino::Geantino()) {  
     G4int Z = 86, A = 222;

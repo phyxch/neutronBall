@@ -18,6 +18,10 @@
 #include "G4UIExecutive.hh"
 #include "G4VisExecutive.hh"
 
+#include "QGSP_BERT.hh"
+#include "QGSP_BERT_HP.hh"
+#include "LBE.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 //namespace {
@@ -54,12 +58,17 @@ int main(int argc,char** argv) {
   //set mandatory initialization classes
   nbDetectorConstruction* det= new nbDetectorConstruction;
   runManager->SetUserInitialization(det);
-
-  nbPhysicsList* phys = new nbPhysicsList;
-  runManager->SetUserInitialization(phys);
-
+  
+  // code for physicslist
+  // nbPhysicsList* phys = new nbPhysicsList;
+  // runManager->SetUserInitialization(phys);
+  auto physicsList = new QGSP_BERT_HP;
+  runManager->SetUserInitialization(physicsList);
+  // code for physics list ends here
+  
+  
   runManager->SetUserInitialization(new nbActionInitialization(det));
-
+  
 
   //initialize G4 kernel
   runManager->Initialize();
