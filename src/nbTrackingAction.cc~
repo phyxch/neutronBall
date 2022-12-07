@@ -116,9 +116,6 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
   // {
   //     G4cout<<"name: "<<name<<G4endl;
   // }
-  
-  // const G4ParticleMomentum dir = aTrack->GetMomentumDirection();
-  // track->SetMomentumDirection(G4ThreeVector(dir.x(), dir.y(), std::abs(dir.z()));
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

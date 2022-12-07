@@ -21,6 +21,9 @@
 #include "QGSP_BERT.hh"
 #include "QGSP_BERT_HP.hh"
 #include "LBE.hh"
+#include "Shielding.hh"
+
+#include "G4ProcessManager.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -65,8 +68,7 @@ int main(int argc,char** argv) {
   auto physicsList = new QGSP_BERT_HP;
   runManager->SetUserInitialization(physicsList);
   // code for physics list ends here
-  
-  
+    
   runManager->SetUserInitialization(new nbActionInitialization(det));
   
 

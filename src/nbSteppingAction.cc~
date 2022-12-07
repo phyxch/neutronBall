@@ -97,8 +97,8 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   // if the particle is radon
   // if(A == 222)
   // {
-  //     const G4ParticleMomentum dir = aStep->GetTrack()->GetMomentumDirection();
-  //     aStep->GetTrack()->SetMomentumDirection(G4ThreeVector(dir.x(), dir.y(), std::abs(dir.z())));
+  //     aStep->GetPostStepPoint()->SetKineticEnergy(100000000000000000000000000.0*eV);
+  //     G4cout<<"kinetic energy is : "<< aStep->GetPostStepPoint()->GetKineticEnergy()<<G4endl;
   // }
 }
 

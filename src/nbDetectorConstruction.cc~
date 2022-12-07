@@ -287,10 +287,10 @@ void nbDetectorConstruction::DefineMaterials()
   elMn = nistManager->FindOrBuildElement("Mn");
   
   // create air
-  Air = nistManager->FindOrBuildMaterial("G4_AIR");
-  // Air = new G4Material("Air", density = 0.1*kg/m3, ncomponents = 2,kStateGas,3000.15*kelvin);
-  // Air->AddElement(elN, fractionmass=70.0*perCent);
-  // Air->AddElement(elO, fractionmass=30.0*perCent);
+  // Air = nistManager->FindOrBuildMaterial("G4_AIR");
+  Air = new G4Material("Air", density = 0.1*kg/m3, ncomponents = 2,kStateGas,3000.15*kelvin);
+  Air->AddElement(elN, fractionmass=70.0*perCent);
+  Air->AddElement(elO, fractionmass=30.0*perCent);
   // Air = new G4Material("Air",density= 0.00120479*g/cm3, 1273.15*kelvin, ncomponents=2);
   // Air->AddElement(elN, 70.0*perCent);
   // Air->AddElement(elO, 30.0*perCent);
