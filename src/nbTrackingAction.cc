@@ -43,14 +43,14 @@ void nbTrackingAction::PreUserTrackingAction(const G4Track* track)
   G4double pID    = particle->GetPDGEncoding();
   G4double Z      = particle->GetAtomicNumber();
   G4double A      = particle->GetAtomicMass();
-  G4double charge = particle->GetPDGCharge();    
+  // G4double charge = particle->GetPDGCharge();    
   G4double energy = track->GetKineticEnergy();
   G4double time   = track->GetGlobalTime();
   // G4double weight = track->GetWeight();
-  G4double x = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
-  G4double y = track->GetStep()->GetPostStepPoint()->GetPosition().y()/cm;
-  G4double z = track->GetStep()->GetPostStepPoint()->GetPosition().z()/cm;
-  G4int trackID      = track->GetTrackID();
+  // G4double x = track->GetStep()->GetPostStepPoint()->GetPosition().x()/cm;
+  // G4double y = track->GetStep()->GetPostStepPoint()->GetPosition().y()/cm;
+  // G4double z = track->GetStep()->GetPostStepPoint()->GetPosition().z()/cm;
+  // G4int trackID = track->GetTrackID();
 
   // if particle is anti neutrino; kill
   if (particle == G4AntiNeutrinoE::AntiNeutrinoE())

@@ -59,6 +59,7 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   G4double pX=aStep->GetPostStepPoint()->GetMomentum().x();
   G4double pY=aStep->GetPostStepPoint()->GetMomentum().y();
   G4double pZ=aStep->GetPostStepPoint()->GetMomentum().z();
+  G4int evtNo = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
   
   // if(A == 222 || z == 86)
   // {
@@ -90,6 +91,7 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   analysisManager->FillNtupleDColumn(id,10, pX);
   analysisManager->FillNtupleDColumn(id,11, pY);
   analysisManager->FillNtupleDColumn(id,12, pZ);
+  analysisManager->FillNtupleIColumn(id,13, evtNo);
   // add row
   analysisManager->AddNtupleRow(id);
   
