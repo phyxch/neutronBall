@@ -1,117 +1,102 @@
 #include "nbPhysicsList.hh"
+#include "nbDriftPhysics.hh"
 
-#include "G4SystemOfUnits.hh"
-#include "G4UnitsTable.hh"
+#include <iomanip>   
 
+#include <CLHEP/Units/SystemOfUnits.h>
+
+#include "globals.hh"
+#include "G4ios.hh"
+
+#include "G4DecayPhysics.hh"
+#include "G4RadioactiveDecayPhysics.hh"
 #include "G4EmStandardPhysics.hh"
 #include "G4EmExtraPhysics.hh"
-#include "G4EmParameters.hh"
-#include "G4DecayPhysics.hh"
-#include "G4NuclideTable.hh"
-#include "nbBiasedRDPhysics.hh"
-#include "G4HadronElasticPhysics.hh"
-#include "G4HadronPhysicsFTFP_BERT.hh"
-#include "G4HadronInelasticQBBC.hh"
-#include "G4HadronPhysicsINCLXX.hh"
-#include "G4IonElasticPhysics.hh"
 #include "G4IonPhysics.hh"
-#include "G4IonINCLXXPhysics.hh"
+#include "G4StoppingPhysics.hh"
+#include "G4HadronElasticPhysicsHP.hh"
 
-// particles
+#include "QGSP_BERT_HP.hh"
+#include "G4HadronPhysicsQGSP_BERT_HP.hh"
 
-#include "G4BosonConstructor.hh"
-#include "G4LeptonConstructor.hh"
-#include "G4MesonConstructor.hh"
-#include "G4BosonConstructor.hh"
-#include "G4BaryonConstructor.hh"
-#include "G4IonConstructor.hh"
-#include "G4ShortLivedConstructor.hh"
+#include "G4UnitsTable.hh"
+#include "G4ProcessManager.hh"
 
 
 nbPhysicsList::nbPhysicsList()
 :G4VModularPhysicsList()
 {
-  G4int verb = 1;
-  SetVerboseLevel(verb);
+  G4int ver = 1;
 
-  // Mandatory for G4NuclideTable
-  // Half-life threshold must be set small or many short-lived isomers 
-  // will not be assigned life times (default to 0) 
-  G4NuclideTable::GetInstance()->SetThresholdOfHalfLife(0.1*picosecond);
-  G4NuclideTable::GetInstance()->SetLevelTolerance(1.0*eV);
-          
-  // EM physics
-  RegisterPhysics(new G4EmStandardPhysics());
-  G4EmParameters* param = G4EmParameters::Instance();
-  param->SetAugerCascade(true);
-  param->SetStepFunction(1., 1*CLHEP::mm);
-  param->SetStepFunctionMuHad(1., 1*CLHEP::mm);
-
-  // Decay
-  RegisterPhysics(new G4DecayPhysics());
-
-  // Radioactive decay
-  RegisterPhysics(new nbBiasedRDPhysics());
-            
-  // Hadron Elastic scattering
-  RegisterPhysics( new G4HadronElasticPhysics(verb) );
+  defaultCutValue = 0.7*CLHEP::mm;  
+  SetVerboseLevel(ver);
   
-  // Hadron Inelastic physics
-  RegisterPhysics( new G4HadronPhysicsFTFP_BERT(verb));
-  //RegisterPhysics( new G4HadronInelasticQBBC(verb));        
-  //RegisterPhysics( new G4HadronPhysicsINCLXX(verb));
-  
-  // Ion Elastic scattering
-  RegisterPhysics( new G4IonElasticPhysics(verb));
-      
-  // Ion Inelastic physics
-  RegisterPhysics( new G4IonPhysics(verb));
-  ////RegisterPhysics( new G4IonINCLXXPhysics(verb));
-    
-  // Gamma-Nuclear Physics
-  G4EmExtraPhysics* gnuc = new G4EmExtraPhysics(verb);
-  gnuc->ElectroNuclear(false);
-  gnuc->MuonNuclear(false);
-  RegisterPhysics(gnuc);
+  // intialise all physics lists
+  DecayPhysics = new G4DecayPhysics(ver);
+  EmStandardPhysics =  new G4EmStandardPhysics(ver);
+  EmExtraPhysics = new G4EmExtraPhysics(ver);
+  RadioactiveDecayPhysics = new G4RadioactiveDecayPhysics(ver);
+  HadronPhysicsQGSP_BERT_HP = new G4HadronPhysicsQGSP_BERT_HP(ver);
+  IonPhysics = new G4IonPhysics(ver);
+  StoppingPhysics = new G4StoppingPhysics(ver);
+  HadronElasticPhysicsHP = new G4HadronElasticPhysicsHP(ver);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 nbPhysicsList::~nbPhysicsList()
-{ }
+{
+  delete DecayPhysics;
+  delete EmStandardPhysics;
+  delete EmExtraPhysics;
+  delete RadioactiveDecayPhysics;
+  delete HadronElasticPhysicsHP;
+  delete HadronPhysicsQGSP_BERT_HP;
+  delete IonPhysics;
+  delete StoppingPhysics;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void nbPhysicsList::ConstructParticle()
 {
-  G4BosonConstructor  pBosonConstructor;
-  pBosonConstructor.ConstructParticle();
-
-  G4LeptonConstructor pLeptonConstructor;
-  pLeptonConstructor.ConstructParticle();
-
-  G4MesonConstructor pMesonConstructor;
-  pMesonConstructor.ConstructParticle();
-
-  G4BaryonConstructor pBaryonConstructor;
-  pBaryonConstructor.ConstructParticle();
-
-  G4IonConstructor pIonConstructor;
-  pIonConstructor.ConstructParticle();
-
-  G4ShortLivedConstructor pShortLivedConstructor;
-  pShortLivedConstructor.ConstructParticle();  
+  // construct the particles which are going to use
+  DecayPhysics->ConstructParticle();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void nbPhysicsList::SetCuts()
+void nbPhysicsList::ConstructProcess()
 {
-  // SetCutValue(0*mm, "proton");
-  // SetCutValue(10*km, "e-");
-  // SetCutValue(10*km, "e+");
-  // SetCutValue(10*km, "gamma");      
+  AddTransportation();
+  
+  // add custom physics list here
+  DecayPhysics->ConstructProcess();
+  EmStandardPhysics->ConstructProcess();
+  EmExtraPhysics->ConstructProcess();
+  RadioactiveDecayPhysics->ConstructProcess();
+  HadronElasticPhysicsHP->ConstructProcess();
+  HadronPhysicsQGSP_BERT_HP->ConstructProcess();
+  IonPhysics->ConstructProcess();
+  StoppingPhysics->ConstructProcess();
+  
+  AddDriftPhysics();
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+void nbPhysicsList::AddDriftPhysics()
+{
+  driftPhysicsProcesss = new nbDriftPhysics();
+
+  auto particleIterator=GetParticleIterator();
+  particleIterator->reset();
+  while ((*particleIterator)()){
+    G4ParticleDefinition* particle = particleIterator->value();
+    G4ProcessManager* pmanager = particle->GetProcessManager();
+
+    if (driftPhysicsProcesss->IsApplicable(*particle) && pmanager)
+      {
+	        pmanager->AddContinuousProcess(driftPhysicsProcesss);
+      }
+  }
+}
 

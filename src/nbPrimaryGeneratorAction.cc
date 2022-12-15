@@ -29,8 +29,6 @@ nbPrimaryGeneratorAction::nbPrimaryGeneratorAction()
   fParticleGun->SetParticleEnergy(0*eV);
   fParticleGun->SetParticlePosition(G4ThreeVector(0.,0.,0.));
   
-
-  
   // if you're setting a particle through the gun
   // use following decay energy in setting particle energy  
   // link: https://www.ld-didactic.de/software/524221en/Content/Appendix/Ra226Series.htm         
@@ -69,7 +67,8 @@ void nbPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   // G4cout<<"py : "<<py<<G4endl;
   // G4cout<<"pz : "<<pz<<G4endl;    
     
-  fParticleGun->SetParticleMomentum(G4ThreeVector(px,py,pz)); 
+  fParticleGun->SetParticleMomentum(G4ThreeVector(px,py,pz)); // set original one
+  // fParticleGun->SetParticleMomentum(G4ThreeVector(0.,80.,0.)); 
 
   // if (fParticleGun->GetParticleDefinition() == G4Geantino::Geantino()) {  
     G4int Z = 86, A = 222;

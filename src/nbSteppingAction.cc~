@@ -100,16 +100,10 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
  
   // if (pVolume == fDetector->getWorld() && A == 222)
   // {
+  // 
   //     aStep->GetTrack()->SetTrackStatus(fStopAndKill);
   //     G4cout << "the particle << " << pName << " is stopped" << G4endl;
   // }
-  // 
-  // else if(A == 222)
-  // {
-  //    aStep->GetTrack()->SetTrackStatus(fAlive);
-  // }
-  
-  
   
   // if(A == 222)
   // {

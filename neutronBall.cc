@@ -12,18 +12,26 @@
 #include "Randomize.hh"
 
 #include "nbDetectorConstruction.hh"
-#include "nbPhysicsList.hh"
 #include "nbActionInitialization.hh"
 
 #include "G4UIExecutive.hh"
 #include "G4VisExecutive.hh"
 
-#include "QGSP_BERT.hh"
-#include "QGSP_BERT_HP.hh"
-#include "LBE.hh"
-#include "Shielding.hh"
+// #include "QGSP_BERT.hh"
+// #include "QGSP_BERT_HP.hh"
+// #include "LBE.hh"
+// #include "Shielding.hh"
 
-#include "G4ProcessManager.hh"
+// #include "nbDriftPhysics.hh"
+// #include "G4ProcessManager.hh"
+// #include "G4PhysListFactory.hh"
+// #include "G4ParticleTable.hh"
+// #include "G4StepLimiter.hh"
+
+#include "nbPhysicsList.hh"
+
+
+// #include "src/nbCustomPhysicsProcess.cc"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -62,13 +70,84 @@ int main(int argc,char** argv) {
   nbDetectorConstruction* det= new nbDetectorConstruction;
   runManager->SetUserInitialization(det);
   
-  // code for physicslist
-  // nbPhysicsList* phys = new nbPhysicsList;
-  // runManager->SetUserInitialization(phys);
-  auto physicsList = new QGSP_BERT_HP;
-  runManager->SetUserInitialization(physicsList);
+  nbPhysicsList* phys = new nbPhysicsList;
+  runManager->SetUserInitialization(phys);
+
+  //////////////////// physics lists code /////////////
+  // G4PhysListFactory physFactory;
+  // auto qgsp_hp_bert = "QGSP_BERT_HP";
+  // auto phys = physFactory.GetReferencePhysList(qgsp_hp_bert);
+  // include more physics process from nbPhysicsList class 
+  // auto physList = new nbPhysicsList;
+  // phys->RegisterPhysics(new nbPhysicsList);
+  // runManager->SetUserInitialization(new nbPhysicsList);
+  
+  //////////////////// OLD CODE ///////////////////////
+  // auto physicsList = new QGSP_BERT_HP;
+  // runManager->SetUserInitialization(physicsList);
   // code for physics list ends here
-    
+  //////////////////// OLD CODE ENDS //////////////////
+ 
+  // G4PhysListFactory physFactory;
+  // auto qgsp_hp_bert = "QGSP_BERT_HP";
+  // G4VModularPhysicsList* phys = physFactory.GetReferencePhysList(qgsp_hp_bert); // return G4VModularPhysicsList (has RegisterPhysics func)
+  // 
+  // nbDriftPhysics* driftPhysicsProcess = new nbDriftPhysics();
+  
+  // G4ParticleTable::G4PTblDicIterator* particleIterator
+  // = G4ParticleTable::GetParticleTable()->GetIterator();
+  // 
+  // G4cout << "particleIterator is created" << G4endl;
+  // 
+  // while ((*particleIterator)()){
+  //   
+  //   G4cout << "particleIterator is iterating.." << G4endl;
+  //   
+  //   // get particle
+  //   G4ParticleDefinition* particle = particleIterator->value();
+  //   
+  //   // create processManager instance
+  //   G4ProcessManager* pmanager = particle->GetProcessManager();
+  //   
+  //   G4cout << "process manager created.." << G4endl;
+  //   
+  //   // check if process is applicable to this particle    
+  //   if (driftPhysicsProcess->IsApplicable(*particle) && pmanager)
+  //   {
+  //       G4cout << "pName: " << particle->GetParticleName() << " ADDED TRUE" << G4endl;
+  //       // add process for that particle
+	 //       pmanager ->AddContinuousProcess(driftPhysicsProcess);
+  //   }
+  // }
+  
+  //////////////////////// ANOTHER IMPLEMENTATION OF PARTICLE ITERATOR ///////////////////////////
+  // // Get a pointer to the particle table
+  // G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
+
+  // // Get a vector of all of the particles in the table
+  // G4int entries = particleTable::entries();
+  // 
+  // G4cout << "entries: " << entries << G4endl;
+  // 
+  // for(G4int i=0;i<entries;i++)
+  // {
+  //   G4ParticleDefinition* particle = particleTable->GetParticle(i);
+  //   G4ProcessManager* pmanager = particle->GetProcessManager();
+  //   if (driftPhysicsProcess->IsApplicable(*particle) && pmanager)
+  //   {
+  //       G4cout << "pName: " << particle->GetParticleName() << " ADDED TRUE" << G4endl;
+  //       // add process for that particle
+	 //       pmanager ->AddContinuousProcess(driftPhysicsProcess);
+  //   }
+  // }
+  // 
+  // runManager->SetUserInitialization(phys);
+  // 
+  // G4cout << "******* drift physics added successfully *******" << G4endl;
+  
+  
+
+  // include detector geometry
   runManager->SetUserInitialization(new nbActionInitialization(det));
   
 
