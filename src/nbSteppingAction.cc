@@ -60,22 +60,8 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   G4double pY=aStep->GetPostStepPoint()->GetMomentum().y();
   G4double pZ=aStep->GetPostStepPoint()->GetMomentum().z();
   G4int evtNo = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
-  
-  // if(A == 222 || z == 86)
-  // {
-  //     G4cout<<"x position: "<<x<<G4endl;
-  //     G4cout<<"y position: "<<y<<G4endl;
-  //     G4cout<<"z position: "<<z<<G4endl;
-  //     G4cout<<"Atomic number(Z): "<<Z<<G4endl;
-  //     G4cout<<"Atomic mass number(A): "<<A<<G4endl;
-  //     G4cout<<"velocity: "<<pVelocity<<G4endl;
-  //     G4cout<<"kinetic energy: "<<pKE<<G4endl;
-  //     G4cout<<"x-direction momentum: "<<pX<<G4endl;
-  //     G4cout<<"y-direction momentum: "<<pX<<G4endl;
-  //     G4cout<<"z-direction momentum: "<<pZ<<G4endl;
-  //     
-  // }
-  
+  G4double time = aStep->GetPostStepPoint()->GetGlobalTime();
+    
   // fill ntuple with id = 2
   G4int id = 2;
   analysisManager->FillNtupleDColumn(id,0, x);
@@ -92,61 +78,9 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   analysisManager->FillNtupleDColumn(id,11, pY);
   analysisManager->FillNtupleDColumn(id,12, pZ);
   analysisManager->FillNtupleIColumn(id,13, evtNo);
+  analysisManager->FillNtupleDColumn(id,14, time/s);
   // add row
   analysisManager->AddNtupleRow(id);
-  
-  // if particle is in world volume
-  
- 
-  // if (pVolume == fDetector->getWorld() && A == 222)
-  // {
-  //     aStep->GetTrack()->SetTrackStatus(fStopAndKill);
-  //     G4cout << "the particle << " << pName << " is stopped" << G4endl;
-  // }
-  // 
-  // else if(A == 222)
-  // {
-  //    aStep->GetTrack()->SetTrackStatus(fAlive);
-  // }
-  
-  
-  
-  // if(A == 222)
-  // {
-  //     // check the velocity of particle
-  //     G4double currentVelocity =  aStep->GetPostStepPoint()->GetVelocity();
-  //     
-  //     G4cout << "currentVelocity : " << currentVelocity << G4endl;
-  //     
-  //     if(currentVelocity <= 0)
-  //     {
-  //         // give particle momentum direction and velocity
-  //         // aStep->GetPreStepPoint()->SetKineticEnergy(86.0 * keV);
-  //         aStep->GetPostStepPoint()->SetMomentumDirection(G4ThreeVector(0,1,0));
-  //         aStep->GetPostStepPoint()->SetVelocity(10 * m/second);
-  //         
-  //         G4cout <<" velocity of " << aStep->GetTrack()->GetVelocity() << "is applied" << G4endl;
-  //         // aStep->GetTrack()->SetTrackStatus(fAlive);
-  //     }
-  //     
-  //     G4cout <<"track status is : " << aStep->GetTrack()->GetTrackStatus() << G4endl;
-  // }
-  // if the particle is radon
-  // if(A == 222)
-  // {
-  //     // auto particleMomentum = aStep->GetTrack()->GetMomentum();
-  //     // 
-  //     // particleMomentum += G4ThreeVector(1.0, 1.0, 1.0);     
-  //     
-  //     auto vel = aStep->GetTrack()->GetVelocity();
-  //     
-  //     
-  //     aStep->GetTrack()->SetVelocity(vel + 100000000000.00);
-  // }
-  // particle->SetParticleMomentum(G4ThreeVector(0,1,0)); 
-  
-  // aStep->GetPostStepPoint()->SetMomentumDirection(G4ThreeVector(0,1,0));
-  // aStep->GetPostStepPoint()->SetVelocity(1 * m/second);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -22,8 +22,6 @@ class nbRadonPhysicsList : public G4VPhysicsConstructor
     virtual void ConstructParticle();
     virtual void ConstructProcess();
     
-    
-    G4VPhysicsConstructor* DecayPhysics;
 
 };
 
