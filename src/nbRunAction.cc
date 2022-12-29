@@ -83,7 +83,7 @@ nbRunAction::nbRunAction(nbDetectorConstruction* det, nbPrimaryGeneratorAction* 
   analysisManager->CreateNtupleDColumn(2, "pX");
   analysisManager->CreateNtupleDColumn(2, "pY");
   analysisManager->CreateNtupleDColumn(2, "pZ");
-  analysisManager->CreateNtupleIColumn(2, "evtNo");
+  analysisManager->CreateNtupleIColumn(2, "stepCount");
   analysisManager->CreateNtupleDColumn(2, "time");
   analysisManager->FinishNtuple(2);
 }

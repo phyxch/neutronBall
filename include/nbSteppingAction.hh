@@ -28,6 +28,9 @@ class nbSteppingAction : public G4UserSteppingAction
     // objects of detector construction & eventAction class
     nbDetectorConstruction* fDetector;  
     nbEventAction* fEventAction;    
+
+  public:
+    G4int stepCounter = 0;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
