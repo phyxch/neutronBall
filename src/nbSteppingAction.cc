@@ -51,9 +51,9 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   G4int pID       = particle->GetPDGEncoding();
   G4int Z         = particle->GetAtomicNumber();
   G4int A         = particle->GetAtomicMass();
-  G4double x=aStep->GetPostStepPoint()->GetPosition().x()/um;
-  G4double y=aStep->GetPostStepPoint()->GetPosition().y()/um;
-  G4double z=aStep->GetPostStepPoint()->GetPosition().z()/um;
+  G4double x=aStep->GetPostStepPoint()->GetPosition().x()/cm;
+  G4double y=aStep->GetPostStepPoint()->GetPosition().y()/cm;
+  G4double z=aStep->GetPostStepPoint()->GetPosition().z()/cm;
   G4double pVelocity=aStep->GetPostStepPoint()->GetVelocity();
   G4double pKE=aStep->GetPostStepPoint()->GetKineticEnergy();
   G4double pX=aStep->GetPostStepPoint()->GetMomentum().x();

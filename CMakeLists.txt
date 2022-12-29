@@ -52,6 +52,7 @@ set(nb_SCRIPTS
   plotPH.C
   run.mac
   mainConfig.txt
+  run1.mac
   )
 
 foreach(_script ${nb_SCRIPTS})

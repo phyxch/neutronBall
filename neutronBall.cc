@@ -22,6 +22,8 @@
 #include "QGSP_BERT_HP.hh"
 #include "nbRadonPhysicsList.hh"
 
+#include "G4StepLimiterPhysics.hh"
+
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -68,6 +70,12 @@ int main(int argc,char** argv) {
   
   nbRadonPhysicsList* nbRadonPhysList = new nbRadonPhysicsList();
   phys->RegisterPhysics(nbRadonPhysList);
+
+  // // step limiter
+	G4StepLimiterPhysics* stepLimiter = new G4StepLimiterPhysics;
+	stepLimiter->SetApplyToAll(true);	// apply step limit to all particles. Default we set limit to DBL_MAX
+	phys->RegisterPhysics(stepLimiter);
+  
   phys->DumpList();
   runManager->SetUserInitialization(phys);
   //////////////////////////////////////////////////////////// 

@@ -1,3 +1,8 @@
+/*
+    Mayur: commented code of AlongStepGetPhysicalInteractionLength(),
+    Mayur: IsApplicable is mimicked from advanced examples in geant4
+*/
+
 #include "nbDriftPhysics.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4UnitsTable.hh"
@@ -17,80 +22,51 @@ nbDriftPhysics::~nbDriftPhysics()
 // IsApplicable
 G4bool nbDriftPhysics::IsApplicable(const G4ParticleDefinition& particle) 
 {   
-  return true;
+  return (particle.GetPDGCharge() != 0.);
 }
 
 // AlongStepGetPhysicalInteractionLength
-G4double nbDriftPhysics::AlongStepGetPhysicalInteractionLength(
-                              const G4Track& track,
-                              G4double  previousStepSize,
-                              G4double  currentMinimumStep,
-                              G4double& proposedSafety,
-                              G4GPILSelection* selection
-                             )
-{
-  return 1. * mm;
-}
+// G4double nbDriftPhysics::AlongStepGetPhysicalInteractionLength(
+//                               const G4Track& track,
+//                               G4double  previousStepSize,
+//                               G4double  currentMinimumStep,
+//                               G4double& proposedSafety,
+//                               G4GPILSelection* selection
+//                              )
+// {
+//   // condition is set to "Not Forced"
+//   *condition = NotForced;
+  
+//   G4double MaxChargedStep
+//   G4double ProposedStep = DBL_MAX;
+
+//   if((MaxChargedStep > 0.) &&
+//      (track.GetVolume() != 0) &&
+//      (track.GetVolume()->GetName() == ""))
+//      ProposedStep = MaxChargedStep;
+
+//   return ProposedStep;
+
+// }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 // AlongStepDoIt
 G4VParticleChange* nbDriftPhysics::AlongStepDoIt(const G4Track& aTrack, const G4Step& aStep)
 {
+   aParticleChange.Initialize(aTrack); 
+   
    const G4ParticleDefinition* particle = aStep.GetTrack()->GetParticleDefinition();  
-
    if(particle->GetAtomicMass() == 222 || particle->GetAtomicNumber() == 86)
    {
-      G4cout << "this is radon" << G4endl;
+      // G4cout << "processCalledCounter: " << processCalledCounter++ << G4endl;  
 
-      // we need to push the particle in upward direction here
-   
-      aParticleChange.Initialize(aTrack);   // this is from official source of G4VParticleChange OR G4VContinuousProcess
-      
-      // // get current velocity in this step 
-      // 
-      // G4double currentVelocity = aStep.GetPostStepPoint()->GetVelocity();
-      // 
-      // G4cout << "current velocity is = " << currentVelocity * mm/s << "mm/s" << G4endl;
-      // 
-      // G4double updatedVelocity = currentVelocity + 100 * m/s;
-      // 
-      // G4cout << "updated velocity is = " << updatedVelocity * mm/s  << "mm/s" << G4endl;
-      // 
-      // // propose this velocity
-      // 
-      // aParticleChange.ProposeVelocity(updatedVelocity);
-      // 
-      // auto dir = aStep.GetPostStepPoint()->GetMomentumDirection();
-      // 
-      // // G4ThreeVector tempMomentumDirection = new G4ThreeVector(0., 1., 0.);
-      // // momentumDirection = momentumDirection + tempMomentum;
-      // 
+      G4double currentEnergy = aStep.GetPreStepPoint()->GetKineticEnergy();
+      // G4cout << "current energy : " << currentEnergy << G4endl;
+      aParticleChange.ProposeEnergy(currentEnergy + 1.0);
       // aParticleChange.ProposeMomentumDirection(G4ThreeVector(0., 1., 0.));
-      
-      // get current velocity in this step 
-      
-      G4double currentKE = aStep.GetPostStepPoint()->GetKineticEnergy();
-      
-      // G4cout << "current velocity is = " << currentKE << G4endl;
-      
-      G4double newKE = currentKE + 100. *MeV;
-      
-      // G4cout << "updated velocity is = " << newKE << G4endl;
-      
-      // propose this velocity
-      
-      aParticleChange.ProposeEnergy(newKE);
-      
-      // auto dir = aStep.GetPostStepPoint()->GetMomentumDirection();
-      
-      // G4ThreeVector tempMomentumDirection = new G4ThreeVector(0., 1., 0.);
-      // momentumDirection = momentumDirection + tempMomentum;
-      
-      aParticleChange.ProposeMomentumDirection(G4ThreeVector(0., 1., 0.));
-
    }
-      
+  
    return &aParticleChange;
 }
 
