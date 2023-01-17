@@ -51,7 +51,7 @@ void nbPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4double theta, phi, PI;
   
   // p = 191.108*MeV; // this is calculated using two body decay
-  p = 188.8827972*MeV;
+  p = 188.8827972*MeV; // this value gives proper kinetic energy of 86.27 keV as mentioned in publications
   
 
   PI = 3.14159265;
