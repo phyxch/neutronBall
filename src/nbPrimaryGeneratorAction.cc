@@ -50,7 +50,8 @@ void nbPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4double p, px, py, pz;
   G4double theta, phi, PI;
   
-  p = 191.108*MeV; // this is calculated using two body decay
+  // p = 191.108*MeV; // this is calculated using two body decay
+  p = 188.8827972*MeV;
   
 
   PI = 3.14159265;
@@ -67,19 +68,17 @@ void nbPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   // G4cout<<"py : "<<py<<G4endl;
   // G4cout<<"pz : "<<pz<<G4endl;    
     
-  fParticleGun->SetParticleMomentum(G4ThreeVector(px,py,pz)); // set original one
-  // fParticleGun->SetParticleMomentum(G4ThreeVector(0.,80.,0.)); 
+  fParticleGun->SetParticleMomentum(G4ThreeVector(px,py,pz));
 
-  // if (fParticleGun->GetParticleDefinition() == G4Geantino::Geantino()) {  
-    G4int Z = 86, A = 222;
-    G4double ionCharge   = 0.*eplus;
-    G4double excitEnergy = 0.*keV;
-    
-    G4ParticleDefinition* ion
-      = G4IonTable::GetIonTable()->GetIon(Z,A,excitEnergy);
-    fParticleGun->SetParticleDefinition(ion);
-    fParticleGun->SetParticleCharge(ionCharge);
-  // }    
+  G4int Z = 86, A = 222;
+  G4double ionCharge   = 0.*eplus;
+  G4double excitEnergy = 0.*keV;
+  
+  G4ParticleDefinition* ion
+    = G4IonTable::GetIonTable()->GetIon(Z,A,excitEnergy);
+  fParticleGun->SetParticleDefinition(ion);
+  fParticleGun->SetParticleCharge(ionCharge);
+      
   //create vertex
   //   
   fParticleGun->GeneratePrimaryVertex(anEvent);

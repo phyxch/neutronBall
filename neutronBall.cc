@@ -72,9 +72,9 @@ int main(int argc,char** argv) {
   phys->RegisterPhysics(nbRadonPhysList);
 
   // // step limiter
-	G4StepLimiterPhysics* stepLimiter = new G4StepLimiterPhysics;
-	stepLimiter->SetApplyToAll(true);	// apply step limit to all particles. Default we set limit to DBL_MAX
-	phys->RegisterPhysics(stepLimiter);
+	// G4StepLimiterPhysics* stepLimiter = new G4StepLimiterPhysics;
+	// stepLimiter->SetApplyToAll(true);	// apply step limit to all particles. Default we set limit to DBL_MAX
+	// phys->RegisterPhysics(stepLimiter);
   
   phys->DumpList();
   runManager->SetUserInitialization(phys);

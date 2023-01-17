@@ -59,8 +59,10 @@ void nbSteppingAction::UserSteppingAction(const G4Step* aStep)
   G4double pX=aStep->GetPostStepPoint()->GetMomentum().x();
   G4double pY=aStep->GetPostStepPoint()->GetMomentum().y();
   G4double pZ=aStep->GetPostStepPoint()->GetMomentum().z();
-  G4double time = aStep->GetPostStepPoint()->GetGlobalTime();
-    
+  // G4double time = aStep->GetPostStepPoint()->GetGlobalTime();
+
+  G4double time = aStep->GetTrack()->GetLocalTime();
+
   // fill ntuple with id = 2
   G4int id = 2;
   analysisManager->FillNtupleDColumn(id,0, x);
